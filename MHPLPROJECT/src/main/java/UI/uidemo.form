@@ -43,7 +43,7 @@
   <SubComponents>
     <Component class="javax.swing.JTextField" name="jTextField1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Quang Linh &#x111;&#xe3; check 1"/>
+        <Property name="text" type="java.lang.String" value="Quang Linh &#x111;&#xe3; check 111"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField1ActionPerformed"/>
