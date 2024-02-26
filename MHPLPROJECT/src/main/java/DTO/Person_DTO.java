@@ -4,6 +4,8 @@
  */
 package DTO;
 
+import java.util.Date;
+
 /**
  *
  * @author ASUS
@@ -17,7 +19,7 @@ public class Person_DTO {
      
     public Person_DTO()
     {}
-    public Person_DTO(int PersonID, String LastName, String FirstName,String HireDate, String EnrollmentDate)
+    public Person_DTO(int PersonID, String LastName, String FirstName,Date HireDate, Date EnrollmentDate)
     {
         this.PersonID = PersonID;
         this.LastName = LastName;
@@ -49,19 +51,19 @@ public class Person_DTO {
     {
         this.FirstName = FirstName;
     }
-    public String getHireDate()
+    public Date getHireDate()
     {
         return HireDate;
     }
-    public void setHireDate(String HireDate)
+    public void setHireDate(Date HireDate)
     {
         this.HireDate = HireDate;
     }
-    public String getEnrollmentDate()
+    public Date getEnrollmentDate()
     {
         return EnrollmentDate;
     }
-    public void setEnrollmentDate(String EnrollmentDate)
+    public void setEnrollmentDate(Date EnrollmentDate)
     {
         this.EnrollmentDate = EnrollmentDate;
     }       
