@@ -12,8 +12,8 @@ public class Person_DTO {
     private int PersonID;
     private String LastName;
     private String FirstName;
-    private String HireDate;
-    private String EnrollmentDate;
+    private Date HireDate;
+    private Date EnrollmentDate;
      
     public Person_DTO()
     {}
