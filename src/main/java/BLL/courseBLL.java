@@ -27,6 +27,16 @@ public class courseBLL {
         int result = stdDal.insertCourse(s);
         return result;
     }
+  
+  
+     
+  public int EditCouse(course s) throws SQLException {
+        int result_up = stdDal.updateCourse(s);
+         System.out.println("Update BLL "+ result_up);
+        return result_up;
+//        System.out.println("Update BLL "+ result_up);
+    }
+  
   public  List LoadCourse (int page) throws SQLException
   {
         int numofrecords = 30;

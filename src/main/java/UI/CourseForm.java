@@ -10,10 +10,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import DAL.courseDAL;import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
-
-import java.awt.List;
 import DAL.courseDAL;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -38,7 +34,6 @@ public class CourseForm extends javax.swing.JFrame {
 //       
 
 // 
-      
     }
 
     /**
@@ -81,6 +76,12 @@ public class CourseForm extends javax.swing.JFrame {
         jLabel4.setText("Credits");
 
         jLabel5.setText("Department ID");
+
+        txt_courseid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_courseidActionPerformed(evt);
+            }
+        });
 
         txtDepartmentid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,6 +126,11 @@ public class CourseForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblCourse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCourseMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblCourse);
 
         txtTimkiem.addActionListener(new java.awt.event.ActionListener() {
@@ -228,18 +234,33 @@ public class CourseForm extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        int row = tblCourse.getSelectedColumn();
-        TableModel model  = tblCourse.getModel();
+        int i = tblCourse.getSelectedColumn();
+//        TableModel model = tblCourse.getModel();
 //        int i;
 //        int course_ID = Integer.parseInt(model.getValueAt(row, 1).toString());
-        
-        
-        
-        
+
+        courseBLL Bl = new courseBLL();
+        if (i >= 0) {
+            try {
+                course c = new course();
+                c.courseId = Integer.parseInt(txt_courseid.getText());
+                c.title = txtTitle.getText();
+                c.credits = Integer.parseInt(txtCredits.getText());
+                c.departmentID = Integer.parseInt(txtDepartmentid.getText());
+                
+                tblCourse.setValueAt(c.courseId, i, 0);
+                tblCourse.setValueAt(c.title, i, 1);
+                tblCourse.setValueAt(c.credits, i, 2);
+                tblCourse.setValueAt(c.departmentID, i, 3);
+                Bl.EditCouse(c);
+// JOptionPane.showMessageDialog(null, " DA SUA THANH CONG");
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    
-   
+
     private void btnInsertMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInsertMouseClicked
         // TODO add your handling code here:
 
@@ -275,19 +296,41 @@ public class CourseForm extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnInsertActionPerformed
+
+    private void txt_courseidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_courseidActionPerformed
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_txt_courseidActionPerformed
+
+    private void tblCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseMouseClicked
+        // TODO add your handling code here:
+
+        DefaultTableModel clickTable = (DefaultTableModel) tblCourse.getModel();
+        int i = tblCourse.getSelectedRow();
+        try {
+            txtDepartmentid.setText(clickTable.getValueAt(i, 0).toString());
+            txtTitle.setText(clickTable.getValueAt(i, 1).toString());
+            txtCredits.setText(clickTable.getValueAt(i, 2).toString());
+            txt_courseid.setText(clickTable.getValueAt(i, 3).toString());
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+
+    }//GEN-LAST:event_tblCourseMouseClicked
     private void listCourse() throws SQLException {
 //    List list = std.LoadCourse(1);
 //    System.out.println("test"+list);
 //        java.util.List list = (java.util.List) std.LoadCourse(1);
-courseDAL sts = new courseDAL();
-ArrayList list = sts.readCourse();
+        courseDAL sts = new courseDAL();
+        ArrayList list = sts.readCourse();
         DefaultTableModel model = convertStudent(list);
         tblCourse.setModel(model);
-        
-        //Fix Three Layer -> 2 Layer
-        
-//        lbStatus.setText("Num of rows: " + list.size());
 
+        //Fix Three Layer -> 2 Layer
+//        lbStatus.setText("Num of rows: " + list.size());
 //    DefaultTableModel model = convertCourse(list);
 //    tblCourse.setModel(model);
     }

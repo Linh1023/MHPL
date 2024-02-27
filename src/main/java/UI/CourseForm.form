@@ -151,6 +151,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txt_courseid">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_courseidActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtTitle">
     </Component>
@@ -204,6 +207,9 @@
               </Table>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblCourseMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

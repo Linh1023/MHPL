@@ -34,6 +34,18 @@ public class courseDAL extends MyDatabaseManager {
         return result;
     }
 
+      public int updateCourse(course s) throws SQLException {
+        String query = "Update course SET Title = ? , Credits = ?,DepartmentID=? "
+                + " WHERE courseID  = ?";
+        PreparedStatement p = courseDAL.getConnection().prepareStatement(query);
+        p.setString(1, s.getTitle());
+        p.setInt(2, s.getCredits());
+        p.setInt(3, s.getDepartmentID());
+        p.setInt(4, s.getCourseId());
+        int result = p.executeUpdate();
+          System.out.println("Lop DAL"+p);
+        return result;
+    }
     public ArrayList readCourse() throws SQLException {
         String query = "SELECT * FROM course ";
         ResultSet rs = courseDAL.doReadQuery(query);
@@ -55,5 +67,7 @@ public class courseDAL extends MyDatabaseManager {
         }
         return list;
     }
+
+  
 
 }
