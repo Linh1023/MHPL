@@ -12,11 +12,12 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import DAL.courseDAL;import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-sfsdfsdfsdfs
+
 import java.awt.List;
 import DAL.courseDAL;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -60,7 +61,6 @@ public class CourseForm extends javax.swing.JFrame {
         txtCredits = new javax.swing.JTextField();
         txtDepartmentid = new javax.swing.JTextField();
         btnUpdate = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
         btnInsert = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -94,8 +94,6 @@ public class CourseForm extends javax.swing.JFrame {
                 btnUpdateActionPerformed(evt);
             }
         });
-
-        btnEdit.setText("Sua");
 
         btnInsert.setText("Them");
         btnInsert.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -155,9 +153,7 @@ public class CourseForm extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(37, 37, 37)
                                 .addComponent(btnDelete)
-                                .addGap(36, 36, 36)
-                                .addComponent(btnEdit)
-                                .addGap(18, 18, 18)
+                                .addGap(49, 49, 49)
                                 .addComponent(btnUpdate))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(59, 59, 59)
@@ -202,7 +198,6 @@ public class CourseForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnInsert)
                             .addComponent(btnDelete)
-                            .addComponent(btnEdit)
                             .addComponent(btnUpdate))
                         .addGap(41, 41, 41)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -233,8 +228,18 @@ public class CourseForm extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        int row = tblCourse.getSelectedColumn();
+        TableModel model  = tblCourse.getModel();
+//        int i;
+//        int course_ID = Integer.parseInt(model.getValueAt(row, 1).toString());
+        
+        
+        
+        
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    
+   
     private void btnInsertMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInsertMouseClicked
         // TODO add your handling code here:
 
@@ -329,7 +334,6 @@ ArrayList list = sts.readCourse();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnInsert;
     private javax.swing.JButton btnTimkiem;
     private javax.swing.JButton btnUpdate;
