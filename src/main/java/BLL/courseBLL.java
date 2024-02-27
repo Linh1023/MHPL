@@ -27,7 +27,7 @@ public class courseBLL {
         int result = stdDal.insertCourse(s);
         return result;
     }
-  public java.util.List LoadCourse (int page) throws SQLException
+  public  List LoadCourse (int page) throws SQLException
   {
         int numofrecords = 30;
         ArrayList list = stdDal.readCourse();
@@ -36,6 +36,6 @@ public class courseBLL {
         from = (page - 1) * numofrecords;
         to = page * numofrecords;
 
-        return  list.subList(from, Math.min(to, size)); 
+        return  (List) list.subList(from, Math.min(to, size)); 
   }
 }

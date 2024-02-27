@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 public class courseDAL extends MyDatabaseManager {
 
     public courseDAL() {

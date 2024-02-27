@@ -12,27 +12,30 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import DAL.courseDAL;
 import java.awt.List;
-
+import DAL.courseDAL;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author DO THE TUNG
  */
-public class courseForm extends javax.swing.JFrame {
+public class CourseForm extends javax.swing.JFrame {
 
-    courseBLL std;
+//    courseBLL std;
+    courseBLL std = new courseBLL();
 
     /**
      * Creates new form course
      */
-    public courseForm() {
+    public CourseForm() throws SQLException {
         initComponents();
-        std = new courseBLL();
- try {
-            listCourse();
-        } catch (SQLException ex) {
-            Logger.getLogger(courseForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        listCourse();
+//        std = new courseBLL();
+//       
+
+// 
+      
     }
 
     /**
@@ -235,31 +238,7 @@ public class courseForm extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnInsertMouseClicked
-private void listCourse() throws SQLException
-{
-        List list_Couse =  std.LoadCourse(1);
- DefaultTableModel model = convertCourse(list_Couse);
-   tblCourse.setModel(model);
-   
-}
 
-private DefaultTableModel convertCourse (List list)
-{
-
-    String[] columnNames = {"CourseID", "Title", "Credits", "DepartmentID"};
-Object[][] data = new Object[list.countItems()][4]; // Correct data type
-for (int i = 0; i < list.countItems(); i++) {
-    course s = (course) list.
-    data[i][0] = s.getCourseId();
-    data[i][1] = s.getTitle();
-    data[i][2] = s.getCredits();
-    data[i][3] = s.getDepartmentID();
-}
-DefaultTableModel model = new DefaultTableModel(data, columnNames);
-return model; // Issue resolved
-       
-
-}
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
 
         course s = new course();
@@ -269,12 +248,14 @@ return model; // Issue resolved
         s.setCredits(credit);
         s.setDepartmentID(departmentId);
         s.setTitle(txtTitle.getText());
+
         System.out.println("Test 011");
 
         try {
 //            System.out.println("test doan nay " + std.addCouse(s));
             if (std.addCouse(s) > 0) {
                 System.out.println("Test 1");
+
                 JOptionPane.showMessageDialog(this, "Complete add student", "Message", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Error add student", "Message", JOptionPane.ERROR_MESSAGE);
@@ -282,16 +263,44 @@ return model; // Issue resolved
         } catch (SQLException ex) {
 
             System.out.println("dang o catch");
-            Logger.getLogger(courseForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CourseForm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
     }//GEN-LAST:event_btnInsertActionPerformed
+    private void listCourse() throws SQLException {
+//    List list = std.LoadCourse(1);
+//    System.out.println("test"+list);
+//        java.util.List list = (java.util.List) std.LoadCourse(1);
+courseDAL sts = new courseDAL();
+ArrayList list = sts.readCourse();
+        DefaultTableModel model = convertStudent(list);
+        tblCourse.setModel(model);
+//        lbStatus.setText("Num of rows: " + list.size());
+
+//    DefaultTableModel model = convertCourse(list);
+//    tblCourse.setModel(model);
+    }
+
+    private DefaultTableModel convertStudent(java.util.List list) {
+        String[] columnNames = {"courseID", "Title", "Credits", "DepartmentId"};
+        Object[][] data = new Object[list.size()][5];
+        for (int i = 0; i < list.size(); i++) {
+            course s = (course) list.get(i);
+//            data[i][0] = i + 1;
+            data[i][0] = s.getCourseId();
+            data[i][1] = s.getTitle();
+            data[i][2] = s.getCredits();
+            data[i][3] = s.getDepartmentID();
+        }
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        return model;
+    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws SQLException {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -300,16 +309,16 @@ return model; // Issue resolved
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(courseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CourseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(courseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CourseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(courseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CourseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(courseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CourseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        courseForm f = new courseForm();
+        CourseForm f = new CourseForm();
         f.setVisible(true);
     }
 
