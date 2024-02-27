@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import BLL.*;
+import java.sql.Time;
 
 /**
  *
@@ -20,6 +21,7 @@ public class DAL_StudentGrade {
     private ResultSet rs;
     private PreparedStatement pst;
     private ArrayList<DTO_StudentGrade> arrayListStudentGrade;
+    
     private DTO_StudentGrade dTO_StudentGrade;
     
     public ArrayList<DTO_StudentGrade> readStudentGrade (String course) {
@@ -47,9 +49,55 @@ public class DAL_StudentGrade {
         } 
     } 
     
-//    public ArrayList<DTO_StudentGrade> readCourse(String Status) {
-//        
-//    }
+    public ArrayList<DTO_OnlineCourse> readOnlineCourse() {
+        conn = ConnectToSQL.conn();
+        ArrayList<DTO_OnlineCourse> arrayListOnlineCourse = new ArrayList<DTO_OnlineCourse>() ;
+        try {
+            String sqlQuery = "SELECT * FROM course, onlinecourse where course.CourseID = onlinecourse.CourseID" ;
+             pst = conn.prepareStatement(sqlQuery);
+             rs = pst.executeQuery();
+             while (rs.next()) {
+              int courseIDOnlline  = rs.getInt("onlinecourse.CourseID");
+              String url = rs.getString("url");
+              int courseID = rs.getInt("course.CourseID");
+              int credits = rs.getInt("Credits");
+              int departmentID = rs.getInt("DepartmentID");
+              String title = rs.getString ("Title");
+              DTO_OnlineCourse dTO_OnlineCourse = new DTO_OnlineCourse(courseIDOnlline, url,courseID , credits, departmentID, title);
+              arrayListOnlineCourse.add(dTO_OnlineCourse);
+             }
+            return arrayListOnlineCourse;
+        } catch (Exception e) {
+            return null;
+        } 
+    }
+    
+    public ArrayList<DTO_OnSiteCourse> readOnSiteCourse() {
+        conn = ConnectToSQL.conn();
+        ArrayList<DTO_OnSiteCourse> arrayListOnSiteCourse = new ArrayList<DTO_OnSiteCourse>() ;
+        try {
+            String sqlQuery = "SELECT * FROM course, onsitecourse where course.CourseID = onsitecourse.CourseID" ;
+             pst = conn.prepareStatement(sqlQuery);
+             rs = pst.executeQuery();
+             while (rs.next()) {
+              int courseIDOnSite  = rs.getInt("onsitecourse.CourseID");
+              String location = rs.getString("Location");
+              String days = rs.getString("Days");
+              Time time = rs.getTime("Time");
+              int courseID = rs.getInt("course.CourseID");
+              int credits = rs.getInt ("Credits");
+              int departmentID = rs.getInt ("DepartmentID");
+              String title = rs.getString("Title");
+              DTO_OnSiteCourse dTO_OnSiteCourse = new DTO_OnSiteCourse( courseIDOnSite,  location,  days,  time,  courseID,  credits,  departmentID,  title);
+              arrayListOnSiteCourse.add(dTO_OnSiteCourse);
+             }
+            return arrayListOnSiteCourse;
+        } catch (Exception e) {
+            return null;
+        } 
+    }
+    
+    
     
     
     

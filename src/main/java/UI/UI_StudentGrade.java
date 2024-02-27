@@ -4,6 +4,10 @@
  */
 package UI;
 
+import BLL.BLL_StudentGrade;
+import BLL.DTO_OnSiteCourse;
+import BLL.DTO_OnlineCourse;
+import java.util.ArrayList;
 import javax.swing.JComboBox;
 
 /**
@@ -15,10 +19,12 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     /**
      * Creates new form UI_StudentGrade
      */
+    private BLL_StudentGrade bLL_StudentGrade;
     public UI_StudentGrade() {
         
         initComponents();
-        
+        bLL_StudentGrade = new BLL_StudentGrade();
+        addOnSiteCourseDataToJcomboboxCourse ();
     }
 
     /**
@@ -373,11 +379,15 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_XoaActionPerformed
 
     private void jComboBox_OnOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_OnOffActionPerformed
-        System.out.println(jComboBox_OnOff.getSelectedItem());
-        
-//        jComboBox_Course.addItem("Hello");
+         jComboBox_Course.removeAllItems();
+        if (jComboBox_OnOff.getSelectedItem().equals("On site"))
+        {
+            addOnSiteCourseDataToJcomboboxCourse();
+        } else if (jComboBox_OnOff.getSelectedItem().equals("Online")) {
+            addOnlineCourseDataToJcomboboxCourse();
+        }
     }//GEN-LAST:event_jComboBox_OnOffActionPerformed
-
+    
     private void jComboBox_CourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_CourseActionPerformed
         System.out.println("clicked jcombobox Course");
     }//GEN-LAST:event_jComboBox_CourseActionPerformed
@@ -418,6 +428,24 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         });
     }
 
+    public void addOnlineCourseDataToJcomboboxCourse () {
+        ArrayList<DTO_OnlineCourse> arrayListOnlineCourse = new ArrayList<DTO_OnlineCourse>() ;
+        arrayListOnlineCourse = bLL_StudentGrade.readOnlineCourse();
+        for (int i = 0; i<arrayListOnlineCourse.size(); i++) {
+            jComboBox_Course.addItem(arrayListOnlineCourse.get(i).getCourseID() + "-" + arrayListOnlineCourse.get(i).getTitle());
+        }
+    }
+    
+     public void addOnSiteCourseDataToJcomboboxCourse () {
+        ArrayList<DTO_OnSiteCourse> arrayListOnSiteCourse = new ArrayList<DTO_OnSiteCourse>() ;
+        arrayListOnSiteCourse = bLL_StudentGrade.readOnSiteCourse();
+        for (int i = 0; i<arrayListOnSiteCourse.size(); i++) {
+            jComboBox_Course.addItem(arrayListOnSiteCourse.get(i).getCourseID() + "-" + arrayListOnSiteCourse.get(i).getTitle());
+        }
+    }
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_ChonCourse;
     private javax.swing.JButton jButton_ChonStudentdID;

@@ -12,21 +12,21 @@ import java.sql.Time;
  */
 public class DTO_OnSiteCourse extends DTO_Course{
     private int courseIDOnSite;
-    private String locationString;
+    private String location;
     private String days;
     private Time time;
 
-    public DTO_OnSiteCourse(int courseIDOnSite, String locationString, String days, Time time) {
+    public DTO_OnSiteCourse(int courseIDOnSite, String location, String days, Time time) {
         this.courseIDOnSite = courseIDOnSite;
-        this.locationString = locationString;
+        this.location = location;
         this.days = days;
         this.time = time;
     }
 
-    public DTO_OnSiteCourse(int courseIDOnSite, String locationString, String days, Time time, int courseID, int credits, int departmentID, String title) {
+    public DTO_OnSiteCourse(int courseIDOnSite, String location, String days, Time time, int courseID, int credits, int departmentID, String title) {
         super(courseID, credits, departmentID, title);
         this.courseIDOnSite = courseIDOnSite;
-        this.locationString = locationString;
+        this.location = location;
         this.days = days;
         this.time = time;
     }
@@ -39,12 +39,12 @@ public class DTO_OnSiteCourse extends DTO_Course{
         this.courseIDOnSite = courseIDOnSite;
     }
 
-    public String getLocationString() {
-        return locationString;
+    public String getLocation() {
+        return location;
     }
 
-    public void setLocationString(String locationString) {
-        this.locationString = locationString;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getDays() {
@@ -62,6 +62,8 @@ public class DTO_OnSiteCourse extends DTO_Course{
     public void setTime(Time time) {
         this.time = time;
     }
+
+    
     
     
     
