@@ -10,7 +10,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import DAL.courseDAL;sfsdfsdfsdfs
+import DAL.courseDAL;import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+sfsdfsdfsdfs
 import java.awt.List;
 import DAL.courseDAL;
 import java.util.ArrayList;
@@ -276,6 +278,9 @@ courseDAL sts = new courseDAL();
 ArrayList list = sts.readCourse();
         DefaultTableModel model = convertStudent(list);
         tblCourse.setModel(model);
+        
+        //Fix Three Layer -> 2 Layer
+        
 //        lbStatus.setText("Num of rows: " + list.size());
 
 //    DefaultTableModel model = convertCourse(list);
