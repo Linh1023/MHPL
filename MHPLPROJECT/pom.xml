@@ -5,10 +5,22 @@
     <artifactId>MHPLPROJECT</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+     <dependencies>
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc10</artifactId>
+            <version>19.13.0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.26</version>
+        </dependency>
+    </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>20</maven.compiler.source>
-        <maven.compiler.target>20</maven.compiler.target>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
         <exec.mainClass>com.mycompany.mhplproject.MHPLPROJECT</exec.mainClass>
     </properties>
 </project>
