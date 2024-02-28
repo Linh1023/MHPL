@@ -102,6 +102,11 @@ public class AddFormCourse extends javax.swing.JFrame {
                 "Mã Khóa Học", "Tên Khóa Học", "Giá", "Phòng", "URL", "Địa Điểm", "Ngày", "Giờ"
             }
         ));
+        tblCourse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCourseMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblCourse);
 
         btnInsert.setBackground(new java.awt.Color(51, 153, 0));
@@ -118,6 +123,11 @@ public class AddFormCourse extends javax.swing.JFrame {
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Sửa");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setBackground(new java.awt.Color(255, 0, 0));
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -555,16 +565,34 @@ public class AddFormCourse extends javax.swing.JFrame {
 
 //            courseDAL sts1 = new courseDAL();
 //            ArrayList list = sts1.readCourse();
-
-
-courseBLL sts1 = new courseBLL();
-ArrayList list  = sts1.LoadCourse_No_Frac_page();
+            courseBLL sts1 = new courseBLL();
+            ArrayList list = sts1.LoadCourse_No_Frac_page();
             DefaultTableModel model = convertStudent(list);
             tblCourse.setModel(model);
         } catch (SQLException ex) {
             Logger.getLogger(AddFormCourse.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void tblCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseMouseClicked
+        // TODO add your handling code here:
+          DefaultTableModel clickTable = (DefaultTableModel) tblCourse.getModel();
+        int i = tblCourse.getSelectedRow();
+        try {
+            txtDepartmentid.setText(clickTable.getValueAt(i, 0).toString());
+            txtTitle.setText(clickTable.getValueAt(i, 1).toString());
+            txtCredits.setText(clickTable.getValueAt(i, 2).toString());
+            txt_courseid.setText(clickTable.getValueAt(i, 3).toString());
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }//GEN-LAST:event_tblCourseMouseClicked
 
     /**
      * @param args the command line arguments
