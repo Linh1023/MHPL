@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class courseDAL extends MyDatabaseManager {
@@ -80,6 +81,27 @@ public class courseDAL extends MyDatabaseManager {
         return result;
     }
 
-  
+  public List findcourses(String title) throws SQLException {
+//        String query = "SELECT * FROM course WHERE concat(FirstName, ' ', LastName)  LIKE ?";
+ String query = "SELECT * FROM course WHERE title  LIKE ?";
+        PreparedStatement p = courseDAL.getConnection().prepareStatement(query);
+        p.setString(1, "%" + title + "%");
+        ResultSet rs = p.executeQuery();
+        List list = new ArrayList();
+
+        if (rs != null) {
+            int i = 1;
+
+            while (rs.next()) {
+                course s = new course();
+                s.setCourseId(rs.getInt("courseid"));
+                s.setTitle(rs.getString("Title"));
+                s.setCourseId(rs.getInt("credits"));
+                s.setDepartmentID(rs.getInt("DepartmentID"));
+                list.add(s);
+            }
+        }
+        return list;
+    }
 
 }

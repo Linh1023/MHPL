@@ -28,7 +28,13 @@ public class courseBLL {
         int result = stdDal.insertCourse(s);
         return result;
     }
-
+public ArrayList findCourse(String title) throws SQLException
+{
+    ArrayList list = new ArrayList();
+    list  = (ArrayList) stdDal.findcourses(title);
+    return list ;
+    
+}
     public int EditCouse(course s) throws SQLException {
         int result_up = stdDal.updateCourse(s);
         System.out.println("Update BLL " + result_up);

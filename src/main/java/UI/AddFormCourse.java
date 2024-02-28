@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import DAL.courseDAL;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -20,15 +21,16 @@ import javax.swing.table.TableModel;
  * @author quang
  */
 public class AddFormCourse extends javax.swing.JFrame {
-
+    
     courseBLL std = new courseBLL();
-DefaultTableModel tableModel = new DefaultTableModel();
+    DefaultTableModel tableModel = new DefaultTableModel();
+
     /**
      * Creates new form AddCourse
      */
     public AddFormCourse() throws SQLException {
         initComponents();
-        tableModel =(DefaultTableModel) tblCourse.getModel();
+        tableModel = (DefaultTableModel) tblCourse.getModel();
         listCourse();
     }
 
@@ -413,7 +415,18 @@ DefaultTableModel tableModel = new DefaultTableModel();
             }
         });
 
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+
         btnSearch.setText("Tìm Kiếm");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -507,34 +520,34 @@ DefaultTableModel tableModel = new DefaultTableModel();
         course s = new course();
         int credit = Integer.parseInt(txtCredits.getText());
         int departmentId = Integer.parseInt(txtDepartmentid.getText());
-
+        
         s.setCredits(credit);
         s.setDepartmentID(departmentId);
         s.setTitle(txtTitle.getText());
-
+        
         System.out.println("Test 011");
-
+        
         try {
 //            System.out.println("test doan nay " + std.addCouse(s));
             if (std.addCouse(s) > 0) {
                 System.out.println("Test 1");
-
+                
                 JOptionPane.showMessageDialog(this, "Complete add student", "Message", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Error add student", "Message", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException ex) {
-
+            
             System.out.println("dang o catch");
             Logger.getLogger(CourseForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnInsertActionPerformed
-
+    
     private void listCourse() throws SQLException {
 //   
         courseDAL sts = new courseDAL();
         ArrayList list = sts.readCourse();
-        DefaultTableModel model = convertStudent(list);
+        DefaultTableModel model = convertCouse(list);
         tblCourse.setModel(model);
 
         //Fix Three Layer -> 2 Layer
@@ -542,8 +555,8 @@ DefaultTableModel tableModel = new DefaultTableModel();
 //    DefaultTableModel model = convertCourse(list);
 //    tblCourse.setModel(model);
     }
-
-    private DefaultTableModel convertStudent(java.util.List list) {
+    
+    private DefaultTableModel convertCouse(java.util.List list) {
         String[] columnNames = {"courseID", "Title", "Credits", "DepartmentId"};
         Object[][] data = new Object[list.size()][5];
         for (int i = 0; i < list.size(); i++) {
@@ -573,8 +586,16 @@ DefaultTableModel tableModel = new DefaultTableModel();
 //            ArrayList list = sts1.readCourse();
             courseBLL sts1 = new courseBLL();
             ArrayList list = sts1.LoadCourse_No_Frac_page();
-            DefaultTableModel model = convertStudent(list);
+            DefaultTableModel model = convertCouse(list);
             tblCourse.setModel(model);
+
+            //Load cai phan tu ve rong
+            String t = "";
+            txtDepartmentid.setText("");
+            txtCredits.setText("");
+            txtTitle.setText(t);
+            txt_courseid.setText(t);
+            
         } catch (SQLException ex) {
             Logger.getLogger(AddFormCourse.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -582,7 +603,7 @@ DefaultTableModel tableModel = new DefaultTableModel();
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-         int i = tblCourse.getSelectedColumn();
+        int i = tblCourse.getSelectedColumn();
 //        TableModel model = tblCourse.getModel();
 //        int i;
 //        int course_ID = Integer.parseInt(model.getValueAt(row, 1).toString());
@@ -610,15 +631,15 @@ DefaultTableModel tableModel = new DefaultTableModel();
 
     private void tblCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseMouseClicked
         // TODO add your handling code here:
-          DefaultTableModel clickTable = (DefaultTableModel) tblCourse.getModel();
+        DefaultTableModel clickTable = (DefaultTableModel) tblCourse.getModel();
         int i = tblCourse.getSelectedRow();
         try {
-            txt_courseid.setText(clickTable.getValueAt(i, 0).toString());  
+            txt_courseid.setText(clickTable.getValueAt(i, 0).toString());            
             txtTitle.setText(clickTable.getValueAt(i, 1).toString());
             txtCredits.setText(clickTable.getValueAt(i, 2).toString());
-
+            
             txtDepartmentid.setText(clickTable.getValueAt(i, 3).toString());
-
+            
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -627,28 +648,50 @@ DefaultTableModel tableModel = new DefaultTableModel();
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         courseBLL bus = new courseBLL();
-        int i =tblCourse.getSelectedRow();
+        int i = tblCourse.getSelectedRow();
         if (i >= 0) {
             int Ma = Integer.parseInt(txt_courseid.getText());
-
+            
             try {
                 //            tgList.remove(bus.findWithId(Ma));
 
                 bus.DeleteCouse(Ma);
-                 tableModel.removeRow(i);
-
-            tblCourse.setModel(tableModel);
-             JOptionPane.showMessageDialog(null, " DA XOA THANH CONG");
+                tableModel.removeRow(i);
+                
+                tblCourse.setModel(tableModel);
+                JOptionPane.showMessageDialog(null, " DA XOA THANH CONG");
             } catch (SQLException ex) {
                 Logger.getLogger(AddFormCourse.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-
-            
         }
         
-        
+
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+         try {
+            
+            String name = txtSearch.getText();
+            if (name.isBlank() == false) {
+                List list = std.findCourse(name);
+                DefaultTableModel model = convertCouse(list);
+                tblCourse.setModel(model);
+//                lbStatus.setText("Num of rows: " + list.size());
+            } else {
+                JOptionPane.showMessageDialog(this, "fullname is empty", "Message", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AddFormCourse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -664,21 +707,21 @@ DefaultTableModel tableModel = new DefaultTableModel();
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
+                    
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(AddFormCourse.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(AddFormCourse.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(AddFormCourse.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AddFormCourse.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -691,7 +734,7 @@ DefaultTableModel tableModel = new DefaultTableModel();
             public void run() {
                 try {
                     new AddFormCourse().setVisible(true);
-
+                    
                 } catch (SQLException ex) {
                     Logger.getLogger(AddFormCourse.class
                             .getName()).log(Level.SEVERE, null, ex);
