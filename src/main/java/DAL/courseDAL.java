@@ -46,6 +46,8 @@ public class courseDAL extends MyDatabaseManager {
           System.out.println("Lop DAL"+p);
         return result;
     }
+      
+      
     public ArrayList readCourse() throws SQLException {
         String query = "SELECT * FROM course ";
         ResultSet rs = courseDAL.doReadQuery(query);
@@ -66,6 +68,16 @@ public class courseDAL extends MyDatabaseManager {
             }
         }
         return list;
+    }
+    
+    
+        public int deleteCourse(int courseID) throws SQLException {
+        String query = "DELETE FROM course WHERE courseID = ?";
+        PreparedStatement p = courseDAL.getConnection().prepareStatement(query);
+        p.setInt(1, courseID);
+        int result = p.executeUpdate();
+
+        return result;
     }
 
   

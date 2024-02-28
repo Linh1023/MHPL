@@ -46,6 +46,13 @@ public class courseBLL {
         return list;
         
     }
+    
+ public int DeleteCouse(int courseId) throws SQLException {
+        int result_up = stdDal.deleteCourse(courseId);
+        System.out.println("Update BLL " + result_up);
+        return result_up;
+//        System.out.println("Update BLL "+ result_up);
+    }
     public List LoadCourse(int page) throws SQLException {
         int numofrecords = 30;
         ArrayList list = stdDal.readCourse();

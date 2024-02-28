@@ -22,12 +22,13 @@ import javax.swing.table.TableModel;
 public class AddFormCourse extends javax.swing.JFrame {
 
     courseBLL std = new courseBLL();
-
+DefaultTableModel tableModel = new DefaultTableModel();
     /**
      * Creates new form AddCourse
      */
     public AddFormCourse() throws SQLException {
         initComponents();
+        tableModel =(DefaultTableModel) tblCourse.getModel();
         listCourse();
     }
 
@@ -133,6 +134,11 @@ public class AddFormCourse extends javax.swing.JFrame {
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnRefresh.setBackground(new java.awt.Color(51, 153, 255));
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -576,7 +582,30 @@ public class AddFormCourse extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        
+         int i = tblCourse.getSelectedColumn();
+//        TableModel model = tblCourse.getModel();
+//        int i;
+//        int course_ID = Integer.parseInt(model.getValueAt(row, 1).toString());
+
+        courseBLL Bl = new courseBLL();
+        if (i >= 0) {
+            try {
+                course c = new course();
+                c.courseId = Integer.parseInt(txt_courseid.getText());
+                c.title = txtTitle.getText();
+                c.credits = Integer.parseInt(txtCredits.getText());
+                c.departmentID = Integer.parseInt(txtDepartmentid.getText());
+                
+                tblCourse.setValueAt(c.courseId, i, 0);
+                tblCourse.setValueAt(c.title, i, 1);
+                tblCourse.setValueAt(c.credits, i, 2);
+                tblCourse.setValueAt(c.departmentID, i, 3);
+                Bl.EditCouse(c);
+// JOptionPane.showMessageDialog(null, " DA SUA THANH CONG");
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void tblCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseMouseClicked
@@ -584,15 +613,42 @@ public class AddFormCourse extends javax.swing.JFrame {
           DefaultTableModel clickTable = (DefaultTableModel) tblCourse.getModel();
         int i = tblCourse.getSelectedRow();
         try {
-            txtDepartmentid.setText(clickTable.getValueAt(i, 0).toString());
+            txt_courseid.setText(clickTable.getValueAt(i, 0).toString());  
             txtTitle.setText(clickTable.getValueAt(i, 1).toString());
             txtCredits.setText(clickTable.getValueAt(i, 2).toString());
-            txt_courseid.setText(clickTable.getValueAt(i, 3).toString());
+
+            txtDepartmentid.setText(clickTable.getValueAt(i, 3).toString());
 
         } catch (Exception e) {
             System.out.println(e.toString());
         }
     }//GEN-LAST:event_tblCourseMouseClicked
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        courseBLL bus = new courseBLL();
+        int i =tblCourse.getSelectedRow();
+        if (i >= 0) {
+            int Ma = Integer.parseInt(txt_courseid.getText());
+
+            try {
+                //            tgList.remove(bus.findWithId(Ma));
+
+                bus.DeleteCouse(Ma);
+                 tableModel.removeRow(i);
+
+            tblCourse.setModel(tableModel);
+             JOptionPane.showMessageDialog(null, " DA XOA THANH CONG");
+            } catch (SQLException ex) {
+                Logger.getLogger(AddFormCourse.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+
+            
+        }
+        
+        
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
