@@ -5,6 +5,7 @@
 package BLL;
 
 import DAL.DAL_StudentGrade;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +22,47 @@ public class BLL_StudentGrade {
     public ArrayList<DTO_OnlineCourse> readOnlineCourse () {
         return  dAL_StudentGrade.readOnlineCourse();
     }
+    
+    public ArrayList<DTO_StudentGrade> readStudentGrade (String course) {
+        return dAL_StudentGrade.readStudentGrade(course);
+    }
+    
+    public int editGrade (int enrollmentID, BigDecimal grade) {
+        return dAL_StudentGrade.editGrade(enrollmentID, grade);
+    }
+    
+    public int deleteStudentGrade (int enrollmentID) {
+        return dAL_StudentGrade.deleteStudentGrade(enrollmentID);
+    }
+    
+    public String checkAndDeleteStudentGrade (String enrollmentID) {
+        if (enrollmentID.equals("")) {
+            return "Vui lòng chọn dữ liệu !";
+        } else {
+            int EnrollmentID = Integer.parseInt(enrollmentID);
+            deleteStudentGrade(EnrollmentID);
+            return "Xóa thành công";
+        }
+    }
+    
+    public String checkAndEditGrade (String grade, String enrollmentID) {
+       String regex = "^\\d{1}(\\.\\d+)?$";
+       if (enrollmentID.equals("")){
+           return "Vui lòng chọn dữ liệu !";
+       } else
+       if (grade.equals("")) {
+           return "Không được để trống Grade !";
+       } else
+       if (grade.matches(regex) == false ) {
+           return "Định dạng phải là số và phần nguyên chỉ chứa 1 số !";
+       }
+       int EnrollmentID = Integer.parseInt(enrollmentID);
+        BigDecimal Grade = new BigDecimal(grade);
+        editGrade(EnrollmentID, Grade);
+        return "Cập nhật thành công";
+    }
+    
+    
     
     
 }

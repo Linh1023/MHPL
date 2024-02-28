@@ -17,7 +17,7 @@ public class DTO_StudentGrade {
     private int studentId;
     private BigDecimal grade;
     private String name;
-    private Date enrollmentDateTime;
+    private Date enrollmentDate;
     
     
     public DTO_StudentGrade() {
@@ -26,17 +26,7 @@ public class DTO_StudentGrade {
         this.studentId = 0;
         this.grade = null;
         this.name = null;
-        this.enrollmentDateTime = null;
-    }
-    
-
-    public DTO_StudentGrade(int enrollmentID, int courseID, int studentId, BigDecimal grade, String name, Date enrollmentDateTime) {
-        this.enrollmentID = enrollmentID;
-        this.courseID = courseID;
-        this.studentId = studentId;
-        this.grade = grade;
-        this.name = name;
-        this.enrollmentDateTime = enrollmentDateTime;
+        this.enrollmentDate = null;
     }
 
     public int getEnrollmentID() {
@@ -79,13 +69,16 @@ public class DTO_StudentGrade {
         this.name = name;
     }
 
-    public Date getEnrollmentDateTime() {
-        return enrollmentDateTime;
+    public Date getEnrollmentDate() {
+        return enrollmentDate;
     }
 
-    public void setEnrollmentDateTime(Date enrollmentDateTime) {
-        this.enrollmentDateTime = enrollmentDateTime;
+    public void setEnrollmentDate(Date enrollmentDate) {
+        this.enrollmentDate = enrollmentDate;
     }
+    
+
+    
     
 }
 

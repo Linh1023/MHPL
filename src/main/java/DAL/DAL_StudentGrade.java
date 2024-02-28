@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import BLL.*;
+import java.math.BigDecimal;
 import java.sql.Time;
 
 /**
@@ -38,7 +39,7 @@ public class DAL_StudentGrade {
              dTO_StudentGrade.setStudentId(rs.getInt("StudentID"));
              dTO_StudentGrade.setGrade(rs.getBigDecimal("Grade"));
              dTO_StudentGrade.setName(rs.getString("Firstname") + " " + rs.getString("Lastname"));
-             dTO_StudentGrade.setEnrollmentDateTime(rs.getDate("EnrollmentDate"));
+             dTO_StudentGrade.setEnrollmentDate(rs.getDate("EnrollmentDate"));
 
              arrayListStudentGrade.add(dTO_StudentGrade);
              }
@@ -48,7 +49,7 @@ public class DAL_StudentGrade {
             return null;
         } 
     } 
-    
+       
     public ArrayList<DTO_OnlineCourse> readOnlineCourse() {
         conn = ConnectToSQL.conn();
         ArrayList<DTO_OnlineCourse> arrayListOnlineCourse = new ArrayList<DTO_OnlineCourse>() ;
@@ -97,9 +98,34 @@ public class DAL_StudentGrade {
         } 
     }
     
+    public int editGrade (int enrollmentID, BigDecimal grade) {
+        conn = ConnectToSQL.conn();
+        try {
+            String sqlQuery = "UPDATE studentgrade SET Grade = ? WHERE EnrollmentID = ?";
+            pst = conn.prepareStatement(sqlQuery);
+            pst.setBigDecimal(1, grade);
+            pst.setInt(2, enrollmentID);
+            int result =  pst.executeUpdate();
+            return result; 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
     
-    
-    
+    public int deleteStudentGrade (int enrollmentID) {
+        conn = ConnectToSQL.conn();
+        try {
+            String sqlQuery = "DELETE FROM studentgrade WHERE EnrollmentID = ?";
+            pst = conn.prepareStatement(sqlQuery);
+            pst.setInt(1, enrollmentID);
+            int result = pst.executeUpdate();
+            return result;
+        } catch (Exception e) {
+            return 0;
+            
+        } 
+    }
     
     
     

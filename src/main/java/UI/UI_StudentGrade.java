@@ -7,8 +7,12 @@ package UI;
 import BLL.BLL_StudentGrade;
 import BLL.DTO_OnSiteCourse;
 import BLL.DTO_OnlineCourse;
+import BLL.DTO_StudentGrade;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,11 +24,14 @@ public class UI_StudentGrade extends javax.swing.JFrame {
      * Creates new form UI_StudentGrade
      */
     private BLL_StudentGrade bLL_StudentGrade;
+    private DefaultTableModel model;
     public UI_StudentGrade() {
         
         initComponents();
+        setLocationRelativeTo(null);
         bLL_StudentGrade = new BLL_StudentGrade();
         addOnSiteCourseDataToJcomboboxCourse ();
+         
     }
 
     /**
@@ -41,7 +48,6 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         jComboBox_OnOff = new javax.swing.JComboBox<>();
         jLabel_Course = new javax.swing.JLabel();
         jComboBox_Course = new javax.swing.JComboBox<>();
-        jButton_ChonCourse = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_StudentGrade = new javax.swing.JTable();
         jPanel_Select = new javax.swing.JPanel();
@@ -54,7 +60,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         jLabel_StudentIDText1 = new javax.swing.JLabel();
         jLabel_StudentID = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel_Name = new javax.swing.JLabel();
         jPanel_Add = new javax.swing.JPanel();
         jButton_XemDSSV = new javax.swing.JButton();
         jLabel_StudentIDText2 = new javax.swing.JLabel();
@@ -73,6 +79,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         jButton_Reset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1200, 750));
 
         jLabel_Header.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel_Header.setText("Đăng ký khóa học và lưu điểm");
@@ -94,29 +101,26 @@ public class UI_StudentGrade extends javax.swing.JFrame {
             }
         });
 
-        jButton_ChonCourse.setText("Chọn");
-        jButton_ChonCourse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_ChonCourseActionPerformed(evt);
-            }
-        });
-
         jTable_StudentGrade.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Enrollment ID", "Student ID", "Name", "Grade", "Enrollment Date"
             }
         ));
+        jTable_StudentGrade.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_StudentGradeMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable_StudentGrade);
 
         jPanel_Select.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel_EnrollmentID.setText("Enrollment ID :");
+
+        jTextField_EnrollmentID.setEditable(false);
 
         jLabel_Grade.setText("Grade :");
 
@@ -140,7 +144,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
 
         jLabel1.setText("Name :");
 
-        jLabel2.setText("Nguyễn Văn A");
+        jLabel_Name.setText("Nguyễn Văn A");
 
         javax.swing.GroupLayout jPanel_SelectLayout = new javax.swing.GroupLayout(jPanel_Select);
         jPanel_Select.setLayout(jPanel_SelectLayout);
@@ -160,7 +164,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
                             .addComponent(jTextField_EnrollmentID)
                             .addComponent(jTextField_Grade, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel_StudentID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE))
+                            .addComponent(jLabel_Name, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel_SelectLayout.createSequentialGroup()
                         .addGap(40, 40, 40)
@@ -176,14 +180,14 @@ public class UI_StudentGrade extends javax.swing.JFrame {
                 .addGroup(jPanel_SelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_EnrollmentID)
                     .addComponent(jTextField_EnrollmentID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel_SelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_StudentIDText1)
                     .addComponent(jLabel_StudentID))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel_SelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel_Name))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel_SelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_Grade)
@@ -301,97 +305,118 @@ public class UI_StudentGrade extends javax.swing.JFrame {
                             .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel_Select, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addGap(50, 50, 50)
                                 .addComponent(jPanel_Add, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButton_Reset)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(34, 34, 34)
+                                        .addComponent(jLabel_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(26, 26, 26)
+                                        .addComponent(jTextField_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                                         .addComponent(jButton_TimKiem))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jTextField_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton_Reset))))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
+                        .addGap(258, 258, 258)
                         .addComponent(jLabel_OnOff, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jComboBox_OnOff, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel_Header, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel_Header, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 487, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel_Course, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
+                                .addGap(18, 18, 18)
                                 .addComponent(jComboBox_Course, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(77, 77, 77)
-                                .addComponent(jButton_ChonCourse)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(171, 171, 171)))))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel_Header, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel_OnOff)
-                    .addComponent(jComboBox_OnOff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel_Course)
-                    .addComponent(jComboBox_Course, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_ChonCourse))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel_Add, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
+                        .addComponent(jLabel_Header, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel_TimKiem)
-                            .addComponent(jTextField_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel_OnOff)
+                            .addComponent(jComboBox_OnOff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel_Course)
+                            .addComponent(jComboBox_Course, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton_TimKiem)
-                            .addComponent(jButton_Reset)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jPanel_Add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel_Select, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(17, Short.MAX_VALUE))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel_TimKiem)
+                                    .addComponent(jTextField_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton_TimKiem))
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton_Reset))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(jPanel_Select, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton_ChonCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ChonCourseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton_ChonCourseActionPerformed
-
     private void jButton_LuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LuuActionPerformed
-        // TODO add your handling code here:
+        String result = bLL_StudentGrade.checkAndEditGrade(jTextField_Grade.getText().trim(), jTextField_EnrollmentID.getText().trim());
+        JOptionPane.showMessageDialog(this,result);
+        addDataToTable();
     }//GEN-LAST:event_jButton_LuuActionPerformed
 
     private void jButton_XoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XoaActionPerformed
-        // TODO add your handling code here:
+        String result = bLL_StudentGrade.checkAndDeleteStudentGrade(jTextField_EnrollmentID.getText().trim());
+        JOptionPane.showMessageDialog(this,result);
+        addDataToTable();
     }//GEN-LAST:event_jButton_XoaActionPerformed
 
     private void jComboBox_OnOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_OnOffActionPerformed
          jComboBox_Course.removeAllItems();
+        
         if (jComboBox_OnOff.getSelectedItem().equals("On site"))
         {
             addOnSiteCourseDataToJcomboboxCourse();
         } else if (jComboBox_OnOff.getSelectedItem().equals("Online")) {
             addOnlineCourseDataToJcomboboxCourse();
         }
+        setEmpty();
     }//GEN-LAST:event_jComboBox_OnOffActionPerformed
     
     private void jComboBox_CourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_CourseActionPerformed
-        System.out.println("clicked jcombobox Course");
+        
+        addDataToTable();
+        setEmpty();
     }//GEN-LAST:event_jComboBox_CourseActionPerformed
 
+    private void jTable_StudentGradeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_StudentGradeMouseClicked
+        int index = jTable_StudentGrade.getSelectedRow();
+        model = (DefaultTableModel) jTable_StudentGrade.getModel();
+        
+        jTextField_EnrollmentID.setText(model.getValueAt(index, 0).toString());
+        jLabel_StudentID.setText(model.getValueAt(index, 1).toString());
+        jLabel_Name.setText(model.getValueAt(index, 2).toString());
+        jTextField_Grade.setText(model.getValueAt(index, 3).toString());
+    }//GEN-LAST:event_jTable_StudentGradeMouseClicked
+
+    private void setEmpty () {
+         jTextField_EnrollmentID.setText("");
+        jLabel_StudentID.setText("");
+        jLabel_Name.setText("");
+        jTextField_Grade.setText("");
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -443,11 +468,28 @@ public class UI_StudentGrade extends javax.swing.JFrame {
             jComboBox_Course.addItem(arrayListOnSiteCourse.get(i).getCourseID() + "-" + arrayListOnSiteCourse.get(i).getTitle());
         }
     }
+     
+     public void addDataToTable ( ) {
+         
+         if (jComboBox_Course.getSelectedItem() != null) {
+        String [] course = jComboBox_Course.getSelectedItem().toString().split("-");
+        String courseID = course[0];
+         ArrayList<DTO_StudentGrade> arrayListStudentGrade = new ArrayList<>();
+         arrayListStudentGrade = bLL_StudentGrade.readStudentGrade(courseID.trim());
+         model = (DefaultTableModel) jTable_StudentGrade.getModel(); 
+         model.setRowCount(0);
+         for (int i = 0; i<arrayListStudentGrade.size(); i ++ ) {
+            Object[] row = {arrayListStudentGrade.get(i).getEnrollmentID(),arrayListStudentGrade.get(i).getStudentId(), arrayListStudentGrade.get(i).getName(), 
+                arrayListStudentGrade.get(i).getGrade(), arrayListStudentGrade.get(i).getEnrollmentDate()
+            };
+              model.addRow(row);
+            }
+         }
+    }
     
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton_ChonCourse;
     private javax.swing.JButton jButton_ChonStudentdID;
     private javax.swing.JButton jButton_Luu;
     private javax.swing.JButton jButton_Reset;
@@ -458,7 +500,6 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox_Course;
     private javax.swing.JComboBox<String> jComboBox_OnOff;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel_Course;
     private javax.swing.JLabel jLabel_EnrollmentDate;
     private javax.swing.JLabel jLabel_EnrollmentDateText;
@@ -469,6 +510,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_Header;
     private javax.swing.JLabel jLabel_LastName;
     private javax.swing.JLabel jLabel_LastNameText;
+    private javax.swing.JLabel jLabel_Name;
     private javax.swing.JLabel jLabel_OnOff;
     private javax.swing.JLabel jLabel_StudentID;
     private javax.swing.JLabel jLabel_StudentIDText1;
