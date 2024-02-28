@@ -20,13 +20,15 @@ import javax.swing.table.TableModel;
  * @author quang
  */
 public class AddFormCourse extends javax.swing.JFrame {
+
     courseBLL std = new courseBLL();
+
     /**
      * Creates new form AddCourse
      */
     public AddFormCourse() throws SQLException {
         initComponents();
-          listCourse();
+        listCourse();
     }
 
     /**
@@ -126,6 +128,11 @@ public class AddFormCourse extends javax.swing.JFrame {
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnRefresh.setForeground(new java.awt.Color(255, 255, 255));
         btnRefresh.setText("Làm Mới");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -481,7 +488,7 @@ public class AddFormCourse extends javax.swing.JFrame {
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
         // TODO add your handling code here:
-           course s = new course();
+        course s = new course();
         int credit = Integer.parseInt(txtCredits.getText());
         int departmentId = Integer.parseInt(txtDepartmentid.getText());
 
@@ -507,10 +514,8 @@ public class AddFormCourse extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnInsertActionPerformed
 
-     private void listCourse() throws SQLException {
-//    List list = std.LoadCourse(1);
-//    System.out.println("test"+list);
-//        java.util.List list = (java.util.List) std.LoadCourse(1);
+    private void listCourse() throws SQLException {
+//   
         courseDAL sts = new courseDAL();
         ArrayList list = sts.readCourse();
         DefaultTableModel model = convertStudent(list);
@@ -536,7 +541,7 @@ public class AddFormCourse extends javax.swing.JFrame {
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
         return model;
     }
-    
+
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
@@ -544,6 +549,22 @@ public class AddFormCourse extends javax.swing.JFrame {
     private void txtDepartmentidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDepartmentidActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDepartmentidActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        try {
+
+//            courseDAL sts1 = new courseDAL();
+//            ArrayList list = sts1.readCourse();
+
+
+courseBLL sts1 = new courseBLL();
+ArrayList list  = sts1.LoadCourse_No_Frac_page();
+            DefaultTableModel model = convertStudent(list);
+            tblCourse.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddFormCourse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -559,16 +580,24 @@ public class AddFormCourse extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddFormCourse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddFormCourse.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddFormCourse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddFormCourse.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddFormCourse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddFormCourse.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddFormCourse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddFormCourse.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -578,8 +607,10 @@ public class AddFormCourse extends javax.swing.JFrame {
             public void run() {
                 try {
                     new AddFormCourse().setVisible(true);
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(AddFormCourse.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AddFormCourse.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
