@@ -35,6 +35,23 @@ public class BLL_StudentGrade {
         return dAL_StudentGrade.deleteStudentGrade(enrollmentID);
     }
     
+   public String checkStudentID (String studentID){
+       String regex = "^[0-9]+$";
+         if (studentID.equals("")) {
+           return "Không được để trống !";
+       } else if (studentID.matches(regex)==false) {
+           return "StudentID phải là số !";
+       }
+       else {
+           return "Correct";
+       }
+   }
+    
+    public DTO_Person readPerson (String personID) {
+        int PersonID = Integer.parseInt(personID);
+        return dAL_StudentGrade.readPerson(PersonID);
+    }
+    
     public String checkAndDeleteStudentGrade (String enrollmentID) {
         if (enrollmentID.equals("")) {
             return "Vui lòng chọn dữ liệu !";

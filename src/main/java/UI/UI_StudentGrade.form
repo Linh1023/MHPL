@@ -36,19 +36,14 @@
                               <Component id="jPanel_Select" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                               <Component id="jPanel_Add" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                                      <Component id="jLabel_TimKiem" min="-2" pref="64" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                      <Component id="jTextField_TimKiem" min="-2" pref="192" max="-2" attributes="0"/>
-                                      <EmptySpace pref="66" max="32767" attributes="0"/>
-                                      <Component id="jButton_TimKiem" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jButton_Reset" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                              <Component id="jLabel_TimKiem" min="-2" pref="64" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                              <Component id="jTextField_TimKiem" min="-2" pref="192" max="-2" attributes="0"/>
+                              <EmptySpace pref="66" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jButton_TimKiem" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jButton_ResetJtable" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -82,34 +77,32 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jPanel_Add" min="-2" max="-2" attributes="0"/>
+              <Component id="jLabel_Header" min="-2" pref="29" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel_OnOff" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jComboBox_OnOff" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel_Course" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jComboBox_Course" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="333" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jLabel_Header" min="-2" pref="29" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel_OnOff" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jComboBox_OnOff" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel_Course" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jComboBox_Course" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel_TimKiem" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_TimKiem" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton_TimKiem" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="333" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jButton_ResetJtable" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel_TimKiem" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField_TimKiem" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jButton_TimKiem" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jButton_Reset" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                              <Component id="jPanel_Select" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jPanel_Add" alignment="0" min="-2" pref="227" max="-2" attributes="0"/>
+                          <Component id="jPanel_Select" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -369,23 +362,15 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel_EnrollmentDateText" min="-2" pref="100" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel_EnrollmentDate" min="-2" pref="114" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel_LastNameText" min="-2" pref="67" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel_LastName" min="-2" pref="120" max="-2" attributes="0"/>
-                                      <Component id="jLabel_FristName" min="-2" pref="182" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <Component id="jLabel_LastNameText" min="-2" pref="67" max="-2" attributes="0"/>
                               <Component id="jLabel_FristNameText" alignment="0" min="-2" pref="69" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel_FristName" min="-2" pref="182" max="-2" attributes="0"/>
+                              <Component id="jLabel_LastName" min="-2" pref="147" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -393,6 +378,8 @@
                           <EmptySpace min="0" pref="62" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
+                                  <Component id="jButton_resetThongTin" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jButton_Them" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
@@ -411,6 +398,21 @@
                               </Group>
                           </Group>
                       </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabel_EnrollmentDateText" min="-2" pref="100" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="jLabel_EnrollmentDate" min="-2" pref="114" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel_IDText" min="-2" pref="60" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="jLabel_ID" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
           </Group>
@@ -426,24 +428,32 @@
                       <Component id="jTextField_StudentID" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jButton_ChonStudentdID" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel_FristNameText" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel_FristName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel_ID" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel_IDText" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel_FristNameText" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel_FristName" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel_LastNameText" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel_LastName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel_LastName" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel_LastNameText" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="11" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel_EnrollmentDateText" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel_EnrollmentDateText" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel_EnrollmentDate" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                  <Component id="jButton_Them" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButton_Them" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButton_resetThongTin" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -465,6 +475,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Ch&#x1ecd;n"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_ChonStudentdIDActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel_FristNameText">
           <Properties>
@@ -473,7 +486,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel_FristName">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nguy&#x1ec5;n V&#x103;n"/>
+            <Property name="text" type="java.lang.String" value="       "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel_LastNameText">
@@ -483,7 +496,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel_LastName">
           <Properties>
-            <Property name="text" type="java.lang.String" value="A"/>
+            <Property name="text" type="java.lang.String" value="          "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel_EnrollmentDateText">
@@ -493,13 +506,31 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel_EnrollmentDate">
           <Properties>
-            <Property name="text" type="java.lang.String" value="22/06/2001"/>
+            <Property name="text" type="java.lang.String" value="           "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton_Them">
           <Properties>
             <Property name="text" type="java.lang.String" value="Th&#xea;m"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel_IDText">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ID :"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel_ID">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="                   "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton_resetThongTin">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reset"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_resetThongTinActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -515,7 +546,7 @@
         <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton_Reset">
+    <Component class="javax.swing.JButton" name="jButton_ResetJtable">
       <Properties>
         <Property name="text" type="java.lang.String" value="Reset"/>
       </Properties>

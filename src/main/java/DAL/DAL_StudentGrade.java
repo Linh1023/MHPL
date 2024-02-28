@@ -24,6 +24,7 @@ public class DAL_StudentGrade {
     private ArrayList<DTO_StudentGrade> arrayListStudentGrade;
     
     private DTO_StudentGrade dTO_StudentGrade;
+    private  DTO_Person dTO_Person;
     
     public ArrayList<DTO_StudentGrade> readStudentGrade (String course) {
         conn = ConnectToSQL.conn();
@@ -126,6 +127,30 @@ public class DAL_StudentGrade {
             
         } 
     }
+    
+    public DTO_Person readPerson (int personID) {
+        conn = ConnectToSQL.conn();
+       
+        try {
+            String sqlQuery = "SELECT * FROM  person where HireDate is NULL AND  PersonID = " + personID;
+             pst = conn.prepareStatement(sqlQuery);
+             rs = pst.executeQuery();
+             
+             while (rs.next()) {
+                 dTO_Person = new DTO_Person();
+                dTO_Person.setPersonID(rs.getInt("PersonID"));
+                dTO_Person.setFirstName(rs.getString("Firstname"));
+                dTO_Person.setLastName( rs.getString("Lastname"));
+                dTO_Person.setEnrollmentDate(rs.getDate("EnrollmentDate"));
+                dTO_Person.setHireDate(rs.getDate("EnrollmentDate"));
+                 return dTO_Person;
+             }
+           return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } 
+    } 
     
     
     
