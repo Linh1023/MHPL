@@ -9,7 +9,6 @@ import BLL.DTO_OnSiteCourse;
 import BLL.DTO_OnlineCourse;
 import BLL.DTO_Person;
 import BLL.DTO_StudentGrade;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -27,6 +26,8 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     private BLL_StudentGrade bLL_StudentGrade;
     private DefaultTableModel model;
     private  DTO_Person dTO_Person;
+    private  DTO_StudentGrade dTO_StudentGrade;
+    private String courseID;
     public UI_StudentGrade() {
         
         initComponents();
@@ -84,7 +85,6 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         jButton_ResetJtable = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1200, 750));
 
         jLabel_Header.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel_Header.setText("Đăng ký khóa học và lưu điểm");
@@ -230,6 +230,11 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         jLabel_EnrollmentDate.setText("           ");
 
         jButton_Them.setText("Thêm");
+        jButton_Them.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ThemActionPerformed(evt);
+            }
+        });
 
         jLabel_IDText.setText("ID :");
 
@@ -311,7 +316,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
                     .addComponent(jLabel_LastName)
                     .addComponent(jLabel_LastNameText))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel_AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel_AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel_EnrollmentDateText)
                     .addComponent(jLabel_EnrollmentDate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -434,10 +439,10 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         int index = jTable_StudentGrade.getSelectedRow();
         model = (DefaultTableModel) jTable_StudentGrade.getModel();
         
-        jTextField_EnrollmentID.setText(model.getValueAt(index, 0).toString());
-        jLabel_StudentID.setText(model.getValueAt(index, 1).toString());
-        jLabel_Name.setText(model.getValueAt(index, 2).toString());
-        jTextField_Grade.setText(model.getValueAt(index, 3).toString());
+        jTextField_EnrollmentID.setText(model.getValueAt(index, 0)+"");
+        jLabel_StudentID.setText(model.getValueAt(index, 1)+"");
+        jLabel_Name.setText(model.getValueAt(index, 2)+"");
+        jTextField_Grade.setText(model.getValueAt(index, 3)+"");
     }//GEN-LAST:event_jTable_StudentGradeMouseClicked
 
     private void jButton_ChonStudentdIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ChonStudentdIDActionPerformed
@@ -461,8 +466,23 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_ChonStudentdIDActionPerformed
 
     private void jButton_resetThongTinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_resetThongTinActionPerformed
-        // TODO add your handling code here:
+       setEmptyJpanel2();
     }//GEN-LAST:event_jButton_resetThongTinActionPerformed
+
+    private void jButton_ThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemActionPerformed
+        if (jLabel_ID.getText().trim().equals("") == false ) {
+            dTO_StudentGrade = new DTO_StudentGrade();
+        dTO_StudentGrade.setCourseID( Integer.parseInt(courseID) );
+        dTO_StudentGrade.setStudentId(Integer.parseInt(jLabel_ID.getText()));
+        bLL_StudentGrade.addStudentGrade(dTO_StudentGrade);
+         JOptionPane.showMessageDialog(this,"Thêm thành công");
+        addDataToTable();
+        } else {
+             JOptionPane.showMessageDialog(this,"Vui lòng chọn sinh viên !");
+        }
+        
+        
+    }//GEN-LAST:event_jButton_ThemActionPerformed
 
     private void setEmptyJpanel1 () {
          jTextField_EnrollmentID.setText("");
@@ -472,6 +492,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     }
     
     private void setEmptyJpanel2 () {
+        jLabel_ID.setText("");
         jLabel_FristName.setText("");
         jLabel_LastName.setText("");
         jLabel_EnrollmentDate.setText("");
@@ -534,7 +555,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
          
          if (jComboBox_Course.getSelectedItem() != null) {
         String [] course = jComboBox_Course.getSelectedItem().toString().split("-");
-        String courseID = course[0];
+         courseID = course[0];
          ArrayList<DTO_StudentGrade> arrayListStudentGrade = new ArrayList<>();
          arrayListStudentGrade = bLL_StudentGrade.readStudentGrade(courseID.trim());
          model = (DefaultTableModel) jTable_StudentGrade.getModel(); 
