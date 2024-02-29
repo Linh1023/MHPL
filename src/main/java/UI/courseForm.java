@@ -11,28 +11,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import DAL.courseDAL;
-import java.awt.List;
-
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author DO THE TUNG
  */
-public class courseForm extends javax.swing.JFrame {
+public class CourseForm extends javax.swing.JFrame {
 
-    courseBLL std;
+//    courseBLL std;
+    courseBLL std = new courseBLL();
 
     /**
      * Creates new form course
      */
-    public courseForm() {
+    public CourseForm() throws SQLException {
         initComponents();
-        std = new courseBLL();
- try {
-            listCourse();
-        } catch (SQLException ex) {
-            Logger.getLogger(courseForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        listCourse();
+//        std = new courseBLL();
+//       
+
+// 
     }
 
     /**
@@ -55,7 +56,6 @@ public class courseForm extends javax.swing.JFrame {
         txtCredits = new javax.swing.JTextField();
         txtDepartmentid = new javax.swing.JTextField();
         btnUpdate = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
         btnInsert = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -77,6 +77,12 @@ public class courseForm extends javax.swing.JFrame {
 
         jLabel5.setText("Department ID");
 
+        txt_courseid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_courseidActionPerformed(evt);
+            }
+        });
+
         txtDepartmentid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDepartmentidActionPerformed(evt);
@@ -89,8 +95,6 @@ public class courseForm extends javax.swing.JFrame {
                 btnUpdateActionPerformed(evt);
             }
         });
-
-        btnEdit.setText("Sua");
 
         btnInsert.setText("Them");
         btnInsert.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -122,6 +126,11 @@ public class courseForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblCourse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCourseMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblCourse);
 
         txtTimkiem.addActionListener(new java.awt.event.ActionListener() {
@@ -150,9 +159,7 @@ public class courseForm extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(37, 37, 37)
                                 .addComponent(btnDelete)
-                                .addGap(36, 36, 36)
-                                .addComponent(btnEdit)
-                                .addGap(18, 18, 18)
+                                .addGap(49, 49, 49)
                                 .addComponent(btnUpdate))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(59, 59, 59)
@@ -197,7 +204,6 @@ public class courseForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnInsert)
                             .addComponent(btnDelete)
-                            .addComponent(btnEdit)
                             .addComponent(btnUpdate))
                         .addGap(41, 41, 41)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -228,38 +234,39 @@ public class courseForm extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        int i = tblCourse.getSelectedColumn();
+//        TableModel model = tblCourse.getModel();
+//        int i;
+//        int course_ID = Integer.parseInt(model.getValueAt(row, 1).toString());
+
+        courseBLL Bl = new courseBLL();
+        if (i >= 0) {
+            try {
+                course c = new course();
+                c.courseId = Integer.parseInt(txt_courseid.getText());
+                c.title = txtTitle.getText();
+                c.credits = Integer.parseInt(txtCredits.getText());
+                c.departmentID = Integer.parseInt(txtDepartmentid.getText());
+                
+                tblCourse.setValueAt(c.courseId, i, 0);
+                tblCourse.setValueAt(c.title, i, 1);
+                tblCourse.setValueAt(c.credits, i, 2);
+                tblCourse.setValueAt(c.departmentID, i, 3);
+                Bl.EditCourse(c);
+// JOptionPane.showMessageDialog(null, " DA SUA THANH CONG");
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
+
 
     private void btnInsertMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInsertMouseClicked
         // TODO add your handling code here:
 
 
     }//GEN-LAST:event_btnInsertMouseClicked
-private void listCourse() throws SQLException
-{
-        List list_Couse =  std.LoadCourse(1);
- DefaultTableModel model = convertCourse(list_Couse);
-   tblCourse.setModel(model);
-   
-}
 
-private DefaultTableModel convertCourse (List list)
-{
-
-    String[] columnNames = {"CourseID", "Title", "Credits", "DepartmentID"};
-Object[][] data = new Object[list.countItems()][4]; // Correct data type
-for (int i = 0; i < list.countItems(); i++) {
-    course s = (course) list.
-    data[i][0] = s.getCourseId();
-    data[i][1] = s.getTitle();
-    data[i][2] = s.getCredits();
-    data[i][3] = s.getDepartmentID();
-}
-DefaultTableModel model = new DefaultTableModel(data, columnNames);
-return model; // Issue resolved
-       
-
-}
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
 
         course s = new course();
@@ -269,12 +276,14 @@ return model; // Issue resolved
         s.setCredits(credit);
         s.setDepartmentID(departmentId);
         s.setTitle(txtTitle.getText());
+
         System.out.println("Test 011");
 
         try {
 //            System.out.println("test doan nay " + std.addCouse(s));
-            if (std.addCouse(s) > 0) {
+            if (std.addCourse(s) > 0) {
                 System.out.println("Test 1");
+
                 JOptionPane.showMessageDialog(this, "Complete add student", "Message", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Error add student", "Message", JOptionPane.ERROR_MESSAGE);
@@ -282,40 +291,92 @@ return model; // Issue resolved
         } catch (SQLException ex) {
 
             System.out.println("dang o catch");
-            Logger.getLogger(courseForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CourseForm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
     }//GEN-LAST:event_btnInsertActionPerformed
 
+    private void txt_courseidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_courseidActionPerformed
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_txt_courseidActionPerformed
+
+    private void tblCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseMouseClicked
+        // TODO add your handling code here:
+
+        DefaultTableModel clickTable = (DefaultTableModel) tblCourse.getModel();
+        int i = tblCourse.getSelectedRow();
+        try {
+            txtDepartmentid.setText(clickTable.getValueAt(i, 0).toString());
+            txtTitle.setText(clickTable.getValueAt(i, 1).toString());
+            txtCredits.setText(clickTable.getValueAt(i, 2).toString());
+            txt_courseid.setText(clickTable.getValueAt(i, 3).toString());
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+
+    }//GEN-LAST:event_tblCourseMouseClicked
+    private void listCourse() throws SQLException {
+//    List list = std.LoadCourse(1);
+//    System.out.println("test"+list);
+//        java.util.List list = (java.util.List) std.LoadCourse(1);
+        courseDAL sts = new courseDAL();
+        ArrayList list = sts.readCourse();
+        DefaultTableModel model = convertStudent(list);
+        tblCourse.setModel(model);
+
+        //Fix Three Layer -> 2 Layer
+//        lbStatus.setText("Num of rows: " + list.size());
+//    DefaultTableModel model = convertCourse(list);
+//    tblCourse.setModel(model);
+    }
+
+    private DefaultTableModel convertStudent(java.util.List list) {
+        String[] columnNames = {"courseID", "Title", "Credits", "DepartmentId"};
+        Object[][] data = new Object[list.size()][5];
+        for (int i = 0; i < list.size(); i++) {
+            course s = (course) list.get(i);
+//            data[i][0] = i + 1;
+            data[i][0] = s.getCourseId();
+            data[i][1] = s.getTitle();
+            data[i][2] = s.getCredits();
+            data[i][3] = s.getDepartmentID();
+        }
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        return model;
+    }
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(courseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(courseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(courseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(courseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        courseForm f = new courseForm();
-        f.setVisible(true);
-    }
+//    public static void main(String args[]) throws SQLException {
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(CourseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(CourseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(CourseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(CourseForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//
+//        CourseForm f = new CourseForm();
+//        f.setVisible(true);
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnInsert;
     private javax.swing.JButton btnTimkiem;
     private javax.swing.JButton btnUpdate;

@@ -9,8 +9,8 @@ package DAL;
  * @author DO THE TUNG
  */
 public class course {
-    int courseId, credits,departmentID;
-    String title;
+   public  int courseId, credits,departmentID;
+    public String title;
     
     public course (){}
     public course (String title, int courseId , int departmentID, int credits)

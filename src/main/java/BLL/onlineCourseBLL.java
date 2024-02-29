@@ -4,41 +4,36 @@
  */
 package BLL;
 
-import DAL.courseDAL;
-import DAL.course;
+import DAL.onlineCourseDAL;
+import DAL.onlineCourse;
 import java.awt.List;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- *
- * @author DO THE TUNG
- */
-public class courseBLL {
+public class onlineCourseBLL {
 
-    courseDAL stdDal;
+    onlineCourseDAL stdDal;
 
-    public courseBLL() {
-        stdDal = new courseDAL();
-
+    public onlineCourseBLL() {
+        stdDal = new onlineCourseDAL();
     }
 
-//   code load list student in BLL
-    public int addCourse(course s) throws SQLException {
+    public int addCourse(onlineCourse s) throws SQLException {
         int result = stdDal.insertCourse(s);
         return result;
     }
 
-    public int EditCourse(course s) throws SQLException {
+    public int EditCourse(onlineCourse s) throws SQLException {
         int result_up = stdDal.updateCourse(s);
         System.out.println("Update BLL " + result_up);
         return result_up;
     }
+
     public ArrayList LoadCourse_No_Frac_page() throws SQLException {
         ArrayList list = stdDal.readCourse();
         return list;
-        
     }
+
     public List LoadCourse(int page) throws SQLException {
         int numofrecords = 30;
         ArrayList list = stdDal.readCourse();
@@ -46,7 +41,6 @@ public class courseBLL {
         int from, to;
         from = (page - 1) * numofrecords;
         to = page * numofrecords;
-
         return (List) list.subList(from, Math.min(to, size));
     }
 }

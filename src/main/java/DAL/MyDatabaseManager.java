@@ -35,7 +35,7 @@ public class MyDatabaseManager {
             c = (Connection) DriverManager.getConnection(dbPath, dbUser, dbPassword);
             s = c.createStatement();
             
-            System.out.println("Connected");
+            System.out.println("Connected DB");
         } catch (SQLException ex) {
             System.out.print(ex.getMessage());
         }
@@ -57,13 +57,5 @@ public class MyDatabaseManager {
                     .log(Level.SEVERE, null, ex);
         }
         return rs;
-    }
-
-    
-
-    //test connection
-    public static void main(String[] args) {
-        MyDatabaseManager.connectDB();
-        
     }
 }

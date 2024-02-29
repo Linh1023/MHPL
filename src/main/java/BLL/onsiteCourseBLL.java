@@ -4,8 +4,8 @@
  */
 package BLL;
 
-import DAL.courseDAL;
-import DAL.course;
+import DAL.onsiteCourseDAL;
+import DAL.onsiteCourse;
 import java.awt.List;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,31 +14,34 @@ import java.util.ArrayList;
  *
  * @author DO THE TUNG
  */
-public class courseBLL {
+public class onsiteCourseBLL {
 
-    courseDAL stdDal;
+    onsiteCourseDAL stdDal;
 
-    public courseBLL() {
-        stdDal = new courseDAL();
+    public onsiteCourseBLL() {
+        stdDal = new onsiteCourseDAL();
 
     }
 
 //   code load list student in BLL
-    public int addCourse(course s) throws SQLException {
+    public int addCourse(onsiteCourse s) throws SQLException {
         int result = stdDal.insertCourse(s);
+        System.out.println("insert BLL onsiteCourse");
         return result;
     }
 
-    public int EditCourse(course s) throws SQLException {
+    public int EditCourse(onsiteCourse s) throws SQLException {
         int result_up = stdDal.updateCourse(s);
-        System.out.println("Update BLL " + result_up);
+        System.out.println("Update BLL onsiteCourse");
         return result_up;
     }
+
     public ArrayList LoadCourse_No_Frac_page() throws SQLException {
         ArrayList list = stdDal.readCourse();
+        System.out.println("read BLL onsiteCourse");
         return list;
-        
     }
+
     public List LoadCourse(int page) throws SQLException {
         int numofrecords = 30;
         ArrayList list = stdDal.readCourse();
