@@ -474,7 +474,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
             dTO_StudentGrade = new DTO_StudentGrade();
         dTO_StudentGrade.setCourseID( Integer.parseInt(courseID) );
         dTO_StudentGrade.setStudentId(Integer.parseInt(jLabel_ID.getText()));
-//        bLL_StudentGrade.addStudentGrade(dTO_StudentGrade);
+        bLL_StudentGrade.addStudentGrade(dTO_StudentGrade);
          JOptionPane.showMessageDialog(this,"Thêm thành công");
         addDataToTable();
         } else {
