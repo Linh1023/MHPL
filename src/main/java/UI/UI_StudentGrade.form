@@ -460,6 +460,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Xem danh s&#xe1;ch sinh vi&#xea;n"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_XemDSSVActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel_StudentIDText2">
           <Properties>

@@ -174,7 +174,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
                     .addGroup(jPanel_SelectLayout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addComponent(jButton_Xoa)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                         .addComponent(jButton_Luu)
                         .addGap(27, 27, 27))))
         );
@@ -207,6 +207,11 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         jPanel_Add.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jButton_XemDSSV.setText("Xem danh sách sinh viên");
+        jButton_XemDSSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_XemDSSVActionPerformed(evt);
+            }
+        });
 
         jLabel_StudentIDText2.setText("Student ID :");
 
@@ -315,7 +320,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
                 .addGroup(jPanel_AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel_LastName)
                     .addComponent(jLabel_LastNameText))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(jPanel_AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel_EnrollmentDateText)
                     .addComponent(jLabel_EnrollmentDate))
@@ -397,7 +402,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel_Add, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel_Add, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel_Select, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
@@ -408,13 +413,21 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     private void jButton_LuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LuuActionPerformed
         String result = bLL_StudentGrade.checkAndEditGrade(jTextField_Grade.getText().trim(), jTextField_EnrollmentID.getText().trim());
         JOptionPane.showMessageDialog(this,result);
-        addDataToTable();
+        if (result.equals("Cập nhật thành công")) {
+            addDataToTable();
+            setEmptyJpanel1();
+        }
+        
     }//GEN-LAST:event_jButton_LuuActionPerformed
 
     private void jButton_XoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XoaActionPerformed
         String result = bLL_StudentGrade.checkAndDeleteStudentGrade(jTextField_EnrollmentID.getText().trim());
         JOptionPane.showMessageDialog(this,result);
-        addDataToTable();
+        if (result.equals("Xóa thành công")) {
+            addDataToTable();
+            setEmptyJpanel1();
+        }
+        
     }//GEN-LAST:event_jButton_XoaActionPerformed
 
     private void jComboBox_OnOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_OnOffActionPerformed
@@ -442,7 +455,13 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         jTextField_EnrollmentID.setText(model.getValueAt(index, 0)+"");
         jLabel_StudentID.setText(model.getValueAt(index, 1)+"");
         jLabel_Name.setText(model.getValueAt(index, 2)+"");
-        jTextField_Grade.setText(model.getValueAt(index, 3)+"");
+        if (model.getValueAt(index, 3) == null) {
+            jTextField_Grade.setText(" ");
+          
+        } else {
+            jTextField_Grade.setText(model.getValueAt(index, 3)+"");
+        }
+        
     }//GEN-LAST:event_jTable_StudentGradeMouseClicked
 
     private void jButton_ChonStudentdIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ChonStudentdIDActionPerformed
@@ -470,19 +489,24 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_resetThongTinActionPerformed
 
     private void jButton_ThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemActionPerformed
-        if (jLabel_ID.getText().trim().equals("") == false ) {
-            dTO_StudentGrade = new DTO_StudentGrade();
-        dTO_StudentGrade.setCourseID( Integer.parseInt(courseID) );
-        dTO_StudentGrade.setStudentId(Integer.parseInt(jLabel_ID.getText()));
-        bLL_StudentGrade.addStudentGrade(dTO_StudentGrade);
-         JOptionPane.showMessageDialog(this,"Thêm thành công");
-        addDataToTable();
-        } else {
-             JOptionPane.showMessageDialog(this,"Vui lòng chọn sinh viên !");
+
+        String result = bLL_StudentGrade.checkAndAddStudentGrade(courseID, jLabel_ID.getText().trim());
+         JOptionPane.showMessageDialog(this,result);
+        if (result.equals("Thêm thành công")) {
+            addDataToTable();
+            setEmptyJpanel2();
         }
         
-        
     }//GEN-LAST:event_jButton_ThemActionPerformed
+
+    private void jButton_XemDSSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XemDSSVActionPerformed
+
+       java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new UI.UI_Student().setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_jButton_XemDSSVActionPerformed
 
     private void setEmptyJpanel1 () {
          jTextField_EnrollmentID.setText("");

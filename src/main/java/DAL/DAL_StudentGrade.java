@@ -143,7 +143,21 @@ public class DAL_StudentGrade {
         } 
     }
     
-    
+   public boolean hasStudentGrade (int studentID, int courseID) {
+        conn = ConnectToSQL.conn();
+        try {
+            String sqlQuery = "Select * From studentgrade Where CourseID = ? and StudentID =  ?";
+            pst = conn.prepareStatement(sqlQuery);
+            pst.setInt(1, courseID);
+            pst.setInt(2, studentID);
+            rs = pst.executeQuery();
+            boolean result =  rs.next() ;
+            return result;
+        } catch (Exception e) {
+            
+            return false;
+        }
+    } 
     
     
     public DTO_Person readPerson (int personID) {
@@ -176,12 +190,14 @@ public class DAL_StudentGrade {
 
     public static void main(String[] args) {
         DAL_StudentGrade dAL_StudentGrade = new DAL_StudentGrade();
-       ArrayList<DTO_StudentGrade> arrayListStudentGrade = new ArrayList<DTO_StudentGrade>();
-       arrayListStudentGrade = dAL_StudentGrade.readStudentGrade("2021");
-       for (int i = 0 ; i< arrayListStudentGrade.size(); i ++) {
-           System.out.print(arrayListStudentGrade.get(i).getEnrollmentID());
+        Boolean results = dAL_StudentGrade.hasStudentGrade(2, 20212);
+        System.out.println(results);
+//       ArrayList<DTO_StudentGrade> arrayListStudentGrade = new ArrayList<DTO_StudentGrade>();
+//       arrayListStudentGrade = dAL_StudentGrade.readStudentGrade("2021");
+//       for (int i = 0 ; i< arrayListStudentGrade.size(); i ++) {
+//           System.out.print(arrayListStudentGrade.get(i).getEnrollmentID());
 //           System.out.println( "--" + arrayListStudentGrade.get(i).getName());
-       }
+//       }
 //        System.out.println(arrayListStudentGrade.size());
     }
     

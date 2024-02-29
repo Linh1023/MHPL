@@ -7,6 +7,7 @@ package BLL;
 import DAL.DAL_StudentGrade;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,6 +38,28 @@ public class BLL_StudentGrade {
     
     public int addStudentGrade (DTO_StudentGrade dTO_StudentGrade) {
         return dAL_StudentGrade.addStudentGrade(dTO_StudentGrade);
+    }
+    
+    public Boolean hasStudentGrade (String studentID, String courseID) {
+        int StudentID = Integer.parseInt(studentID);
+        int CourseID = Integer.parseInt(courseID);
+        return dAL_StudentGrade.hasStudentGrade(StudentID, CourseID);
+    }
+    
+    public String checkAndAddStudentGrade (String courseID, String studentID) {
+        if (studentID.equals("") == false ) {
+          if (hasStudentGrade(studentID, courseID) == false) {
+            DTO_StudentGrade  dTO_StudentGrade = new DTO_StudentGrade();
+            dTO_StudentGrade.setCourseID( Integer.parseInt(courseID) );
+            dTO_StudentGrade.setStudentId(Integer.parseInt(studentID));
+            addStudentGrade(dTO_StudentGrade);
+             return "Thêm thành công";
+          } else {
+              return "Sinh viên này đã tồn tại trong khóa học !";
+          }
+        } else {
+             return "Vui lòng chọn sinh viên !";
+        }
     }
     
    public String checkStudentID (String studentID){
