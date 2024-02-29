@@ -16,11 +16,12 @@ public class onsiteCourseDAL extends MyDatabaseManager {
     }
 
     public int insertCourse(onsiteCourse s) throws SQLException {
-        String query = "INSERT  onsitecourse ( Location, Days,Time) VALUES ( ?,?, ?)";
+        String query = "INSERT  onsitecourse ( CourseID ,Location, Days,Time) VALUES ( ?,?,?, ?)";
         PreparedStatement p = onsiteCourseDAL.getConnection().prepareStatement(query);
-        p.setString(1, s.getLocation());
-        p.setString(2, s.getDays());
-        p.setString(3, s.getTime());
+        p.setInt(1, s.getCourseId());
+        p.setString(2, s.getLocation());
+        p.setString(3, s.getDays());
+        p.setString(4, s.getTime());
         System.out.println("DAL insert courseonsite");
         int result = p.executeUpdate();
         return result;

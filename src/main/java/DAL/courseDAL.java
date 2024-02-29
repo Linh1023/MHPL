@@ -4,14 +4,10 @@
  */
 package DAL;
 
-import DAL.course;
-/**
- *
- * @author DO THE TUNG
- */
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class courseDAL extends MyDatabaseManager {
@@ -22,13 +18,19 @@ public class courseDAL extends MyDatabaseManager {
 
     public int insertCourse(course s) throws SQLException {
         String query = "INSERT  course ( Title, Credits,DepartmentID) VALUES ( ?,?, ?)";
-        PreparedStatement p = courseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = courseDAL.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         p.setString(1, s.getTitle());
         p.setInt(2, s.getCredits());
         p.setInt(3, s.getDepartmentID());
-        int result = p.executeUpdate();
-        System.out.println("DAL insert course");
-        return result;
+        if (p.executeUpdate() > 0) {
+            System.out.println("DAL insert course");
+            ResultSet generatedKeys = p.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int newId = generatedKeys.getInt(1);
+                return newId;
+            }
+        }
+        return 0;
     }
 
     public int updateCourse(course s) throws SQLException {
@@ -50,8 +52,6 @@ public class courseDAL extends MyDatabaseManager {
         ArrayList list = new ArrayList();
 
         if (rs != null) {
-            int i = 1;
-
             while (rs.next()) {
                 course s = new course();
 
@@ -62,6 +62,8 @@ public class courseDAL extends MyDatabaseManager {
 
                 list.add(s);
             }
+        } else {
+            list = null;
         }
         System.out.println("DAL read course");
         return list;
@@ -74,18 +76,19 @@ public class courseDAL extends MyDatabaseManager {
                 + "left join onsitecourse as c on a.CourseID =c.CourseID;";
         ResultSet rs = courseDAL.doReadQuery(query);
         ArrayList list = new ArrayList();
-
-        while (rs.next()) {
-            list.add(new Object[]{
-                rs.getInt("CourseID"),
-                rs.getString("Title"),
-                rs.getInt("Credits"),
-                rs.getString("DepartmentID"),
-                rs.getString("url"),
-                rs.getString("Location"),
-                rs.getString("Days"),
-                rs.getString("Time")
-            });
+        if (rs != null) {
+            while (rs.next()) {
+                list.add(new Object[]{
+                    rs.getInt("CourseID"),
+                    rs.getString("Title"),
+                    rs.getInt("Credits"),
+                    rs.getString("DepartmentID"),
+                    rs.getString("url"),
+                    rs.getString("Location"),
+                    rs.getString("Days"),
+                    rs.getString("Time")
+                });
+            }
         }
         return list;
     }

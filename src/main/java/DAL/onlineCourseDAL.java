@@ -17,10 +17,10 @@ public class onlineCourseDAL extends MyDatabaseManager {
     }
 
     public int insertCourse(onlineCourse s) throws SQLException {
-        String query = "INSERT  onlinecourse ( url) VALUES (?)";
+        String query = "INSERT  onlinecourse ( CourseID, url) VALUES (?,?)";
         PreparedStatement p = onlineCourseDAL.getConnection().prepareStatement(query);
-        p.setString(1, s.getUrl());
-        p.setInt(2, s.getCourseId());
+        p.setInt(1, s.getCourseId());
+        p.setString(2, s.getUrl());
         int result = p.executeUpdate();
         System.out.println("DAL insert courseonline");
         return result;

@@ -6,6 +6,8 @@ package UI;
 
 import DAL.course;
 import BLL.courseBLL;
+import BLL.onlineCourseBLL;
+import BLL.onsiteCourseBLL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,10 +28,9 @@ import javax.swing.table.DefaultTableModel;
 public class FormCourse extends javax.swing.JFrame {
 
     courseBLL std = new courseBLL();
+    onlineCourseBLL onlinestd =new onlineCourseBLL();;
+    onsiteCourseBLL onsitestd =new onsiteCourseBLL();
 
-    /**
-     * Creates new form AddCourse
-     */
     public FormCourse() throws SQLException {
         initComponents();
         inits();
@@ -300,10 +301,11 @@ public class FormCourse extends javax.swing.JFrame {
                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBoxThu, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBoxSat, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBoxWed, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBoxWed, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jCheckBoxThu, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jCheckBoxSat, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jCheckBoxTue, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jCheckBoxFri, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -505,17 +507,7 @@ public class FormCourse extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUrlActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-//        try {
-
-//            courseDAL sts1 = new courseDAL();
-//            ArrayList list = sts1.readCourse();
-//courseBLL sts1 = new courseBLL();
-//ArrayList list  = sts1.LoadCourse_No_Frac_page();
-//            DefaultTableModel model = convertStudent(list,list);
-//            tblCourse.setModel(model);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+//        
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void jRadioButtonOnsiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonOnsiteActionPerformed
@@ -530,39 +522,6 @@ public class FormCourse extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormCourse.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormCourse.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormCourse.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormCourse.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -680,27 +639,72 @@ public class FormCourse extends javax.swing.JFrame {
 
     private void funcInsertCourse() {
         course s = new course();
+        
         int credit = Integer.parseInt(txtCredits.getText());
-
         String selectedItem = (String) jComboBoxDepartment.getSelectedItem();
         int departmentId = Integer.parseInt(selectedItem);
-
+        
         s.setCredits(credit);
         s.setDepartmentID(departmentId);
         s.setTitle(txtTitle.getText());
-
+        
         try {
-            if (std.addCourse(s) > 0) {
-                System.out.println("Test 1");
-
-                JOptionPane.showMessageDialog(this, "Complete add student", "Message", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "Error add student", "Message", JOptionPane.ERROR_MESSAGE);
-            }
+            int courseId=0;
+            courseId=std.addCourse(s);
+            System.out.println(courseId);
+            if(courseId>0) 
+                if(jRadioButtonOnsite.isSelected()){
+                    onsiteCourse s1 =new onsiteCourse();
+                    
+                    String location = txtLocation.getText();
+                    String days ="";
+                    if(jCheckBoxMon.isSelected()) days+="M";
+                    if(jCheckBoxTue.isSelected()) days+="T";
+                    if(jCheckBoxWed.isSelected()) days+="W";
+                    if(jCheckBoxThu.isSelected()) days+="H";
+                    if(jCheckBoxSat.isSelected()) days+="S";
+                    if(jCheckBoxFri.isSelected()) days+="F";
+                    String time=txtTime.getText();
+                    
+                    s1.setLocation(location);
+                    s1.setDays(days);
+                    s1.setTime(time);
+                    s1.setCourseId(courseId);
+                    
+                    onsitestd.addCourse(s1);
+                }
+                else{
+                    onlineCourse s2 =new onlineCourse();
+                    String url=txtUrl.getText();
+                    s2.setUrl(url);
+                    s2.setCourseId(courseId);
+                    onlinestd.addCourse(s2);
+                }
         } catch (SQLException ex) {
-
-            System.out.println("dang o catch");
-            Logger.getLogger(CourseForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+            
+            
+        
+
+        
+    }
+
+    public static void showMessageDialog(String message, String title) {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void funcRefreshCourse() {
+//        try {
+//            courseDAL sts1 = new courseDAL();
+//            ArrayList list = sts1.readCourse();
+//            courseBLL sts1 = new courseBLL();
+//            ArrayList list = sts1.LoadCourse_No_Frac_page();
+//            DefaultTableModel model = convertStudent(list);
+//            tblCourse.setModel(model);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 }
