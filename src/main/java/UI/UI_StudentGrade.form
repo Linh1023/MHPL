@@ -98,7 +98,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel_Add" alignment="0" min="-2" pref="227" max="-2" attributes="0"/>
+                          <Component id="jPanel_Add" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jPanel_Select" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -247,7 +247,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                           <Component id="jButton_Xoa" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="48" max="32767" attributes="0"/>
+                          <EmptySpace pref="54" max="32767" attributes="0"/>
                           <Component id="jButton_Luu" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                       </Group>
@@ -440,7 +440,7 @@
                       <Component id="jLabel_LastName" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel_LastNameText" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="13" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel_EnrollmentDateText" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel_EnrollmentDate" min="-2" max="-2" attributes="0"/>
