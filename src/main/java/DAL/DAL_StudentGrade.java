@@ -114,6 +114,21 @@ public class DAL_StudentGrade {
         }
     }
     
+    public int addStudentGrade (DTO_StudentGrade dTO_StudentGrade) {
+        conn = ConnectToSQL.conn();
+        try {
+            String sqlQuery = "INSERT  StudentGrade( CourseID, StudentID, Grade) VALUES (?,?,?)";
+            pst = conn.prepareStatement(sqlQuery);
+            pst.setInt(1, dTO_StudentGrade.getCourseID());
+            pst.setInt(2, dTO_StudentGrade.getStudentId());
+            pst.setBigDecimal(3, dTO_StudentGrade.getGrade());
+            int result =  pst.executeUpdate();
+            return result;
+        } catch (Exception e) {
+          return 0;
+        }
+    }
+    
     public int deleteStudentGrade (int enrollmentID) {
         conn = ConnectToSQL.conn();
         try {
@@ -127,6 +142,9 @@ public class DAL_StudentGrade {
             
         } 
     }
+    
+    
+    
     
     public DTO_Person readPerson (int personID) {
         conn = ConnectToSQL.conn();

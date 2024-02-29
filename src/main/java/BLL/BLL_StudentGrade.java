@@ -35,6 +35,10 @@ public class BLL_StudentGrade {
         return dAL_StudentGrade.deleteStudentGrade(enrollmentID);
     }
     
+    public int addStudentGrade (DTO_StudentGrade dTO_StudentGrade) {
+        return dAL_StudentGrade.addStudentGrade(dTO_StudentGrade);
+    }
+    
    public String checkStudentID (String studentID){
        String regex = "^[0-9]+$";
          if (studentID.equals("")) {
