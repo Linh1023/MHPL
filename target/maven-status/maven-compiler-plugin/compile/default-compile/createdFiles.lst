@@ -1,5 +1,6 @@
 UI\FormCourse$2.class
 UI\CourseForm$5.class
+UI\FormCourse$13.class
 DAL\MyDatabaseManager.class
 UI\FormCourse$11.class
 UI\CourseForm$7.class
@@ -25,6 +26,7 @@ UI\FormCourse$5.class
 UI\CourseForm$3.class
 DAL\OnsiteCourse.class
 UI\CourseForm$8.class
+UI\FormCourse$14.class
 DAL\CourseDAL.class
 UI\FormCourse$7.class
 DAL\OnlineCourse.class
