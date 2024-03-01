@@ -4,26 +4,26 @@
  */
 package BLL;
 
-import DAL.onlineCourseDAL;
-import DAL.onlineCourse;
+import DAL.OnlineCourseDAL;
+import DAL.OnlineCourse;
 import java.awt.List;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class onlineCourseBLL {
+public class OnlineCourseBLL {
 
-    onlineCourseDAL stdDal;
+    OnlineCourseDAL stdDal;
 
-    public onlineCourseBLL() {
-        stdDal = new onlineCourseDAL();
+    public OnlineCourseBLL() {
+        stdDal = new OnlineCourseDAL();
     }
 
-    public int addCourse(onlineCourse s) throws SQLException {
+    public int addCourse(OnlineCourse s) throws SQLException {
         int result = stdDal.insertCourse(s);
         return result;
     }
 
-    public int EditCourse(onlineCourse s) throws SQLException {
+    public int EditCourse(OnlineCourse s) throws SQLException {
         int result_up = stdDal.updateCourse(s);
         System.out.println("Update BLL " + result_up);
         return result_up;

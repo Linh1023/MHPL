@@ -9,16 +9,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class courseDAL extends MyDatabaseManager {
+public class CourseDAL extends MyDatabaseManager {
 
-    public courseDAL() {
-        courseDAL.connectDB();
+    public CourseDAL() {
+        CourseDAL.connectDB();
     }
 
-    public int insertCourse(course s) throws SQLException {
+    public int insertCourse(Course s) throws SQLException {
         String query = "INSERT  course ( Title, Credits,DepartmentID) VALUES ( ?,?, ?)";
-        PreparedStatement p = courseDAL.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement p = CourseDAL.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         p.setString(1, s.getTitle());
         p.setInt(2, s.getCredits());
         p.setInt(3, s.getDepartmentID());
@@ -33,10 +36,10 @@ public class courseDAL extends MyDatabaseManager {
         return 0;
     }
 
-    public int updateCourse(course s) throws SQLException {
+    public int updateCourse(Course s) throws SQLException {
         String query = "Update course SET Title = ? , Credits = ?,DepartmentID=? "
                 + " WHERE courseID  = ?";
-        PreparedStatement p = courseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = CourseDAL.getConnection().prepareStatement(query);
         p.setString(1, s.getTitle());
         p.setInt(2, s.getCredits());
         p.setInt(3, s.getDepartmentID());
@@ -48,12 +51,12 @@ public class courseDAL extends MyDatabaseManager {
 
     public ArrayList readCourse() throws SQLException {
         String query = "SELECT * FROM course ";
-        ResultSet rs = courseDAL.doReadQuery(query);
+        ResultSet rs = CourseDAL.doReadQuery(query);
         ArrayList list = new ArrayList();
 
         if (rs != null) {
             while (rs.next()) {
-                course s = new course();
+                Course s = new Course();
 
                 s.setCourseId(rs.getInt("CourseID"));
                 s.setTitle(rs.getString("Title"));
@@ -74,7 +77,11 @@ public class courseDAL extends MyDatabaseManager {
                 + "from course as a "
                 + "Left join onlinecourse as b on a.CourseID =b.CourseID "
                 + "left join onsitecourse as c on a.CourseID =c.CourseID;";
-        ResultSet rs = courseDAL.doReadQuery(query);
+        return readCourseFull(query);
+    }
+
+    public ArrayList readCourseFull(String query) throws SQLException {
+        ResultSet rs = CourseDAL.doReadQuery(query);
         ArrayList list = new ArrayList();
         if (rs != null) {
             while (rs.next()) {
@@ -90,7 +97,55 @@ public class courseDAL extends MyDatabaseManager {
                 });
             }
         }
+        
+
         return list;
+    }
+
+    public ArrayList find(String text, int type) {
+        String query = null;
+        if (type == 0) {
+            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+                    + "FROM course AS a "
+                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
+                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+                    + "WHERE LOWER(a.Title) LIKE '%" + text + "%';";
+            System.out.println(query);
+        }
+        if (type == 1) {
+            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+                    + "FROM course AS a "
+                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
+                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+                    + "WHERE a.Credits = "+text + ";";
+        }
+        if (type == 2) {
+            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+                    + "FROM course AS a "
+                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
+                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+                    + "WHERE a.DepartmentID = "+text + ";";
+        }
+        if (type == 3) {
+            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+                    + "FROM course AS a "
+                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
+                    + "WHERE b.url IS NOT NULL";
+        }
+        if (type == 4) {
+            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+                    + "FROM course AS a "
+                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
+                    + "WHERE c.Location IS NOT NULL";
+        }
+        try {
+            return readCourseFull(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
 }

@@ -10,15 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class onlineCourseDAL extends MyDatabaseManager {
+public class OnlineCourseDAL extends MyDatabaseManager {
 
-    public onlineCourseDAL() {
-        onlineCourseDAL.connectDB();
+    public OnlineCourseDAL() {
+        OnlineCourseDAL.connectDB();
     }
 
-    public int insertCourse(onlineCourse s) throws SQLException {
+    public int insertCourse(OnlineCourse s) throws SQLException {
         String query = "INSERT  onlinecourse ( CourseID, url) VALUES (?,?)";
-        PreparedStatement p = onlineCourseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = OnlineCourseDAL.getConnection().prepareStatement(query);
         p.setInt(1, s.getCourseId());
         p.setString(2, s.getUrl());
         int result = p.executeUpdate();
@@ -26,10 +26,10 @@ public class onlineCourseDAL extends MyDatabaseManager {
         return result;
     }
 
-    public int updateCourse(onlineCourse s) throws SQLException {
+    public int updateCourse(OnlineCourse s) throws SQLException {
         String query = "Update onlinecourse SET url = ?"
                 + " WHERE courseID  = ?";
-        PreparedStatement p = onlineCourseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = OnlineCourseDAL.getConnection().prepareStatement(query);
         p.setString(1, s.getUrl());
         p.setInt(2, s.getCourseId());
         int result = p.executeUpdate();
@@ -39,11 +39,11 @@ public class onlineCourseDAL extends MyDatabaseManager {
 
     public ArrayList readCourse() throws SQLException {
         String query = "SELECT * FROM onlinecourse ";
-        ResultSet rs = onlineCourseDAL.doReadQuery(query);
+        ResultSet rs = OnlineCourseDAL.doReadQuery(query);
         ArrayList list = new ArrayList();
         if (rs != null) {
             while (rs.next()) {
-                onlineCourse s = new onlineCourse();
+                OnlineCourse s = new OnlineCourse();
                 s.setCourseId(rs.getInt("CourseID"));
                 s.setUrl(rs.getString("url"));
                 list.add(s);

@@ -4,13 +4,13 @@
  */
 package UI;
 
-import DAL.course;
-import BLL.courseBLL;
+import DAL.Course;
+import BLL.CourseBLL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import DAL.courseDAL;
+import DAL.CourseDAL;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -22,7 +22,7 @@ import javax.swing.table.TableModel;
 public class CourseForm extends javax.swing.JFrame {
 
 //    courseBLL std;
-    courseBLL std = new courseBLL();
+    CourseBLL std = new CourseBLL();
 
     /**
      * Creates new form course
@@ -239,10 +239,10 @@ public class CourseForm extends javax.swing.JFrame {
 //        int i;
 //        int course_ID = Integer.parseInt(model.getValueAt(row, 1).toString());
 
-        courseBLL Bl = new courseBLL();
+        CourseBLL Bl = new CourseBLL();
         if (i >= 0) {
             try {
-                course c = new course();
+                Course c = new Course();
                 c.courseId = Integer.parseInt(txt_courseid.getText());
                 c.title = txtTitle.getText();
                 c.credits = Integer.parseInt(txtCredits.getText());
@@ -269,7 +269,7 @@ public class CourseForm extends javax.swing.JFrame {
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
 
-        course s = new course();
+        Course s = new Course();
         int credit = Integer.parseInt(txtCredits.getText());
         int departmentId = Integer.parseInt(txtDepartmentid.getText());
 
@@ -324,7 +324,7 @@ public class CourseForm extends javax.swing.JFrame {
 //    List list = std.LoadCourse(1);
 //    System.out.println("test"+list);
 //        java.util.List list = (java.util.List) std.LoadCourse(1);
-        courseDAL sts = new courseDAL();
+        CourseDAL sts = new CourseDAL();
         ArrayList list = sts.readCourse();
         DefaultTableModel model = convertStudent(list);
         tblCourse.setModel(model);
@@ -339,7 +339,7 @@ public class CourseForm extends javax.swing.JFrame {
         String[] columnNames = {"courseID", "Title", "Credits", "DepartmentId"};
         Object[][] data = new Object[list.size()][5];
         for (int i = 0; i < list.size(); i++) {
-            course s = (course) list.get(i);
+            Course s = (Course) list.get(i);
 //            data[i][0] = i + 1;
             data[i][0] = s.getCourseId();
             data[i][1] = s.getTitle();

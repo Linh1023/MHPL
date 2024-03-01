@@ -8,12 +8,12 @@ package DAL;
  *
  * @author DO THE TUNG
  */
-public class course {
+public class Course {
    public  int courseId, credits,departmentID;
     public String title;
     
-    public course (){}
-    public course (String title, int courseId , int departmentID, int credits)
+    public Course (){}
+    public Course (String title, int courseId , int departmentID, int credits)
     {
         this.title = title;
        this.courseId = courseId;

@@ -8,14 +8,14 @@ package DAL;
  *
  * @author DO THE TUNG
  */
-public class onsiteCourse {
+public class OnsiteCourse {
 
     public int courseId;
     public String days, time, location;
-    public onsiteCourse() {
+    public OnsiteCourse() {
     }
 
-    public onsiteCourse(int courseId, String days, String time, String location) {
+    public OnsiteCourse(int courseId, String days, String time, String location) {
         this.courseId = courseId;
         this.days = days;
         this.time = time;

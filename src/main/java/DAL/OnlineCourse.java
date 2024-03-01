@@ -8,11 +8,11 @@ package DAL;
  *
  * @author DO THE TUNG
  */
-public class onlineCourse {
+public class OnlineCourse {
    public  int courseId;
     public String url;
-    public onlineCourse(){}
-    public onlineCourse(int courseId, String url) {
+    public OnlineCourse(){}
+    public OnlineCourse(int courseId, String url) {
         this.courseId = courseId;
         this.url = url;
     }

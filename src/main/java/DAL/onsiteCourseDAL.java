@@ -9,15 +9,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class onsiteCourseDAL extends MyDatabaseManager {
+public class OnsiteCourseDAL extends MyDatabaseManager {
 
-    public onsiteCourseDAL() {
-        onsiteCourseDAL.connectDB();
+    public OnsiteCourseDAL() {
+        OnsiteCourseDAL.connectDB();
     }
 
-    public int insertCourse(onsiteCourse s) throws SQLException {
+    public int insertCourse(OnsiteCourse s) throws SQLException {
         String query = "INSERT  onsitecourse ( CourseID ,Location, Days,Time) VALUES ( ?,?,?, ?)";
-        PreparedStatement p = onsiteCourseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = OnsiteCourseDAL.getConnection().prepareStatement(query);
         p.setInt(1, s.getCourseId());
         p.setString(2, s.getLocation());
         p.setString(3, s.getDays());
@@ -27,10 +27,10 @@ public class onsiteCourseDAL extends MyDatabaseManager {
         return result;
     }
 
-    public int updateCourse(onsiteCourse s) throws SQLException {
+    public int updateCourse(OnsiteCourse s) throws SQLException {
         String query = "Update onsitecourse SET Location = ? , Days = ?,Time=? "
                 + " WHERE courseID  = ?";
-        PreparedStatement p = onsiteCourseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = OnsiteCourseDAL.getConnection().prepareStatement(query);
         p.setString(1, s.getLocation());
         p.setString(2, s.getDays());
         p.setString(3, s.getTime());
@@ -42,12 +42,12 @@ public class onsiteCourseDAL extends MyDatabaseManager {
 
     public ArrayList readCourse() throws SQLException {
         String query = "SELECT * FROM onsitecourse ";
-        ResultSet rs = onsiteCourseDAL.doReadQuery(query);
+        ResultSet rs = OnsiteCourseDAL.doReadQuery(query);
         ArrayList list = new ArrayList();
 
         if (rs != null) {
             while (rs.next()) {
-                onsiteCourse s = new onsiteCourse();
+                OnsiteCourse s = new OnsiteCourse();
                 s.setCourseId(rs.getInt("CourseID"));
                 s.setLocation(rs.getString("Location"));
                 s.setDays(rs.getString("Days"));

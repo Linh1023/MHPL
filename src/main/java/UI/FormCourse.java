@@ -4,21 +4,24 @@
  */
 package UI;
 
-import DAL.course;
-import BLL.courseBLL;
-import BLL.onlineCourseBLL;
-import BLL.onsiteCourseBLL;
+import DAL.Course;
+import BLL.CourseBLL;
+import BLL.OnlineCourseBLL;
+import BLL.OnsiteCourseBLL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import DAL.courseDAL;
-import DAL.onlineCourse;
-import DAL.onlineCourseDAL;
-import DAL.onsiteCourse;
-import DAL.onsiteCourseDAL;
+import DAL.OnlineCourse;
+import DAL.OnsiteCourse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,9 +30,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FormCourse extends javax.swing.JFrame {
 
-    courseBLL std = new courseBLL();
-    onlineCourseBLL onlinestd =new onlineCourseBLL();;
-    onsiteCourseBLL onsitestd =new onsiteCourseBLL();
+    CourseBLL std = new CourseBLL();
+    OnlineCourseBLL onlinestd = new OnlineCourseBLL();
+    OnsiteCourseBLL onsitestd = new OnsiteCourseBLL();
 
     public FormCourse() throws SQLException {
         initComponents();
@@ -46,7 +49,6 @@ public class FormCourse extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -58,8 +60,6 @@ public class FormCourse extends javax.swing.JFrame {
         btnDelete = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
-        jRadioButtonOnsite = new javax.swing.JRadioButton();
-        jRadioButtonOnline = new javax.swing.JRadioButton();
         jLabel7 = new javax.swing.JLabel();
         txtUrl = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -74,23 +74,25 @@ public class FormCourse extends javax.swing.JFrame {
         jCheckBoxFri = new javax.swing.JCheckBox();
         jCheckBoxSat = new javax.swing.JCheckBox();
         jPanel6 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        txt_courseid = new javax.swing.JTextField();
         txtTitle = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtCredits = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jComboBoxDepartment = new javax.swing.JComboBox<>();
+        jRadioButtonOnsite = new javax.swing.JRadioButton();
+        jRadioButtonOnline = new javax.swing.JRadioButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBoxFilterCoures = new javax.swing.JComboBox<>();
+        jComboBoxFilterCourse = new javax.swing.JComboBox<>();
         txtSearch = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 750));
         setPreferredSize(new java.awt.Dimension(1000, 750));
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(1000, 750));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -164,27 +166,10 @@ public class FormCourse extends javax.swing.JFrame {
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-
-        buttonGroup1.add(jRadioButtonOnsite);
-        jRadioButtonOnsite.setSelected(true);
-        jRadioButtonOnsite.setText("Onsite");
-        jRadioButtonOnsite.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonOnsiteActionPerformed(evt);
-            }
-        });
-
-        buttonGroup1.add(jRadioButtonOnline);
-        jRadioButtonOnline.setText("Online");
-        jRadioButtonOnline.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonOnlineActionPerformed(evt);
-            }
-        });
 
         jLabel7.setText("URL");
 
@@ -241,21 +226,11 @@ public class FormCourse extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtUrl)
-                        .addContainerGap())
-                    .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTime)
-                        .addContainerGap())
+                        .addComponent(txtTime))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtLocation))
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -269,25 +244,21 @@ public class FormCourse extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jCheckBoxFri)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jCheckBoxSat)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(6, 6, 6))
+                                .addComponent(jCheckBoxSat))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 5, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addComponent(jRadioButtonOnsite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButtonOnline, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtUrl)
+                            .addComponent(txtLocation))))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jRadioButtonOnline, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jRadioButtonOnsite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(31, 31, 31)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -297,7 +268,7 @@ public class FormCourse extends javax.swing.JFrame {
                     .addComponent(txtLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jCheckBoxMon, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxMon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -312,12 +283,10 @@ public class FormCourse extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50))
+                .addGap(14, 14, 14))
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-
-        jLabel3.setText("Mã Khóa Học");
 
         jLabel4.setText("Tên Khóa Học");
 
@@ -327,51 +296,68 @@ public class FormCourse extends javax.swing.JFrame {
 
         jComboBoxDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
 
+        buttonGroup1.add(jRadioButtonOnsite);
+        jRadioButtonOnsite.setSelected(true);
+        jRadioButtonOnsite.setText("Onsite");
+        jRadioButtonOnsite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonOnsiteActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(jRadioButtonOnline);
+        jRadioButtonOnline.setText("Online");
+        jRadioButtonOnline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonOnlineActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_courseid))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTitle))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(15, 15, 15)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBoxDepartment, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCredits))))
-                .addContainerGap())
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jRadioButtonOnsite, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButtonOnline, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
+                            .addComponent(txtCredits)
+                            .addComponent(jComboBoxDepartment, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTitle)))
+                .addGap(0, 0, 0))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_courseid, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
+                    .addComponent(txtTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCredits, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonOnsite, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jRadioButtonOnline, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -380,9 +366,9 @@ public class FormCourse extends javax.swing.JFrame {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -390,26 +376,30 @@ public class FormCourse extends javax.swing.JFrame {
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 25, Short.MAX_VALUE))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 51), 2, true));
 
         jLabel1.setText("Lọc & Tìm Kiếm Khóa Học");
 
-        jComboBoxFilterCoures.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBoxFilterCoures.addActionListener(new java.awt.event.ActionListener() {
+        jComboBoxFilterCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxFilterCourse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxFilterCouresActionPerformed(evt);
+                jComboBoxFilterCourseActionPerformed(evt);
             }
         });
 
         btnSearch.setText("Tìm Kiếm");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -419,11 +409,11 @@ public class FormCourse extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxFilterCoures, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComboBoxFilterCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -432,7 +422,7 @@ public class FormCourse extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxFilterCoures, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxFilterCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
@@ -449,8 +439,8 @@ public class FormCourse extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -458,10 +448,10 @@ public class FormCourse extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -478,9 +468,9 @@ public class FormCourse extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBoxFilterCouresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFilterCouresActionPerformed
+    private void jComboBoxFilterCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFilterCourseActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxFilterCouresActionPerformed
+    }//GEN-LAST:event_jComboBoxFilterCourseActionPerformed
 
     private void jCheckBoxWedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxWedActionPerformed
         // TODO add your handling code here:
@@ -507,7 +497,7 @@ public class FormCourse extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUrlActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-//        
+        funcRefreshCourse();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void jRadioButtonOnsiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonOnsiteActionPerformed
@@ -517,6 +507,10 @@ public class FormCourse extends javax.swing.JFrame {
     private void jRadioButtonOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonOnlineActionPerformed
         funcCheckBtnOnline();
     }//GEN-LAST:event_jRadioButtonOnlineActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        funcFilterCourse();
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -544,7 +538,6 @@ public class FormCourse extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JCheckBox jCheckBoxFri;
     private javax.swing.JCheckBox jCheckBoxMon;
     private javax.swing.JCheckBox jCheckBoxSat;
@@ -552,11 +545,10 @@ public class FormCourse extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBoxTue;
     private javax.swing.JCheckBox jCheckBoxWed;
     private javax.swing.JComboBox<String> jComboBoxDepartment;
-    private javax.swing.JComboBox<String> jComboBoxFilterCoures;
+    private javax.swing.JComboBox<String> jComboBoxFilterCourse;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -579,18 +571,21 @@ public class FormCourse extends javax.swing.JFrame {
     private javax.swing.JTextField txtTime;
     private javax.swing.JTextField txtTitle;
     private javax.swing.JTextField txtUrl;
-    private javax.swing.JTextField txt_courseid;
     // End of variables declaration//GEN-END:variables
 
     private void inits() throws SQLException {
         listCourse();
+        changeFilterType();
     }
 
     private void listCourse() throws SQLException {
-        courseDAL sts = new courseDAL();
+        CourseBLL sts = new CourseBLL();
         ArrayList list = sts.readCourseFull();
-        System.out.println("đến");
+        update1(list);
 
+    }
+
+    private void update1(ArrayList list) {
         DefaultTableModel model = convertStudent(list);
         tblCourse.setModel(model);
     }
@@ -638,57 +633,65 @@ public class FormCourse extends javax.swing.JFrame {
     }
 
     private void funcInsertCourse() {
-        course s = new course();
-        
+        Course s = new Course();
+
         int credit = Integer.parseInt(txtCredits.getText());
         String selectedItem = (String) jComboBoxDepartment.getSelectedItem();
         int departmentId = Integer.parseInt(selectedItem);
-        
+
         s.setCredits(credit);
         s.setDepartmentID(departmentId);
         s.setTitle(txtTitle.getText());
-        
+
         try {
-            int courseId=0;
-            courseId=std.addCourse(s);
+            int courseId = 0;
+            courseId = std.addCourse(s);
             System.out.println(courseId);
-            if(courseId>0) 
-                if(jRadioButtonOnsite.isSelected()){
-                    onsiteCourse s1 =new onsiteCourse();
-                    
+            if (courseId > 0) {
+                if (jRadioButtonOnsite.isSelected()) {
+                    OnsiteCourse s1 = new OnsiteCourse();
+
                     String location = txtLocation.getText();
-                    String days ="";
-                    if(jCheckBoxMon.isSelected()) days+="M";
-                    if(jCheckBoxTue.isSelected()) days+="T";
-                    if(jCheckBoxWed.isSelected()) days+="W";
-                    if(jCheckBoxThu.isSelected()) days+="H";
-                    if(jCheckBoxSat.isSelected()) days+="S";
-                    if(jCheckBoxFri.isSelected()) days+="F";
-                    String time=txtTime.getText();
-                    
+                    String days = "";
+                    if (jCheckBoxMon.isSelected()) {
+                        days += "M";
+                    }
+                    if (jCheckBoxTue.isSelected()) {
+                        days += "T";
+                    }
+                    if (jCheckBoxWed.isSelected()) {
+                        days += "W";
+                    }
+                    if (jCheckBoxThu.isSelected()) {
+                        days += "H";
+                    }
+                    if (jCheckBoxSat.isSelected()) {
+                        days += "S";
+                    }
+                    if (jCheckBoxFri.isSelected()) {
+                        days += "F";
+                    }
+                    String time = txtTime.getText();
+
                     s1.setLocation(location);
                     s1.setDays(days);
                     s1.setTime(time);
                     s1.setCourseId(courseId);
-                    
+
                     onsitestd.addCourse(s1);
-                }
-                else{
-                    onlineCourse s2 =new onlineCourse();
-                    String url=txtUrl.getText();
+                    System.out.println(time);
+                } else {
+                    OnlineCourse s2 = new OnlineCourse();
+                    String url = txtUrl.getText();
                     s2.setUrl(url);
                     s2.setCourseId(courseId);
                     onlinestd.addCourse(s2);
                 }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-            
-            
-        
-
-        
     }
 
     public static void showMessageDialog(String message, String title) {
@@ -696,15 +699,103 @@ public class FormCourse extends javax.swing.JFrame {
     }
 
     private void funcRefreshCourse() {
-//        try {
-//            courseDAL sts1 = new courseDAL();
-//            ArrayList list = sts1.readCourse();
-//            courseBLL sts1 = new courseBLL();
-//            ArrayList list = sts1.LoadCourse_No_Frac_page();
-//            DefaultTableModel model = convertStudent(list);
-//            tblCourse.setModel(model);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        CourseBLL std = new CourseBLL();
+        try {
+            ArrayList list = std.readCourseFull();
+            DefaultTableModel model = convertStudent(list);
+            tblCourse.setModel(model);
+        } catch (SQLException ex) {
+            Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
+    private void changeFilterType() {
+        // Lấy model của combobox
+        DefaultComboBoxModel model = (DefaultComboBoxModel) jComboBoxFilterCourse.getModel();
+
+        // Xóa tất cả các phần tử hiện tại trong combobox
+        model.removeAllElements();
+
+        // Thêm các phần tử mới vào combobox
+        model.addElement("Tên Khóa Học");
+        model.addElement("Số Tín Chỉ");
+        model.addElement("Phòng");
+        model.addElement("online");
+        model.addElement("onsite");
+
+        // Cập nhật combobox với model mới
+        jComboBoxFilterCourse.setModel(model);
+    }
+
+    private void funcFilterCourse() {
+        String text = txtSearch.getText();
+        int selection = -1;
+        selection = jComboBoxFilterCourse.getSelectedIndex();
+
+        if (selection > 3 && selection < 5) {
+            ArrayList myList = std.find(text, selection);
+            update1(myList);
+        } else {
+            if (selection >= 0 && selection < 3 && !"".equals(text)) {
+                ArrayList myList = std.find(text, selection);
+                update1(myList);
+            } else {
+                JOptionPane.showMessageDialog(null, "Tìm kiếm không hợp lệ", "Lỗi", JOptionPane.OK_OPTION);
+            }
+        }
+    }
+//    private void tablePhieuMuonMouseClicked(java.awt.event.MouseEvent evt) {                                            
+//        // TODO add your handling code here:
+//        int rowIndex = tblCourse.getSelectedRow();
+//        if(rowIndex>=0){
+//            
+//            //Xuất ra jcombobox1
+//            String value = tablePhieuMuon.getValueAt(rowIndex, 1).toString();
+//            if (value != null) {
+//                for (int i = 0; i < jComboBox1.getItemCount(); i++) {
+//                String item = (String) jComboBox1.getItemAt(i);
+//                    if (value.equals(item)) {
+//                        jComboBox1.setSelectedItem(item);
+//                        break;
+//                    }
+//                }
+//            }
+//            //Xuất ra jcombobox2
+//            value = tablePhieuMuon.getValueAt(rowIndex, 2).toString();
+//            if (value != null) {
+//                for (int i = 0; i < jComboBox2.getItemCount(); i++) {
+//                String item = (String) jComboBox2.getItemAt(i);
+//                    if (value.equals(item)) {
+//                        jComboBox2.setSelectedItem(item);
+//                        break;
+//                    }
+//                }
+//            }
+//            // Xuất ra txtNgayMuon
+//            // Lấy giá trị của cột 2 trong dòng được chọn
+//            String dateString = tablePhieuMuon.getModel().getValueAt(rowIndex, 3).toString();
+//
+//            // Chuyển đổi giá trị của cột 2 sang kiểu Date
+//            try {
+//                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+//                // Đưa giá trị Date vào JDateChooser
+//                txtNgayMuon.setDate(date);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            
+////            Xuất dữu liệu ra txtNgayTra
+//            // Lấy giá trị của cột 2 trong dòng được chọn
+//            dateString = tablePhieuMuon.getModel().getValueAt(rowIndex, 4).toString();
+//
+//            // Chuyển đổi giá trị của cột 2 sang kiểu Date
+//            try {
+//                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+//                // Đưa giá trị Date vào JDateChooser
+//                txtNgayTra.setDate(date);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }      
 }

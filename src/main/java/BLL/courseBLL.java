@@ -4,8 +4,8 @@
  */
 package BLL;
 
-import DAL.courseDAL;
-import DAL.course;
+import DAL.CourseDAL;
+import DAL.Course;
 import java.awt.List;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,22 +14,22 @@ import java.util.ArrayList;
  *
  * @author DO THE TUNG
  */
-public class courseBLL {
+public class CourseBLL {
 
-    courseDAL stdDal;
+    CourseDAL stdDal;
 
-    public courseBLL() {
-        stdDal = new courseDAL();
+    public CourseBLL() {
+        stdDal = new CourseDAL();
 
     }
 
 //   code load list student in BLL
-    public int addCourse(course s) throws SQLException {
+    public int addCourse(Course s) throws SQLException {
         int result = stdDal.insertCourse(s);
         return result;
     }
 
-    public int EditCourse(course s) throws SQLException {
+    public int EditCourse(Course s) throws SQLException {
         int result_up = stdDal.updateCourse(s);
         System.out.println("Update BLL " + result_up);
         return result_up;
@@ -48,5 +48,16 @@ public class courseBLL {
         to = page * numofrecords;
 
         return (List) list.subList(from, Math.min(to, size));
+    }
+
+    public ArrayList readCourseFull() throws SQLException {
+        ArrayList result =stdDal.readCourseFull();
+        return result;       
+    }
+    public ArrayList find(String text,int type){
+        ArrayList result =new ArrayList();
+        String text1=text.toLowerCase();
+       result =stdDal.find(text1,type);
+        return result; 
     }
 }
