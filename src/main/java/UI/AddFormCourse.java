@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import DAL.courseDAL;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -20,14 +21,16 @@ import javax.swing.table.TableModel;
  * @author quang
  */
 public class AddFormCourse extends javax.swing.JFrame {
-
+    
     courseBLL std = new courseBLL();
+    DefaultTableModel tableModel = new DefaultTableModel();
 
     /**
      * Creates new form AddCourse
      */
     public AddFormCourse() throws SQLException {
         initComponents();
+        tableModel = (DefaultTableModel) tblCourse.getModel();
         listCourse();
     }
 
@@ -102,6 +105,11 @@ public class AddFormCourse extends javax.swing.JFrame {
                 "Mã Khóa Học", "Tên Khóa Học", "Giá", "Phòng", "URL", "Địa Điểm", "Ngày", "Giờ"
             }
         ));
+        tblCourse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblCourseMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblCourse);
 
         btnInsert.setBackground(new java.awt.Color(51, 153, 0));
@@ -118,11 +126,21 @@ public class AddFormCourse extends javax.swing.JFrame {
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Sửa");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setBackground(new java.awt.Color(255, 0, 0));
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnRefresh.setBackground(new java.awt.Color(51, 153, 255));
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -397,7 +415,18 @@ public class AddFormCourse extends javax.swing.JFrame {
             }
         });
 
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+
         btnSearch.setText("Tìm Kiếm");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -491,34 +520,34 @@ public class AddFormCourse extends javax.swing.JFrame {
         course s = new course();
         int credit = Integer.parseInt(txtCredits.getText());
         int departmentId = Integer.parseInt(txtDepartmentid.getText());
-
+        
         s.setCredits(credit);
         s.setDepartmentID(departmentId);
         s.setTitle(txtTitle.getText());
-
+        
         System.out.println("Test 011");
-
+        
         try {
 //            System.out.println("test doan nay " + std.addCouse(s));
             if (std.addCouse(s) > 0) {
                 System.out.println("Test 1");
-
+                
                 JOptionPane.showMessageDialog(this, "Complete add student", "Message", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Error add student", "Message", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException ex) {
-
+            
             System.out.println("dang o catch");
             Logger.getLogger(CourseForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnInsertActionPerformed
-
+    
     private void listCourse() throws SQLException {
 //   
         courseDAL sts = new courseDAL();
         ArrayList list = sts.readCourse();
-        DefaultTableModel model = convertStudent(list);
+        DefaultTableModel model = convertCouse(list);
         tblCourse.setModel(model);
 
         //Fix Three Layer -> 2 Layer
@@ -526,8 +555,8 @@ public class AddFormCourse extends javax.swing.JFrame {
 //    DefaultTableModel model = convertCourse(list);
 //    tblCourse.setModel(model);
     }
-
-    private DefaultTableModel convertStudent(java.util.List list) {
+    
+    private DefaultTableModel convertCouse(java.util.List list) {
         String[] columnNames = {"courseID", "Title", "Credits", "DepartmentId"};
         Object[][] data = new Object[list.size()][5];
         for (int i = 0; i < list.size(); i++) {
@@ -555,16 +584,114 @@ public class AddFormCourse extends javax.swing.JFrame {
 
 //            courseDAL sts1 = new courseDAL();
 //            ArrayList list = sts1.readCourse();
-
-
-courseBLL sts1 = new courseBLL();
-ArrayList list  = sts1.LoadCourse_No_Frac_page();
-            DefaultTableModel model = convertStudent(list);
+            courseBLL sts1 = new courseBLL();
+            ArrayList list = sts1.LoadCourse_No_Frac_page();
+            DefaultTableModel model = convertCouse(list);
             tblCourse.setModel(model);
+
+            //Load cai phan tu ve rong
+            String t = "";
+            txtDepartmentid.setText("");
+            txtCredits.setText("");
+            txtTitle.setText(t);
+            txt_courseid.setText(t);
+            
         } catch (SQLException ex) {
             Logger.getLogger(AddFormCourse.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        int i = tblCourse.getSelectedColumn();
+//        TableModel model = tblCourse.getModel();
+//        int i;
+//        int course_ID = Integer.parseInt(model.getValueAt(row, 1).toString());
+
+        courseBLL Bl = new courseBLL();
+        if (i >= 0) {
+            try {
+                course c = new course();
+                c.courseId = Integer.parseInt(txt_courseid.getText());
+                c.title = txtTitle.getText();
+                c.credits = Integer.parseInt(txtCredits.getText());
+                c.departmentID = Integer.parseInt(txtDepartmentid.getText());
+                
+                tblCourse.setValueAt(c.courseId, i, 0);
+                tblCourse.setValueAt(c.title, i, 1);
+                tblCourse.setValueAt(c.credits, i, 2);
+                tblCourse.setValueAt(c.departmentID, i, 3);
+                Bl.EditCouse(c);
+// JOptionPane.showMessageDialog(null, " DA SUA THANH CONG");
+            } catch (SQLException ex) {
+                Logger.getLogger(CourseForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void tblCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel clickTable = (DefaultTableModel) tblCourse.getModel();
+        int i = tblCourse.getSelectedRow();
+        try {
+            txt_courseid.setText(clickTable.getValueAt(i, 0).toString());            
+            txtTitle.setText(clickTable.getValueAt(i, 1).toString());
+            txtCredits.setText(clickTable.getValueAt(i, 2).toString());
+            
+            txtDepartmentid.setText(clickTable.getValueAt(i, 3).toString());
+            
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }//GEN-LAST:event_tblCourseMouseClicked
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        courseBLL bus = new courseBLL();
+        int i = tblCourse.getSelectedRow();
+        if (i >= 0) {
+            int Ma = Integer.parseInt(txt_courseid.getText());
+            
+            try {
+                //            tgList.remove(bus.findWithId(Ma));
+
+                bus.DeleteCouse(Ma);
+                tableModel.removeRow(i);
+                
+                tblCourse.setModel(tableModel);
+                JOptionPane.showMessageDialog(null, " DA XOA THANH CONG");
+            } catch (SQLException ex) {
+                Logger.getLogger(AddFormCourse.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+         try {
+            
+            String name = txtSearch.getText();
+            if (name.isBlank() == false) {
+                List list = std.findCourse(name);
+                DefaultTableModel model = convertCouse(list);
+                tblCourse.setModel(model);
+//                lbStatus.setText("Num of rows: " + list.size());
+            } else {
+                JOptionPane.showMessageDialog(this, "fullname is empty", "Message", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AddFormCourse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -580,21 +707,21 @@ ArrayList list  = sts1.LoadCourse_No_Frac_page();
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
+                    
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(AddFormCourse.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(AddFormCourse.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(AddFormCourse.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AddFormCourse.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -607,7 +734,7 @@ ArrayList list  = sts1.LoadCourse_No_Frac_page();
             public void run() {
                 try {
                     new AddFormCourse().setVisible(true);
-
+                    
                 } catch (SQLException ex) {
                     Logger.getLogger(AddFormCourse.class
                             .getName()).log(Level.SEVERE, null, ex);
