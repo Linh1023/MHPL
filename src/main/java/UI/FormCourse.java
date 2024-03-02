@@ -95,11 +95,7 @@ public class FormCourse extends javax.swing.JFrame {
 
         tblCourse.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Mã Khóa Học", "Tên Khóa Học", "Giá", "Phòng", "URL", "Địa Điểm", "Ngày", "Giờ"
@@ -129,6 +125,7 @@ public class FormCourse extends javax.swing.JFrame {
 
         jLabel10.setText("Giờ");
 
+        jCheckBoxMon.setSelected(true);
         jCheckBoxMon.setText("Mon");
 
         jCheckBoxTue.setText("Tue");
@@ -332,7 +329,7 @@ public class FormCourse extends javax.swing.JFrame {
 
         jLabel1.setText("Lọc & Tìm Kiếm Khóa Học");
 
-        jComboBoxTypeFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxTypeFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên Khóa Học", "Số Tín Chỉ", "Phòng" }));
         jComboBoxTypeFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxTypeFilterActionPerformed(evt);
@@ -346,7 +343,12 @@ public class FormCourse extends javax.swing.JFrame {
             }
         });
 
-        jComboBoxTypeCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxTypeCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Onsite", "Online" }));
+        jComboBoxTypeCourse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTypeCourseActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -396,11 +398,21 @@ public class FormCourse extends javax.swing.JFrame {
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Sửa");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setBackground(new java.awt.Color(255, 0, 0));
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnRefresh.setBackground(new java.awt.Color(51, 153, 255));
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -507,6 +519,7 @@ public class FormCourse extends javax.swing.JFrame {
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
         funcInsertCourse();
+        funcRefreshCourse();
     }//GEN-LAST:event_btnInsertActionPerformed
 
     private void txtUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUrlActionPerformed
@@ -536,6 +549,20 @@ public class FormCourse extends javax.swing.JFrame {
     private void tblCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCourseMouseClicked
         funcTblPhieuMuon();
     }//GEN-LAST:event_tblCourseMouseClicked
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        funcEditCourse();
+        funcRefreshCourse();
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        funcDeleteCourse();
+        funcRefreshCourse();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void jComboBoxTypeCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTypeCourseActionPerformed
+        funcTypeCourse();
+    }//GEN-LAST:event_jComboBoxTypeCourseActionPerformed
 
     /**
      * @param args the command line arguments
@@ -601,7 +628,6 @@ public class FormCourse extends javax.swing.JFrame {
 
     private void inits() throws SQLException {
         listCourse();
-        changeFilterType();
     }
 
     private void listCourse() throws SQLException {
@@ -730,42 +756,32 @@ public class FormCourse extends javax.swing.JFrame {
         }
     }
 
-    private void changeFilterType() {
-        // Lấy model của combobox
-        DefaultComboBoxModel model = (DefaultComboBoxModel) jComboBoxTypeFilter.getModel();
-
-        // Xóa tất cả các phần tử hiện tại trong combobox
-        model.removeAllElements();
-
-        // Thêm các phần tử mới vào combobox
-        model.addElement("Tên Khóa Học");
-        model.addElement("Số Tín Chỉ");
-        model.addElement("Phòng");
-        model.addElement("online");
-        model.addElement("onsite");
-
-        jComboBoxTypeFilter.setModel(model);
-    }
 
     private void funcFilterCourse() {
         String text = txtSearch.getText();
-        int selection = -1;
-        selection = jComboBoxTypeFilter.getSelectedIndex();
-
-        if (selection > 3 && selection < 5) {
-            ArrayList myList = std.find(text, selection);
+        int selectionFilter = -1, selectionType = -1;
+        selectionFilter = jComboBoxTypeFilter.getSelectedIndex();
+        selectionType = jComboBoxTypeCourse.getSelectedIndex();
+        if (selectionFilter >= 0 && selectionFilter < 3 && !"".equals(text)) {
+            ArrayList myList = std.find(text, selectionFilter, selectionType);
             update1(myList);
         } else {
-            if (selection >= 0 && selection < 3 && !"".equals(text)) {
-                ArrayList myList = std.find(text, selection);
-                update1(myList);
-            } else {
-                JOptionPane.showMessageDialog(null, "Tìm kiếm không hợp lệ", "Lỗi", JOptionPane.OK_OPTION);
-            }
+            JOptionPane.showMessageDialog(null, "Filter không hợp lệ", "Lỗi", JOptionPane.OK_OPTION);
+
         }
     }
 
+    private void funcTypeCourse() {
+        int selectionType = -1;
+        selectionType = jComboBoxTypeCourse.getSelectedIndex();
+
+        ArrayList myList = std.find(selectionType);
+        update1(myList);
+
+    }
+
     private void funcTblPhieuMuon() {
+        delAllvaluetable();
         int rowIndex = tblCourse.getSelectedRow();
         if (rowIndex >= 0) {
 
@@ -791,7 +807,17 @@ public class FormCourse extends javax.swing.JFrame {
             if (tblCourse.getValueAt(rowIndex, 4) != null) {
                 //online
                 txtUrl.setText(tblCourse.getValueAt(rowIndex, 4).toString());
-                jRadioButtonOnline.setEnabled(true);
+                jRadioButtonOnline.setSelected(true);
+                funcCheckBtnOnline();
+                txtLocation.setText("");
+                txtTime.setText("");
+                jCheckBoxMon.setSelected(false);
+                jCheckBoxTue.setSelected(false);
+                jCheckBoxWed.setSelected(false);
+                jCheckBoxThu.setSelected(false);
+                jCheckBoxFri.setSelected(false);
+                jCheckBoxSat.setSelected(false);
+
             } else {
                 String value5 = tblCourse.getValueAt(rowIndex, 5).toString();
                 String value6 = tblCourse.getValueAt(rowIndex, 6).toString();
@@ -799,33 +825,127 @@ public class FormCourse extends javax.swing.JFrame {
                 txtLocation.setText(value5);
                 txtTime.setText(value7);
                 for (int i = 0; i < value6.length(); i++) {
-                    System.out.println(value6.charAt(i));  
                     if (value6.charAt(i) == 'M') {
-                        System.out.println("Check mon");
-                        jCheckBoxMon.isEnabled();
+                        jCheckBoxMon.setSelected(true);
                     }
                     if (value6.charAt(i) == 'T') {
-                        jCheckBoxTue.isEnabled();
+                        jCheckBoxTue.setSelected(true);
                     }
                     if (value6.charAt(i) == 'W') {
-                        jCheckBoxWed.isEnabled();
+                        jCheckBoxWed.setSelected(true);
                     }
                     if (value6.charAt(i) == 'H') {
-                        jCheckBoxThu.isEnabled();
+                        jCheckBoxThu.setSelected(true);
                     }
                     if (value6.charAt(i) == 'F') {
-                        jCheckBoxFri.isEnabled();
+                        jCheckBoxFri.setSelected(true);
                     }
                     if (value6.charAt(i) == 'S') {
-                        jCheckBoxSat.isEnabled();
+                        jCheckBoxSat.setSelected(true);
+                    }
+                    txtUrl.setText(null);
+                }
+                jRadioButtonOnsite.setSelected(true);
+                funcCheckBtnOnsite();
+            }
+        }
+    }
+
+    public void funcEditCourse() {
+        int rowIndex = tblCourse.getSelectedRow();
+        if (rowIndex >= 0) {
+            Course s = new Course();
+
+            int credit = Integer.parseInt(txtCredits.getText());
+            String selectedItem = (String) jComboBoxDepartment.getSelectedItem();
+            int departmentId = Integer.parseInt(selectedItem);
+            int courseId = Integer.parseInt(tblCourse.getValueAt(rowIndex, 0).toString());
+
+            s.setCredits(credit);
+            s.setDepartmentID(departmentId);
+            s.setTitle(txtTitle.getText());
+            s.setCourseId(courseId);
+
+            try {
+
+                std.EditCourse(s);
+                if (courseId > 0) {
+                    if (jRadioButtonOnsite.isSelected()) {
+                        OnsiteCourse s1 = new OnsiteCourse();
+
+                        String location = txtLocation.getText();
+                        String days = "";
+                        if (jCheckBoxMon.isSelected()) {
+                            days += "M";
+                        }
+                        if (jCheckBoxTue.isSelected()) {
+                            days += "T";
+                        }
+                        if (jCheckBoxWed.isSelected()) {
+                            days += "W";
+                        }
+                        if (jCheckBoxThu.isSelected()) {
+                            days += "H";
+                        }
+                        if (jCheckBoxSat.isSelected()) {
+                            days += "S";
+                        }
+                        if (jCheckBoxFri.isSelected()) {
+                            days += "F";
+                        }
+                        String time = txtTime.getText();
+
+                        s1.setLocation(location);
+                        s1.setDays(days);
+                        s1.setTime(time);
+                        s1.setCourseId(courseId);
+
+                        onsitestd.EditCourse(s1);
+                    } else {
+                        OnlineCourse s2 = new OnlineCourse();
+                        String url = txtUrl.getText();
+                        s2.setUrl(url);
+                        s2.setCourseId(courseId);
+                        onlinestd.EditCourse(s2);
                     }
                 }
-                jRadioButtonOnsite.setEnabled(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-//            Xuất dữu liệu ra txtNgayTra
-            // Lấy giá trị của cột 2 trong dòng được chọn
-            // Chuyển đổi giá trị của cột 2 sang kiểu Date
         }
+    }
+
+    private void funcDeleteCourse() {
+        int rowIndex = tblCourse.getSelectedRow();
+        if (rowIndex >= 0) {
+            int courseId = Integer.parseInt(tblCourse.getValueAt(rowIndex, 0).toString());
+            try {
+                std.DeleteCouse(courseId);
+                if (jRadioButtonOnsite.isSelected()) {
+                    onsitestd.DeleteCouse(courseId);
+                }
+                onlinestd.DeleteCouse(courseId);
+
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public void delAllvaluetable() {
+        txtTitle.setText(null);
+        txtCredits.setText(null);
+        jComboBoxDepartment.setSelectedItem(null);
+        txtUrl.setText(null);
+        jRadioButtonOnline.setSelected(true);
+        txtLocation.setText(null);
+        txtTime.setText(null);
+        jCheckBoxMon.setSelected(false);
+        jCheckBoxTue.setSelected(false);
+        jCheckBoxWed.setSelected(false);
+        jCheckBoxThu.setSelected(false);
+        jCheckBoxFri.setSelected(false);
+        jCheckBoxSat.setSelected(false);
+        txtLocation.setText(null);
+        txtTime.setText(null);
     }
 }

@@ -59,5 +59,13 @@ public class OnsiteCourseDAL extends MyDatabaseManager {
         System.out.println("DAL read courseonsite");
         return list;
     }
+    public int DeleteCourse(int courseID) throws SQLException {
+        String query = "DELETE FROM onsitecourse WHERE courseID = ?";
+        PreparedStatement p = CourseDAL.getConnection().prepareStatement(query);
+        p.setInt(1, courseID);
+        int result = p.executeUpdate();
+
+        return result;
+    }
 
 }

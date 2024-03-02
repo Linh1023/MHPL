@@ -52,5 +52,13 @@ public class OnlineCourseDAL extends MyDatabaseManager {
         System.out.println("DAL read courseonline");
         return list;
     }
+    public int DeleteCourse(int courseID) throws SQLException {
+        String query = "DELETE FROM onlinecourse WHERE courseID = ?";
+        PreparedStatement p = CourseDAL.getConnection().prepareStatement(query);
+        p.setInt(1, courseID);
+        int result = p.executeUpdate();
+
+        return result;
+    }
 
 }

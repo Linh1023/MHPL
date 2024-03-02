@@ -9,6 +9,7 @@ UI\FormCourse$4.class
 BLL\CourseBLL.class
 UI\FormCourse$9.class
 BLL\OnsiteCourseBLL.class
+UI\FormCourse$15.class
 UI\FormCourse$6.class
 UI\CourseForm$1.class
 UI\CourseForm$4.class
@@ -18,10 +19,12 @@ DAL\Course.class
 UI\FormCourse$3.class
 UI\CourseForm$6.class
 UI\FormCourse$1.class
+UI\FormCourse$17.class
 DAL\OnsiteCourseDAL.class
 UI\FormCourse$12.class
 UI\FormCourse.class
 UI\CourseForm$2.class
+UI\FormCourse$16.class
 UI\FormCourse$5.class
 UI\CourseForm$3.class
 DAL\OnsiteCourse.class

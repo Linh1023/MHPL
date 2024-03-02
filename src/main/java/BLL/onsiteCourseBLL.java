@@ -52,4 +52,9 @@ public class OnsiteCourseBLL {
 
         return (List) list.subList(from, Math.min(to, size));
     }
+    public int DeleteCouse(int courseId) throws SQLException {
+        int result_up = stdDal.DeleteCourse(courseId);
+        System.out.println("Update BLL " + result_up);
+        return result_up;
+    }
 }

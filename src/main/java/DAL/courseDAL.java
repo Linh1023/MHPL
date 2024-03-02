@@ -80,6 +80,7 @@ public class CourseDAL extends MyDatabaseManager {
     }
 
     public ArrayList readCourseFull(String query) throws SQLException {
+        System.out.println(query);
         ResultSet rs = CourseDAL.doReadQuery(query);
         ArrayList list = new ArrayList();
         if (rs != null) {
@@ -96,48 +97,60 @@ public class CourseDAL extends MyDatabaseManager {
                 });
             }
         }
-        
 
         return list;
     }
 
-    public ArrayList find(String text, int type) {
-        String query = null;
-        if (type == 0) {
-            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-                    + "FROM course AS a "
-                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
-                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-                    + "WHERE LOWER(a.Title) LIKE '%" + text + "%';";
-            System.out.println(query);
-        }
+    public ArrayList find(int type) {
+        String query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID ";
+        if (type ==0 ) query += ",b.url ,c.Location,c.Days,c.Time "
+                + "From course as a "
+                + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+                + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID ";
         if (type == 1) {
-            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-                    + "FROM course AS a "
-                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
-                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-                    + "WHERE a.Credits = "+text + ";";
+            query += ",c.Location,c.Days,c.Time ,NUll as url "
+                + "From course as a "
+                + "RIGHT JOIN onsitecourse AS c ON a.CourseID = c.CourseID ";
         }
         if (type == 2) {
-            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-                    + "FROM course AS a "
-                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
-                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-                    + "WHERE a.DepartmentID = "+text + ";";
+            query += ", b.url ,NULL AS Location,NULL AS Days,NULL AS Time "
+                     + "From course as a "
+                    + "RIGHT JOIN onlinecourse AS b ON a.CourseID = b.CourseID ";
         }
-        if (type == 3) {
-            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-                    + "FROM course AS a "
-                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
-                    + "WHERE b.url IS NOT NULL";
+        try {
+            return readCourseFull(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDAL.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (type == 4) {
-            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-                    + "FROM course AS a "
-                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
-                    + "WHERE c.Location IS NOT NULL";
+        System.out.println(query);
+        return null;
+    }
+
+    public ArrayList find(String value, int filter, int type) {
+        String query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID ";
+        if (type ==0 ) query += ",b.url ,c.Location,c.Days,c.Time "
+                + "From course as a "
+                + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+                + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID ";
+        if (type == 1) {
+            query += ",c.Location,c.Days,c.Time ,NUll as url "
+                + "From course as a "
+                + "RIGHT JOIN onsitecourse AS c ON a.CourseID = c.CourseID ";
+        }
+        if (type == 2) {
+            query += ", b.url ,NULL AS Location,NULL AS Days,NULL AS Time "
+                     + "From course as a "
+                    + "RIGHT JOIN onlinecourse AS b ON a.CourseID = b.CourseID ";
+        }
+
+        if (filter == 0) {
+            query += "WHERE a.Title LIKE '%" + value + "%';";
+        } else {
+            if (filter == 1) {
+                query += "WHERE a.Credits = " + value + ";";
+            } else if (filter == 2) {
+                query += "WHERE a.DepartmentID = " + value + ";";
+            }
         }
         try {
             return readCourseFull(query);
@@ -147,4 +160,57 @@ public class CourseDAL extends MyDatabaseManager {
         return null;
     }
 
+    public int DeleteCourse(int courseID) throws SQLException {
+        String query = "DELETE FROM course WHERE courseID = ?";
+        PreparedStatement p = CourseDAL.getConnection().prepareStatement(query);
+        p.setInt(1, courseID);
+        int result = p.executeUpdate();
+
+        return result;
+    }
+//public ArrayList find(String value, int filter,int type) {
+//        String query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+//                    + "FROM course AS a ";
+//        if (filter == 0) {
+//            query += "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+//                    + "FROM course AS a "
+//                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
+//                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+//                    + "WHERE LOWER(a.Title) LIKE '%" + value + "%';";
+//        }
+//        if (filter == 1) {
+//            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+//                    + "FROM course AS a "
+//                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
+//                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+//                    + "WHERE a.Credits = "+value + ";";
+//        }
+//        if (filter == 2) {
+//            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+//                    + "FROM course AS a "
+//                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
+//                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+//                    + "WHERE a.DepartmentID = "+value + ";";
+//        }
+//        if (filter == 3) {
+//            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+//                    + "FROM course AS a "
+//                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+//                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
+//                    + "WHERE b.url IS NOT NULL";
+//        }
+//        if (filter == 4) {
+//            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
+//                    + "FROM course AS a "
+//                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+//                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
+//                    + "WHERE c.Location IS NOT NULL";
+//        }
+//        try {
+//            return readCourseFull(query);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(CourseDAL.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return null;
+//    }
 }

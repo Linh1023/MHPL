@@ -54,10 +54,19 @@ public class CourseBLL {
         ArrayList result =stdDal.readCourseFull();
         return result;       
     }
-    public ArrayList find(String text,int type){
+    public ArrayList find(String value,int filter,int type){
         ArrayList result =new ArrayList();
-        String text1=text.toLowerCase();
-       result =stdDal.find(text1,type);
+       result =stdDal.find(value,filter,type);
         return result; 
+    }
+    public ArrayList find(int type){
+        ArrayList result =new ArrayList();
+       result =stdDal.find(type);
+        return result; 
+    }
+     public int DeleteCouse(int courseId) throws SQLException {
+        int result_up = stdDal.DeleteCourse(courseId);
+        System.out.println("Update BLL " + result_up);
+        return result_up;
     }
 }
