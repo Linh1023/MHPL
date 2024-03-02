@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package DAL;
 
 import java.sql.Connection;
@@ -8,21 +12,24 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ *
+ * @author DO THE TUNG
+ */
 public class MyDatabaseManager {
+//format code shift +alt +f
     private static Connection c;
     private static Statement s;
-    
+
     private static String host, port, dbName, dbUser, dbPassword;
-    
-    
-    public static void connectDB()
-    {
-        host = "localhost";
+
+   public static void connectDB()
+   { host = "localhost";
         port = "3306";
         dbUser = "root";
         dbName = "school";
         dbPassword = "";
-        String dbPath = "jdbc:mysql://" + host + ":" + port + "/"
+         String dbPath = "jdbc:mysql://" + host + ":" + port + "/"
                 + dbName + "?useUnicode=yes&characterEncoding=UTF-8";
         try {
             c = (Connection) DriverManager.getConnection(dbPath, dbUser, dbPassword);
@@ -32,8 +39,10 @@ public class MyDatabaseManager {
         } catch (SQLException ex) {
             System.out.print(ex.getMessage());
         }
-    }
-    public static Connection getConnection()
+       
+   }
+   
+   public static Connection getConnection()
     {
         return c;
     }
@@ -50,8 +59,11 @@ public class MyDatabaseManager {
         return rs;
     }
 
+    
+
     //test connection
     public static void main(String[] args) {
         MyDatabaseManager.connectDB();
+        
     }
 }
