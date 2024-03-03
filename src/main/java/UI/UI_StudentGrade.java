@@ -100,6 +100,8 @@ public class UI_StudentGrade extends javax.swing.JFrame {
 
         jLabel_OnOff.setText("On-Off :");
 
+        jComboBox_OnOff.setBackground(new java.awt.Color(255, 255, 255));
+        jComboBox_OnOff.setForeground(new java.awt.Color(255, 255, 255));
         jComboBox_OnOff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "On site", "Online" }));
         jComboBox_OnOff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,6 +111,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
 
         jLabel_Course.setText("Course :");
 
+        jComboBox_Course.setBackground(new java.awt.Color(255, 255, 255));
         jComboBox_Course.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox_CourseActionPerformed(evt);
@@ -230,8 +233,9 @@ public class UI_StudentGrade extends javax.swing.JFrame {
 
         jPanel_Add.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jButton_XemDSSV.setBackground(new java.awt.Color(153, 153, 153));
+        jButton_XemDSSV.setBackground(new java.awt.Color(153, 0, 153));
         jButton_XemDSSV.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_XemDSSV.setForeground(new java.awt.Color(255, 255, 255));
         jButton_XemDSSV.setText("Xem danh sách sinh viên");
         jButton_XemDSSV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -241,8 +245,9 @@ public class UI_StudentGrade extends javax.swing.JFrame {
 
         jLabel_StudentIDText2.setText("Student ID :");
 
-        jButton_ChonStudentdID.setBackground(new java.awt.Color(0, 153, 51));
+        jButton_ChonStudentdID.setBackground(new java.awt.Color(0, 153, 0));
         jButton_ChonStudentdID.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_ChonStudentdID.setForeground(new java.awt.Color(255, 255, 255));
         jButton_ChonStudentdID.setText("Chọn");
         jButton_ChonStudentdID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -388,6 +393,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
             }
         });
 
+        jComboBox_TimTheo.setBackground(new java.awt.Color(255, 255, 255));
         jComboBox_TimTheo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student ID", "Name" }));
         jComboBox_TimTheo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
