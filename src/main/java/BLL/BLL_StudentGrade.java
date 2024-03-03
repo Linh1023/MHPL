@@ -28,6 +28,14 @@ public class BLL_StudentGrade {
         return dAL_StudentGrade.readStudentGrade(course);
     }
     
+    public ArrayList<DTO_StudentGrade> readAllStudentGrade () {
+        return dAL_StudentGrade.readAllStudentGrade();
+    }
+    
+    public  Boolean hasOnsiteCourse (int courseID) {
+        return dAL_StudentGrade.hasOnsiteCourse(courseID);
+    }
+    
     public int editGrade (int enrollmentID, BigDecimal grade) {
         return dAL_StudentGrade.editGrade(enrollmentID, grade);
     }
@@ -44,6 +52,10 @@ public class BLL_StudentGrade {
         int StudentID = Integer.parseInt(studentID);
         int CourseID = Integer.parseInt(courseID);
         return dAL_StudentGrade.hasStudentGrade(StudentID, CourseID);
+    }
+    
+   public ArrayList<DTO_StudentGrade> findAllStudentGrade (String comboboxValueString, String search, String courseID) {
+        return dAL_StudentGrade.findAllStudentGrade(comboboxValueString, search, courseID);
     }
     
     public String checkAndAddStudentGrade (String courseID, String studentID) {

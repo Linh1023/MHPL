@@ -7,7 +7,11 @@ package DAL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import javax.swing.JOptionPane;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author PC
@@ -28,6 +32,16 @@ public class ConnectToSQL {
         return null;
     }
   
+    public static void closeConnection(Connection conn) {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConnectToSQL.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     public static void main(String[] args) {
     Connection conn = ConnectToSQL.conn();
         System.out.println(conn);

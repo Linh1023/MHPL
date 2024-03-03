@@ -48,8 +48,42 @@ public class DAL_StudentGrade {
             return arrayListStudentGrade;
         } catch (Exception e) {
             return null;
-        } 
+        } finally {
+            ConnectToSQL.closeConnection(conn);
+        }
+        
     } 
+    
+    public ArrayList<DTO_StudentGrade> readAllStudentGrade () {
+        conn = ConnectToSQL.conn();
+        arrayListStudentGrade = new ArrayList<DTO_StudentGrade>();
+        try {
+            String sqlQuery = "SELECT * FROM studentgrade, person, course where StudentId = PersonID AND studentgrade.CourseID = course.CourseID" ;
+             pst = conn.prepareStatement(sqlQuery);
+             rs = pst.executeQuery();
+             while (rs.next()) {
+             dTO_StudentGrade = new DTO_StudentGrade ();
+             dTO_StudentGrade.setEnrollmentID(rs.getInt("EnrollmentID"));
+             dTO_StudentGrade.setCourseID(rs.getInt("CourseID"));
+             dTO_StudentGrade.setStudentId(rs.getInt("StudentID"));
+             dTO_StudentGrade.setGrade(rs.getBigDecimal("Grade"));
+             dTO_StudentGrade.setName(rs.getString("Firstname") + " " + rs.getString("Lastname"));
+             dTO_StudentGrade.setEnrollmentDate(rs.getDate("EnrollmentDate"));
+             dTO_StudentGrade.setTitle(rs.getString("Title"));
+
+             arrayListStudentGrade.add(dTO_StudentGrade);
+             }
+             
+            return arrayListStudentGrade;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            ConnectToSQL.closeConnection(conn);
+        }
+    }
+    
+    
+    
        
     public ArrayList<DTO_OnlineCourse> readOnlineCourse() {
         conn = ConnectToSQL.conn();
@@ -71,7 +105,9 @@ public class DAL_StudentGrade {
             return arrayListOnlineCourse;
         } catch (Exception e) {
             return null;
-        } 
+        } finally {
+            ConnectToSQL.closeConnection(conn);
+        }
     }
     
     public ArrayList<DTO_OnSiteCourse> readOnSiteCourse() {
@@ -96,7 +132,9 @@ public class DAL_StudentGrade {
             return arrayListOnSiteCourse;
         } catch (Exception e) {
             return null;
-        } 
+        } finally {
+            ConnectToSQL.closeConnection(conn);
+        }
     }
     
     public int editGrade (int enrollmentID, BigDecimal grade) {
@@ -111,6 +149,8 @@ public class DAL_StudentGrade {
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
+        }finally {
+            ConnectToSQL.closeConnection(conn);
         }
     }
     
@@ -126,6 +166,8 @@ public class DAL_StudentGrade {
             return result;
         } catch (Exception e) {
           return 0;
+        }finally {
+            ConnectToSQL.closeConnection(conn);
         }
     }
     
@@ -140,7 +182,9 @@ public class DAL_StudentGrade {
         } catch (Exception e) {
             return 0;
             
-        } 
+        } finally {
+            ConnectToSQL.closeConnection(conn);
+        }
     }
     
    public boolean hasStudentGrade (int studentID, int courseID) {
@@ -156,9 +200,27 @@ public class DAL_StudentGrade {
         } catch (Exception e) {
             
             return false;
+        }finally {
+            ConnectToSQL.closeConnection(conn);
         }
     } 
     
+   public boolean hasOnsiteCourse ( int courseID) {
+        conn = ConnectToSQL.conn();
+        try {
+            String sqlQuery = "Select * From  onsitecourse  Where CourseID = ?";
+            pst = conn.prepareStatement(sqlQuery);
+           pst.setInt(1, courseID);
+            rs = pst.executeQuery();
+            boolean result =  rs.next() ;
+            return result;
+        } catch (Exception e) {
+            
+            return false;
+        }finally {
+            ConnectToSQL.closeConnection(conn);
+        }
+    } 
     
     public DTO_Person readPerson (int personID) {
         conn = ConnectToSQL.conn();
@@ -181,11 +243,62 @@ public class DAL_StudentGrade {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        } 
+        } finally {
+            ConnectToSQL.closeConnection(conn);
+        }
     } 
     
     
-    
+    public ArrayList<DTO_StudentGrade> findAllStudentGrade (String comboboxValueString, String search, String courseID) {
+        conn = ConnectToSQL.conn();
+        arrayListStudentGrade = new ArrayList<DTO_StudentGrade>();
+        try {
+            
+//            SELECT * FROM course WHERE CourseID LIKE '%key%';
+            if (courseID.equals("")) {
+                if  (comboboxValueString.equals("Name")) {
+                    String sqlQuery = "SELECT *, CONCAT(FirstName,' ',LastName) AS Name FROM studentgrade, person,course WHERE StudentID = PersonID AND studentgrade.CourseID =  course.CourseID AND  CONCAT(FirstName,' ',LastName) LIKE ?" ;
+                    pst = conn.prepareStatement(sqlQuery);
+                    pst.setString(1, "%" +search+ "%");
+                } else if (comboboxValueString.equals("Student ID")) {
+                     String sqlQuery = "SELECT *, CONCAT(FirstName,' ',LastName) AS Name  FROM  studentgrade,course,person WHERE  studentgrade.CourseID =  course.CourseID  AND StudentID = PersonID AND StudentID = ?" ;
+                    pst = conn.prepareStatement(sqlQuery);
+                    pst.setInt(1, Integer.parseInt(search));
+                }
+            } else {
+                if  (comboboxValueString.equals("Name")) {
+                    String sqlQuery = "SELECT *, CONCAT(FirstName,' ',LastName) AS Name FROM studentgrade, person,course WHERE StudentID = PersonID AND studentgrade.CourseID =  course.CourseID AND studentgrade.CourseID = ? AND CONCAT(FirstName,' ',LastName) LIKE ?" ;
+                    pst = conn.prepareStatement(sqlQuery);
+                    pst.setInt (1,Integer.parseInt(courseID));
+                    pst.setString(2, "%" +search+ "%");
+                } else if (comboboxValueString.equals("Student ID")) {
+                     String sqlQuery = "SELECT *, CONCAT(FirstName,' ',LastName) AS Name  FROM  studentgrade,course,person WHERE  studentgrade.CourseID =  course.CourseID  AND StudentID = PersonID AND studentgrade.CourseID = ? AND StudentID = ?" ;
+                    pst = conn.prepareStatement(sqlQuery);
+                    pst.setInt (1,Integer.parseInt(courseID));
+                    pst.setInt(2, Integer.parseInt(search));
+                }
+            }
+            
+             
+             rs = pst.executeQuery();
+             while (rs.next()) {
+             dTO_StudentGrade = new DTO_StudentGrade ();
+             dTO_StudentGrade.setEnrollmentID(rs.getInt("EnrollmentID"));
+             dTO_StudentGrade.setCourseID(rs.getInt("CourseID"));
+             
+             dTO_StudentGrade.setStudentId(rs.getInt("StudentID"));
+             dTO_StudentGrade.setGrade(rs.getBigDecimal("Grade"));
+             dTO_StudentGrade.setName(rs.getString("Name"));
+             dTO_StudentGrade.setEnrollmentDate(rs.getDate("EnrollmentDate"));
+             dTO_StudentGrade.setTitle(rs.getString("Title"));
+
+             arrayListStudentGrade.add(dTO_StudentGrade);
+             }
+            return arrayListStudentGrade;
+        } catch (Exception e) {
+            return null;
+        }
+    }
     
 
     public static void main(String[] args) {

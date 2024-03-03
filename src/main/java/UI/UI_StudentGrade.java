@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -32,8 +34,12 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         
         initComponents();
         setLocationRelativeTo(null);
+        
+     
+        
         bLL_StudentGrade = new BLL_StudentGrade();
-        addOnSiteCourseDataToJcomboboxCourse ();
+//        addOnSiteCourseDataToJcomboboxCourse ();
+        jComboBox_Course.addItem("Tất cả");
          
     }
 
@@ -83,15 +89,18 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         jTextField_TimKiem = new javax.swing.JTextField();
         jButton_TimKiem = new javax.swing.JButton();
         jButton_ResetJtable = new javax.swing.JButton();
+        jComboBox_TimTheo = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel_Header.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel_Header.setText("Đăng ký khóa học và lưu điểm");
 
         jLabel_OnOff.setText("On-Off :");
 
-        jComboBox_OnOff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "On site", "Online" }));
+        jComboBox_OnOff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "On site", "Online" }));
         jComboBox_OnOff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox_OnOffActionPerformed(evt);
@@ -113,13 +122,24 @@ public class UI_StudentGrade extends javax.swing.JFrame {
             new String [] {
                 "Enrollment ID", "Student ID", "Name", "Grade", "Enrollment Date"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable_StudentGrade.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable_StudentGradeMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable_StudentGrade);
+        if (jTable_StudentGrade.getColumnModel().getColumnCount() > 0) {
+            jTable_StudentGrade.getColumnModel().getColumn(0).setPreferredWidth(0);
+        }
 
         jPanel_Select.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -210,6 +230,8 @@ public class UI_StudentGrade extends javax.swing.JFrame {
 
         jPanel_Add.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jButton_XemDSSV.setBackground(new java.awt.Color(153, 153, 153));
+        jButton_XemDSSV.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton_XemDSSV.setText("Xem danh sách sinh viên");
         jButton_XemDSSV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -219,6 +241,8 @@ public class UI_StudentGrade extends javax.swing.JFrame {
 
         jLabel_StudentIDText2.setText("Student ID :");
 
+        jButton_ChonStudentdID.setBackground(new java.awt.Color(0, 153, 51));
+        jButton_ChonStudentdID.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton_ChonStudentdID.setText("Chọn");
         jButton_ChonStudentdID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -303,11 +327,11 @@ public class UI_StudentGrade extends javax.swing.JFrame {
                                 .addComponent(jTextField_StudentID, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton_ChonStudentdID)
-                                .addGap(38, 38, 38))))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_AddLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton_XemDSSV, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
+                                .addGap(38, 38, 38))
+                            .addGroup(jPanel_AddLayout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(jButton_XemDSSV, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))))
         );
         jPanel_AddLayout.setVerticalGroup(
             jPanel_AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,6 +382,20 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         jButton_ResetJtable.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton_ResetJtable.setForeground(new java.awt.Color(255, 255, 255));
         jButton_ResetJtable.setText("Reset");
+        jButton_ResetJtable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ResetJtableActionPerformed(evt);
+            }
+        });
+
+        jComboBox_TimTheo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student ID", "Name" }));
+        jComboBox_TimTheo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_TimTheoActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Tìm theo :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -374,9 +412,13 @@ public class UI_StudentGrade extends javax.swing.JFrame {
                                 .addGap(50, 50, 50)
                                 .addComponent(jPanel_Add, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(34, 34, 34)
-                                .addComponent(jLabel_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel_TimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(26, 26, 26)
-                                .addComponent(jTextField_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jComboBox_TimTheo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jButton_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -421,7 +463,10 @@ public class UI_StudentGrade extends javax.swing.JFrame {
                             .addComponent(jTextField_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton_TimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton_ResetJtable, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton_ResetJtable, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox_TimTheo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -459,8 +504,23 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         if (jComboBox_OnOff.getSelectedItem().equals("On site"))
         {
             addOnSiteCourseDataToJcomboboxCourse();
+            System.out.println(jTable_StudentGrade.getColumnCount());
+            if (jTable_StudentGrade.getColumnCount() == 6) {
+                 jTable_StudentGrade.removeColumn(jTable_StudentGrade.getColumnModel().getColumn(5));
+                 model = (DefaultTableModel) jTable_StudentGrade.getModel();
+                 model.setColumnCount(model.getColumnCount() - 1);
+            }
         } else if (jComboBox_OnOff.getSelectedItem().equals("Online")) {
             addOnlineCourseDataToJcomboboxCourse();
+            System.out.println(jTable_StudentGrade.getColumnCount());
+            if (jTable_StudentGrade.getColumnCount() == 6) {
+                 jTable_StudentGrade.removeColumn(jTable_StudentGrade.getColumnModel().getColumn(5));
+                  model = (DefaultTableModel) jTable_StudentGrade.getModel();
+                 model.setColumnCount(model.getColumnCount() - 1);
+            }
+        } else if (jComboBox_OnOff.getSelectedItem().equals("Tất cả")) {
+           
+            jComboBox_Course.addItem("Tất cả");
         }
         setEmptyJpanel1();
     }//GEN-LAST:event_jComboBox_OnOffActionPerformed
@@ -512,13 +572,18 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_resetThongTinActionPerformed
 
     private void jButton_ThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ThemActionPerformed
-
-        String result = bLL_StudentGrade.checkAndAddStudentGrade(courseID, jLabel_ID.getText().trim());
+        
+        if (jComboBox_OnOff.getSelectedItem().equals("Tất cả") == false) {
+            String result = bLL_StudentGrade.checkAndAddStudentGrade(courseID, jLabel_ID.getText().trim());
          JOptionPane.showMessageDialog(this,result);
         if (result.equals("Thêm thành công")) {
             addDataToTable();
             setEmptyJpanel2();
+            }
+        } else {
+             JOptionPane.showMessageDialog(this,"Vui lòng chọn lớp học để thêm sinh viên !");
         }
+        
         
     }//GEN-LAST:event_jButton_ThemActionPerformed
 
@@ -532,8 +597,38 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_XemDSSVActionPerformed
 
     private void jButton_TimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_TimKiemActionPerformed
-        // TODO add your handling code here:
+     
+          if (jTextField_TimKiem.getText().equals("")) {
+             JOptionPane.showMessageDialog(this,"Vui lòng điền thông tin tìm kiếm !");
+        }
+        else if (jComboBox_TimTheo.getSelectedItem().equals("Student ID") && bLL_StudentGrade.checkStudentID(jTextField_TimKiem.getText().trim()).equals("Correct") ==false )
+        {
+              JOptionPane.showMessageDialog(this,"Student ID phải là số !");
+        } else {
+            if (jComboBox_OnOff.getSelectedItem().equals("Tất cả")) {
+                    readAllStudentGrade(bLL_StudentGrade.findAllStudentGrade(jComboBox_TimTheo.getSelectedItem().toString(), jTextField_TimKiem.getText().trim(), ""));
+           }  else {
+               readAllStudentGrade(bLL_StudentGrade.findAllStudentGrade(jComboBox_TimTheo.getSelectedItem().toString(), jTextField_TimKiem.getText().trim(), courseID));
+              } 
+        }
+      
+        
+        
+        
     }//GEN-LAST:event_jButton_TimKiemActionPerformed
+
+    private void jComboBox_TimTheoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_TimTheoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_TimTheoActionPerformed
+
+    private void jButton_ResetJtableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ResetJtableActionPerformed
+        if (jComboBox_OnOff.getSelectedItem().equals("Tất cả")) {
+//            readAllStudentGrade(bLL_StudentGrade.readAllStudentGrade());
+                addDataToTable();
+        } else {
+            addDataToTable();
+        }
+    }//GEN-LAST:event_jButton_ResetJtableActionPerformed
 
     private void setEmptyJpanel1 () {
          jTextField_EnrollmentID.setText("");
@@ -604,12 +699,13 @@ public class UI_StudentGrade extends javax.swing.JFrame {
      
      public void addDataToTable ( ) {
          
-         if (jComboBox_Course.getSelectedItem() != null) {
-        String [] course = jComboBox_Course.getSelectedItem().toString().split("-");
+         if (jComboBox_Course.getSelectedItem() != null && jComboBox_Course.getSelectedItem().equals("Tất cả") == false ) {
+         String [] course = jComboBox_Course.getSelectedItem().toString().split("-");
          courseID = course[0];
          ArrayList<DTO_StudentGrade> arrayListStudentGrade = new ArrayList<>();
          arrayListStudentGrade = bLL_StudentGrade.readStudentGrade(courseID.trim());
-         model = (DefaultTableModel) jTable_StudentGrade.getModel(); 
+         model = (DefaultTableModel) jTable_StudentGrade.getModel();
+         
          model.setRowCount(0);
          for (int i = 0; i<arrayListStudentGrade.size(); i ++ ) {
             Object[] row = {arrayListStudentGrade.get(i).getEnrollmentID(),arrayListStudentGrade.get(i).getStudentId(), arrayListStudentGrade.get(i).getName(), 
@@ -617,9 +713,41 @@ public class UI_StudentGrade extends javax.swing.JFrame {
             };
               model.addRow(row);
             }
+         } else if (jComboBox_Course.getSelectedItem() != null && jComboBox_Course.getSelectedItem().equals("Tất cả") == true) {
+              
+             if (jTable_StudentGrade.getColumnCount() == 5) {
+//                  System.out.println(jTable_StudentGrade.getColumnCount());
+                 model = (DefaultTableModel) jTable_StudentGrade.getModel(); 
+                 
+                  model.addColumn("Course title");
+                  
+                  System.out.println("có vào");
+             }
+             readAllStudentGrade(bLL_StudentGrade.readAllStudentGrade());
+             
          }
     }
     
+     public void readAllStudentGrade (ArrayList<DTO_StudentGrade> arrayListStudentGrade) {
+//         ArrayList<DTO_StudentGrade> arrayListStudentGrade = new ArrayList<>();
+//         arrayListStudentGrade = bLL_StudentGrade.readAllStudentGrade();
+         model = (DefaultTableModel) jTable_StudentGrade.getModel();
+         
+         model.setRowCount(0);
+         for (int i = 0; i<arrayListStudentGrade.size(); i ++ ) {
+            if (bLL_StudentGrade.hasOnsiteCourse(arrayListStudentGrade.get(i).getCourseID()))  {
+                Object[] row = {arrayListStudentGrade.get(i).getEnrollmentID(),arrayListStudentGrade.get(i).getStudentId(), arrayListStudentGrade.get(i).getName(), 
+                arrayListStudentGrade.get(i).getGrade(), arrayListStudentGrade.get(i).getEnrollmentDate(), arrayListStudentGrade.get(i).getCourseID() + "-" + arrayListStudentGrade.get(i).getTitle() + "- Onsite"
+            };
+              model.addRow(row);
+            } else {
+                Object[] row = {arrayListStudentGrade.get(i).getEnrollmentID(),arrayListStudentGrade.get(i).getStudentId(), arrayListStudentGrade.get(i).getName(), 
+                arrayListStudentGrade.get(i).getGrade(), arrayListStudentGrade.get(i).getEnrollmentDate(), arrayListStudentGrade.get(i).getCourseID() + "-" + arrayListStudentGrade.get(i).getTitle() + "- Online"
+            };
+              model.addRow(row);
+            }
+        }
+     }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -633,7 +761,9 @@ public class UI_StudentGrade extends javax.swing.JFrame {
     private javax.swing.JButton jButton_resetThongTin;
     private javax.swing.JComboBox<String> jComboBox_Course;
     private javax.swing.JComboBox<String> jComboBox_OnOff;
+    private javax.swing.JComboBox<String> jComboBox_TimTheo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel_Course;
     private javax.swing.JLabel jLabel_EnrollmentDate;
     private javax.swing.JLabel jLabel_EnrollmentDateText;

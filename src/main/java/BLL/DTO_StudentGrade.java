@@ -18,6 +18,7 @@ public class DTO_StudentGrade {
     private BigDecimal grade;
     private String name;
     private Date enrollmentDate;
+    private String title;
     
     
     public DTO_StudentGrade() {
@@ -27,6 +28,15 @@ public class DTO_StudentGrade {
         this.grade = null;
         this.name = null;
         this.enrollmentDate = null;
+        this.title = null;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getEnrollmentID() {
