@@ -5,6 +5,8 @@
 package UI;
 
 import DAL.Course;
+import DAL.OnlineCourse;
+import DAL.OnsiteCourse;
 import BLL.CourseBLL;
 import BLL.OnlineCourseBLL;
 import BLL.OnsiteCourseBLL;
@@ -16,7 +18,8 @@ import DAL.OnlineCourse;
 import DAL.OnsiteCourse;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -223,6 +226,12 @@ public class FormCourse extends javax.swing.JFrame {
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+
+        txtTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTitleActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Tên Khóa Học");
 
@@ -518,8 +527,8 @@ public class FormCourse extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBoxSatActionPerformed
 
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
-        funcInsertCourse();
-        funcRefreshCourse();
+        if (funcInsertCourse())
+            funcRefreshCourse();
     }//GEN-LAST:event_btnInsertActionPerformed
 
     private void txtUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUrlActionPerformed
@@ -528,6 +537,7 @@ public class FormCourse extends javax.swing.JFrame {
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         funcRefreshCourse();
+        delAllvaluetable();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void jRadioButtonOnsiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonOnsiteActionPerformed
@@ -563,6 +573,10 @@ public class FormCourse extends javax.swing.JFrame {
     private void jComboBoxTypeCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTypeCourseActionPerformed
         funcTypeCourse();
     }//GEN-LAST:event_jComboBoxTypeCourseActionPerformed
+
+    private void txtTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTitleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTitleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -627,16 +641,11 @@ public class FormCourse extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void inits() throws SQLException {
-        listCourse();
-    }
-
-    private void listCourse() throws SQLException {
-        CourseBLL sts = new CourseBLL();
-        ArrayList list = sts.readCourseFull();
+        ArrayList list = std.readCourseFull();
         update1(list);
-
     }
 
+    //Làm mới table bởi List
     private void update1(ArrayList list) {
         DefaultTableModel model = convertStudent(list);
         tblCourse.setModel(model);
@@ -680,65 +689,98 @@ public class FormCourse extends javax.swing.JFrame {
         txtUrl.setEnabled(true);
     }
 
-    private void funcInsertCourse() {
-        Course s = new Course();
+    public static boolean isInteger(String str) {
+        String regex = "^-?\\d+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(str);
+        return matcher.matches();
+    }
 
-        int credit = Integer.parseInt(txtCredits.getText());
-        String selectedItem = (String) jComboBoxDepartment.getSelectedItem();
-        int departmentId = Integer.parseInt(selectedItem);
+    private boolean funcInsertCourse() {
+        Course s=new Course();
 
-        s.setCredits(credit);
-        s.setDepartmentID(departmentId);
-        s.setTitle(txtTitle.getText());
+        //tạo biến xét điều kiện bảng  course s
+        String creditString = txtCredits.getText();
+        String departmentId = (String) jComboBoxDepartment.getSelectedItem();
+        String title = txtTitle.getText();
+        
+        if (creditString.equals("") || title.equals("")) {
+            showMessageDialog("Chưa Điền Đủ Dữ Liệu", "Lỗi");
+            return false;
+        } else if (!isInteger(creditString)) {
+            showMessageDialog("Lỗi Kiểu Dữ Liệu Tín Chỉ", "Lỗi");
+            return false;
+        }
+        
+        
+        System.out.println(title);
 
-        try {
-            int courseId = 0;
-            courseId = std.addCourse(s);
-            System.out.println(courseId);
-            if (courseId > 0) {
-                if (jRadioButtonOnsite.isSelected()) {
-                    OnsiteCourse s1 = new OnsiteCourse();
-
-                    String location = txtLocation.getText();
-                    String days = "";
-                    if (jCheckBoxMon.isSelected()) {
-                        days += "M";
-                    }
-                    if (jCheckBoxTue.isSelected()) {
-                        days += "T";
-                    }
-                    if (jCheckBoxWed.isSelected()) {
-                        days += "W";
-                    }
-                    if (jCheckBoxThu.isSelected()) {
-                        days += "H";
-                    }
-                    if (jCheckBoxSat.isSelected()) {
-                        days += "S";
-                    }
-                    if (jCheckBoxFri.isSelected()) {
-                        days += "F";
-                    }
-                    String time = txtTime.getText();
-
-                    s1.setLocation(location);
-                    s1.setDays(days);
-                    s1.setTime(time);
-                    s1.setCourseId(courseId);
-
-                    onsitestd.addCourse(s1);
-                    System.out.println(time);
-                } else {
-                    OnlineCourse s2 = new OnlineCourse();
-                    String url = txtUrl.getText();
-                    s2.setUrl(url);
-                    s2.setCourseId(courseId);
-                    onlinestd.addCourse(s2);
-                }
+        //tạo biến xét điều kiện bảng  onsitecourse s1
+        if (jRadioButtonOnsite.isSelected()) {
+            if (!isTimeValid(txtTime.getText())) {
+                return false;
             }
+            String location = txtLocation.getText();
+            String days = "";
+            if (jCheckBoxMon.isSelected()) {
+                days += "M";
+            }
+            if (jCheckBoxTue.isSelected()) {
+                days += "T";
+            }
+            if (jCheckBoxWed.isSelected()) {
+                days += "W";
+            }
+            if (jCheckBoxThu.isSelected()) {
+                days += "H";
+            }
+            if (jCheckBoxSat.isSelected()) {
+                days += "S";
+            }
+            if (jCheckBoxFri.isSelected()) {
+                days += "F";
+            }
+            String time = txtTime.getText();
+            s = new OnsiteCourse();
+            
+            ((OnsiteCourse)s).setLocation(location);
+            ((OnsiteCourse)s).setDays(days);
+            ((OnsiteCourse)s).setTime(time);
+        }
+        else{
+            String url = txtUrl.getText();
+            
+            s=new OnlineCourse();
+            ((OnlineCourse) s).setUrl(url);
+        }
+
+        s.setCredits(Integer.parseInt(creditString));
+        s.setDepartmentID(Integer.parseInt(departmentId));
+        s.setTitle(title);
+        
+        try {
+            s.getTitle();
+            int courseId = std.addCourse(s);
+            if (courseId > 0) 
+                if (jRadioButtonOnsite.isSelected()) {
+                    s.setCourseId(courseId);
+                    if (onsitestd.addCourse((OnsiteCourse) s) != 0) return true;
+                } else {
+                    s.setCourseId(courseId);
+                    if (onlinestd.addCourse((OnlineCourse) s) != 0) return true;
+                }
+            
         } catch (SQLException ex) {
             Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
+    }
+
+    public static boolean isTimeValid(String timeString) {
+        String regex = "^([0-1]?[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(timeString);
+        return matcher.matches();
     }
 
     public static void showMessageDialog(String message, String title) {
@@ -746,16 +788,16 @@ public class FormCourse extends javax.swing.JFrame {
     }
 
     private void funcRefreshCourse() {
-        std = new CourseBLL();
+        jRadioButtonOnsite.setEnabled(true);
+        jRadioButtonOnline.setEnabled(true);
+//        std = new CourseBLL();
         try {
             ArrayList list = std.readCourseFull();
-            DefaultTableModel model = convertStudent(list);
-            tblCourse.setModel(model);
+            update1(list);
         } catch (SQLException ex) {
             Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
     private void funcFilterCourse() {
         String text = txtSearch.getText();
@@ -784,6 +826,8 @@ public class FormCourse extends javax.swing.JFrame {
         delAllvaluetable();
         int rowIndex = tblCourse.getSelectedRow();
         if (rowIndex >= 0) {
+            jRadioButtonOnsite.setEnabled(false);
+            jRadioButtonOnline.setEnabled(false);
 
             String value1 = tblCourse.getValueAt(rowIndex, 1).toString();
             String value2 = tblCourse.getValueAt(rowIndex, 2).toString();
@@ -805,6 +849,7 @@ public class FormCourse extends javax.swing.JFrame {
                 }
             }
             if (tblCourse.getValueAt(rowIndex, 4) != null) {
+
                 //online
                 txtUrl.setText(tblCourse.getValueAt(rowIndex, 4).toString());
                 jRadioButtonOnline.setSelected(true);
@@ -819,6 +864,7 @@ public class FormCourse extends javax.swing.JFrame {
                 jCheckBoxSat.setSelected(false);
 
             } else {
+
                 String value5 = tblCourse.getValueAt(rowIndex, 5).toString();
                 String value6 = tblCourse.getValueAt(rowIndex, 6).toString();
                 String value7 = tblCourse.getValueAt(rowIndex, 7).toString();
@@ -912,6 +958,8 @@ public class FormCourse extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else {
+            showMessageDialog("Lỗi Chưa Chọn Khóa Học Để Sửa", "Lỗi");
         }
     }
 

@@ -53,8 +53,5 @@ public class Course {
     public void setTitle(String title) {
         this.title = title;
     }
-
-   
  
-    
 }

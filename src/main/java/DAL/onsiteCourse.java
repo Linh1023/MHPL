@@ -8,9 +8,8 @@ package DAL;
  *
  * @author DO THE TUNG
  */
-public class OnsiteCourse {
+public class OnsiteCourse extends Course{
 
-    public int courseId;
     public String days, time, location;
     public OnsiteCourse() {
     }
@@ -20,14 +19,6 @@ public class OnsiteCourse {
         this.days = days;
         this.time = time;
         this.location = location;
-    }
-
-    public int getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
     }
 
     public String getDays() {

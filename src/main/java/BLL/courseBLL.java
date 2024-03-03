@@ -26,6 +26,7 @@ public class CourseBLL {
 //   code load list student in BLL
     public int addCourse(Course s) throws SQLException {
         int result = stdDal.insertCourse(s);
+        System.out.println(s.getTitle());
         return result;
     }
 

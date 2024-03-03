@@ -26,19 +26,16 @@ public class OnsiteCourseBLL {
 //   code load list student in BLL
     public int addCourse(OnsiteCourse s) throws SQLException {
         int result = stdDal.insertCourse(s);
-        System.out.println("insert BLL onsiteCourse");
         return result;
     }
 
     public int EditCourse(OnsiteCourse s) throws SQLException {
         int result_up = stdDal.updateCourse(s);
-        System.out.println("Update BLL onsiteCourse");
         return result_up;
     }
 
     public ArrayList LoadCourse_No_Frac_page() throws SQLException {
         ArrayList list = stdDal.readCourse();
-        System.out.println("read BLL onsiteCourse");
         return list;
     }
 
@@ -54,7 +51,6 @@ public class OnsiteCourseBLL {
     }
     public int DeleteCouse(int courseId) throws SQLException {
         int result_up = stdDal.DeleteCourse(courseId);
-        System.out.println("Update BLL " + result_up);
         return result_up;
     }
 }
