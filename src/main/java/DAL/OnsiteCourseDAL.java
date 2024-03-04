@@ -4,6 +4,7 @@
  */
 package DAL;
 
+import BLL.OnsiteCourse;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class OnsiteCourseDAL extends MyDatabaseManager {
     }
 
     public int insertCourse(OnsiteCourse s) throws SQLException {
-        String query = "INSERT  onsitecourse ( CourseID ,Location, Days,Time) VALUES ( ?,?,?, ?)";
+        String query = "INSERT  onsitecourse ( CourseID ,Location, Days, Time) VALUES ( ?,?,?, ?)";
         PreparedStatement p = OnsiteCourseDAL.getConnection().prepareStatement(query);
         p.setInt(1, s.getCourseId());
         p.setString(2, s.getLocation());

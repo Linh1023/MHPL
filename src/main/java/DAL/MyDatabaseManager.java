@@ -11,13 +11,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author DO THE TUNG
  */
 public class MyDatabaseManager {
-//format code shift +alt +f
 
     private static Connection c;
     private static Statement s;
@@ -55,4 +55,29 @@ public class MyDatabaseManager {
         }
         return rs;
     }
+    public static Connection conn () {
+        try {
+            String url = "jdbc:mysql://localhost:3306/school";
+            String user = "root";
+            String passWord = "";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url,user,passWord);
+            return conn;
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return null;
+    }
+  
+    public static void closeConnection(Connection conn) {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(MyDatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
 }

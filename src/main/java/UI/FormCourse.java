@@ -4,18 +4,16 @@
  */
 package UI;
 
-import DAL.Course;
-import DAL.OnlineCourse;
-import DAL.OnsiteCourse;
-import BLL.CourseBLL;
-import BLL.OnlineCourseBLL;
-import BLL.OnsiteCourseBLL;
+import BLL.Course;
+import BLL.BLL_Course;
+import BLL.BLL_OnlineCourse;
+import BLL.BLL_OnsiteCourse;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import DAL.OnlineCourse;
-import DAL.OnsiteCourse;
+import BLL.OnlineCourse;
+import BLL.OnsiteCourse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -28,9 +26,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FormCourse extends javax.swing.JFrame {
 
-    CourseBLL std = new CourseBLL();
-    OnlineCourseBLL onlinestd = new OnlineCourseBLL();
-    OnsiteCourseBLL onsitestd = new OnsiteCourseBLL();
+    BLL_Course std = new BLL_Course();
+    BLL_OnlineCourse onlinestd = new BLL_OnlineCourse();
+    BLL_OnsiteCourse onsitestd = new BLL_OnsiteCourse();
 
     public FormCourse() throws SQLException {
         initComponents();
@@ -711,9 +709,6 @@ public class FormCourse extends javax.swing.JFrame {
             showMessageDialog("Lỗi Kiểu Dữ Liệu Tín Chỉ", "Lỗi");
             return false;
         }
-        
-        
-        System.out.println(title);
 
         //tạo biến xét điều kiện bảng  onsitecourse s1
         if (jRadioButtonOnsite.isSelected()) {
@@ -800,23 +795,24 @@ public class FormCourse extends javax.swing.JFrame {
     }
 
     private void funcFilterCourse() {
-        String text = txtSearch.getText();
+        String value = txtSearch.getText();
         int selectionFilter = -1, selectionType = -1;
         selectionFilter = jComboBoxTypeFilter.getSelectedIndex();
         selectionType = jComboBoxTypeCourse.getSelectedIndex();
-        if (selectionFilter >= 0 && selectionFilter < 3 && !"".equals(text)) {
-            ArrayList myList = std.find(text, selectionFilter, selectionType);
+        if (selectionFilter >= 0 && selectionFilter < 3 && !"".equals(value)) {
+            if(selectionFilter==2 && !isInteger(value))
+                JOptionPane.showMessageDialog(null, "Filter không hợp lệ", "Lỗi", JOptionPane.OK_OPTION);
+
+            ArrayList myList = std.find(value, selectionFilter, selectionType);
             update1(myList);
         } else {
             JOptionPane.showMessageDialog(null, "Filter không hợp lệ", "Lỗi", JOptionPane.OK_OPTION);
-
         }
     }
 
     private void funcTypeCourse() {
         int selectionType = -1;
         selectionType = jComboBoxTypeCourse.getSelectedIndex();
-
         ArrayList myList = std.find(selectionType);
         update1(myList);
 
