@@ -6,8 +6,17 @@ package UI;
 
 import BLL.BLL_Student;
 import BLL.DTO_Person;
+import java.sql.JDBCType;
+import static java.sql.JDBCType.NULL;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 public class UI_Student extends javax.swing.JFrame {
@@ -15,9 +24,13 @@ public class UI_Student extends javax.swing.JFrame {
     BLL_Student bllthongtinstudent = new BLL_Student();
     ArrayList<DTO_Person> arrayStudent = new ArrayList<DTO_Person>();
     private NonEditableTableModel tableModel_jTable1;
+
     public UI_Student() {
         initComponents();
+        setLocationRelativeTo(null);
         loadStudent();
+        loadData();
+        
     }
 
     /**
@@ -36,20 +49,20 @@ public class UI_Student extends javax.swing.JFrame {
         jComboBox_item = new javax.swing.JComboBox<>();
         jButton_timkiem = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        jButton_Sua = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton_refresh = new javax.swing.JButton();
         jButton_exit = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtID = new javax.swing.JTextField();
+        txtFirstName = new javax.swing.JTextField();
+        txtLastName = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        jButton_insert = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_ThongtinSV = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        jSpinner_Date = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,6 +88,9 @@ public class UI_Student extends javax.swing.JFrame {
             }
         });
 
+        jButton_timkiem.setBackground(new java.awt.Color(0, 153, 51));
+        jButton_timkiem.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_timkiem.setForeground(new java.awt.Color(255, 255, 255));
         jButton_timkiem.setText("Tìm");
         jButton_timkiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,8 +100,19 @@ public class UI_Student extends javax.swing.JFrame {
 
         jLabel4.setText("StudentID");
 
-        jButton2.setText("Sửa");
+        jButton_Sua.setBackground(new java.awt.Color(0, 51, 255));
+        jButton_Sua.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_Sua.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_Sua.setText("Sửa");
+        jButton_Sua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_SuaActionPerformed(evt);
+            }
+        });
 
+        jButton1.setBackground(new java.awt.Color(255, 51, 51));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Xóa");
         jButton1.setActionCommand("Deleted");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -94,6 +121,9 @@ public class UI_Student extends javax.swing.JFrame {
             }
         });
 
+        jButton_refresh.setBackground(new java.awt.Color(0, 204, 204));
+        jButton_refresh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_refresh.setForeground(new java.awt.Color(255, 255, 255));
         jButton_refresh.setText("Làm mới");
         jButton_refresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,6 +131,9 @@ public class UI_Student extends javax.swing.JFrame {
             }
         });
 
+        jButton_exit.setBackground(new java.awt.Color(0, 153, 204));
+        jButton_exit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_exit.setForeground(new java.awt.Color(255, 255, 255));
         jButton_exit.setText("Thoát");
         jButton_exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,20 +141,30 @@ public class UI_Student extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setMinimumSize(new java.awt.Dimension(64, 30));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtID.setEditable(false);
+        txtID.setEnabled(false);
+        txtID.setMinimumSize(new java.awt.Dimension(64, 30));
+        txtID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtIDActionPerformed(evt);
             }
         });
 
-        jTextField2.setMinimumSize(new java.awt.Dimension(64, 30));
+        txtFirstName.setMinimumSize(new java.awt.Dimension(64, 30));
 
         jLabel5.setText("FirstName");
 
         jLabel6.setText("LastName");
 
-        jButton3.setText("Thêm");
+        jButton_insert.setBackground(new java.awt.Color(0, 153, 51));
+        jButton_insert.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_insert.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_insert.setText("Thêm");
+        jButton_insert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_insertActionPerformed(evt);
+            }
+        });
 
         jTable_ThongtinSV.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -135,8 +178,8 @@ public class UI_Student extends javax.swing.JFrame {
 
         jLabel7.setText("EnrollmentDate");
 
-        jSpinner1.setModel(new javax.swing.SpinnerDateModel());
-        jSpinner1.setPreferredSize(new java.awt.Dimension(64, 30));
+        jSpinner_Date.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), new java.util.Date(), new java.util.Date(), java.util.Calendar.DAY_OF_WEEK_IN_MONTH));
+        jSpinner_Date.setPreferredSize(new java.awt.Dimension(64, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,34 +205,34 @@ public class UI_Student extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(51, 51, 51)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(78, 78, 78)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(48, 48, 48)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(42, 42, 42)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jSpinner_Date, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3)
+                        .addComponent(jButton_insert)
                         .addGap(29, 29, 29)
-                        .addComponent(jButton2)
+                        .addComponent(jButton_Sua)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton_refresh)
-                        .addGap(20, 20, 20))))
+                        .addComponent(jButton_refresh)))
+                .addGap(20, 20, 20))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -223,14 +266,15 @@ public class UI_Student extends javax.swing.JFrame {
                         .addComponent(jLabel7)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtFirstName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jSpinner_Date, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
+                    .addComponent(jButton_insert)
+                    .addComponent(jButton_Sua)
                     .addComponent(jButton1)
                     .addComponent(jButton_refresh))
                 .addGap(22, 22, 22))
@@ -261,7 +305,7 @@ public class UI_Student extends javax.swing.JFrame {
                         System.out.println("123");
                         ArrayList<DTO_Person> students = bllthongtinstudent.searchStudentByID(idValue);
                         reloadStudent(students);
-                        System.out.println("size : "+students.size());
+
                     } catch (NumberFormatException e) {
                         JOptionPane.showMessageDialog(this, "ID phải là số nguyên");
                     }
@@ -275,10 +319,33 @@ public class UI_Student extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Không tìm thấy Sinh Viên");
         }
     }//GEN-LAST:event_jButton_timkiemActionPerformed
+    private void loadData() {
+        // Add a ListSelectionListener to the table
+        jTable_ThongtinSV.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    displaySelectedRowData();
+                }
+            }
+        });
+    }
 
-    
+    private void displaySelectedRowData() {
+        int selectedRowIndex = jTable_ThongtinSV.getSelectedRow();
+        if (selectedRowIndex != -1) {
+            DefaultTableModel model = (DefaultTableModel) jTable_ThongtinSV.getModel();
+            txtID.setText(model.getValueAt(selectedRowIndex, 1).toString());
+            txtFirstName.setText(model.getValueAt(selectedRowIndex, 2).toString());
+            txtLastName.setText(model.getValueAt(selectedRowIndex, 3).toString());
+            Date enrollmentDate = (Date) model.getValueAt(selectedRowIndex, 5);
+            SpinnerDateModel dateModel = (SpinnerDateModel) jSpinner_Date.getModel();
+            dateModel.setValue(enrollmentDate);
+            //jSpinner_Date.setValue(enrollmentDate);
+        }
+    }
     private void jButton_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_exitActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jButton_exitActionPerformed
 
     private void jComboBox_itemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_itemActionPerformed
@@ -286,42 +353,145 @@ public class UI_Student extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox_itemActionPerformed
 
     private void jButton_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_refreshActionPerformed
+        txtID.setText("");
+        txtFirstName.setText("");
+        txtLastName.setText("");
         refresh();
     }//GEN-LAST:event_jButton_refreshActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = jTable_ThongtinSV.getSelectedRow();
+        if (selectedRow != -1) {
+            
+            int personID = (int) jTable_ThongtinSV.getValueAt(selectedRow, 1);
+            int option = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa sinh viên này không?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                try {
+                int result = bllthongtinstudent.deleteStudent(personID);
+                if (result > 0) {
+                    // Xóa thành công, cập nhật GUI hoặc hiển thị thông báo
+                    JOptionPane.showMessageDialog(this, "Đã xóa thành công");
+                    refresh();
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Xóa thất bại");
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                // Xử lý lỗi SQL
+            }
+            }
+            } else {
+                    // Người dùng chưa chọn sinh viên để xóa
+                    JOptionPane.showMessageDialog(this, "Vui lòng chọn một sinh viên để xóa.");
+                }
+            
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtIDActionPerformed
 
-    public void loadStudent(){
+    private void jButton_insertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_insertActionPerformed
+        try {
+            String firstName = txtFirstName.getText();
+            String lastName = txtLastName.getText();
+            Date enrollmentDate = (Date) jSpinner_Date.getValue();
+            if (firstName.equals("") && lastName.equals("")) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin");
+                return;
+            }
+//                    // Lấy ID của sinh viên từ dòng đã chọn trong bảng
+//                    int selectedRow = jTable_ThongtinSV.getSelectedRow();
+//
+//                    int studentID = (int) jTable_ThongtinSV.getValueAt(selectedRow, 1);
+//
+//                    // Kiểm tra xem sinh viên có tồn tại hay không
+            //int personID = Integer.parseInt(txtID.getText());
+            if (txtID.getText().equals("") == false) {
+                JOptionPane.showMessageDialog(this, "Sinh viên đã tồn tại trong cơ sở dữ liệu.");
+                return;
+            } else if(txtID.getText().equals("")) {
+                DTO_Person new_student = new DTO_Person();
+                new_student.setFirstName(firstName);
+                new_student.setLastName(lastName);
+                new_student.setHireDate(null);
+                new_student.setEnrollmentDate(enrollmentDate);
+
+                int result = bllthongtinstudent.insertStudent(new_student);
+
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(this, "Thêm Thành Công");
+                    refresh();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Thêm Thất Bại");
+                }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Có lỗi !!");
+        }
+    }//GEN-LAST:event_jButton_insertActionPerformed
+
+    private void jButton_SuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SuaActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = jTable_ThongtinSV.getSelectedRow();
+        if (selectedRow != -1) {
+            int personID = (int) jTable_ThongtinSV.getValueAt(selectedRow, 1);
+            String firstName = txtFirstName.getText();
+            String lastName = txtLastName.getText();
+
+            DTO_Person editedStudent = new DTO_Person();
+            editedStudent.setPersonID(personID);
+            editedStudent.setFirstName(firstName);
+            editedStudent.setLastName(lastName);
+
+            try {
+                int result = bllthongtinstudent.updateStudentName(editedStudent);
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(this, "Sửa thành công.");
+                    refresh();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Sửa thất bại");
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                // Xử lý lỗi SQL
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một sinh viên để sửa.");
+        }
+    }//GEN-LAST:event_jButton_SuaActionPerformed
+
+    public void loadStudent() {
         arrayStudent = bllthongtinstudent.getAllStudent();
         DefaultTableModel model = (DefaultTableModel) jTable_ThongtinSV.getModel();
-        for(int i = 0; i<arrayStudent.size(); i++){
+        for (int i = 0; i < arrayStudent.size(); i++) {
             DTO_Person person_DTO = arrayStudent.get(i);
-            Object[] newrow = new Object[] {i+1, person_DTO.getPersonID(), person_DTO.getFirstName(), person_DTO.getLastName(), person_DTO.getHireDate(), person_DTO.getEnrollmentDate()};
+            Object[] newrow = new Object[]{i + 1, person_DTO.getPersonID(), person_DTO.getFirstName(), person_DTO.getLastName(), person_DTO.getHireDate(), person_DTO.getEnrollmentDate()};
             model.addRow(newrow);
         }
     }
-    public void refresh(){
+
+    public void refresh() {
         arrayStudent = bllthongtinstudent.getAllStudent();
         DefaultTableModel model = (DefaultTableModel) jTable_ThongtinSV.getModel();
         model.setRowCount(0); // Xóa dữ liệu hiện tại trên bảng
-        for(int i = 0; i<arrayStudent.size(); i++){
+        for (int i = 0; i < arrayStudent.size(); i++) {
             DTO_Person person_DTO = arrayStudent.get(i);
-            Object[] newrow = new Object[] {i+1, person_DTO.getPersonID(), person_DTO.getFirstName(), person_DTO.getLastName(), person_DTO.getHireDate(), person_DTO.getEnrollmentDate()};
+            Object[] newrow = new Object[]{i + 1, person_DTO.getPersonID(), person_DTO.getFirstName(), person_DTO.getLastName(), person_DTO.getHireDate(), person_DTO.getEnrollmentDate()};
             model.addRow(newrow);
         }
     }
+
     public void reloadStudent(ArrayList<DTO_Person> list_Student) {
         DefaultTableModel model = (DefaultTableModel) jTable_ThongtinSV.getModel();
         model.setRowCount(0);
-        for(int i = 0; i<list_Student.size(); i++){
+        for (int i = 0; i < list_Student.size(); i++) {
             DTO_Person person_DTO = list_Student.get(i);
-            Object[] row = new Object[] {i+1, person_DTO.getPersonID(), person_DTO.getFirstName(), person_DTO.getLastName(), person_DTO.getHireDate(), person_DTO.getEnrollmentDate()};
+            Object[] row = new Object[]{i + 1, person_DTO.getPersonID(), person_DTO.getFirstName(), person_DTO.getLastName(), person_DTO.getHireDate(), person_DTO.getEnrollmentDate()};
             model.addRow(row);
         }
     }
@@ -335,6 +505,7 @@ public class UI_Student extends javax.swing.JFrame {
 //            }
 //        }
 //    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -366,22 +537,24 @@ public class UI_Student extends javax.swing.JFrame {
             }
         });
     }
+
     public class NonEditableTableModel extends DefaultTableModel {
-  
+
         public NonEditableTableModel(Object[][] data, Object[] columnNames) {
-          super(data, columnNames);
+            super(data, columnNames);
         }
+
         @Override
         public boolean isCellEditable(int row, int column) {
-          return false; // không cho phép sửa đổi các ô trong bảng
+            return false; // không cho phép sửa đổi các ô trong bảng
         }
-      }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton_Sua;
     private javax.swing.JButton jButton_exit;
+    private javax.swing.JButton jButton_insert;
     private javax.swing.JButton jButton_refresh;
     private javax.swing.JButton jButton_timkiem;
     private javax.swing.JComboBox<String> jComboBox_item;
@@ -393,11 +566,11 @@ public class UI_Student extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSpinner jSpinner_Date;
     private javax.swing.JTable jTable_ThongtinSV;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField_timkien;
+    private javax.swing.JTextField txtFirstName;
+    private javax.swing.JTextField txtID;
+    private javax.swing.JTextField txtLastName;
     // End of variables declaration//GEN-END:variables
 }

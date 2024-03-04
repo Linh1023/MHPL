@@ -8,6 +8,7 @@ import BLL.DTO_Person;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -46,8 +47,8 @@ public class DAL_Student {
         ArrayList<DTO_Person> arrayList = new ArrayList<DTO_Person>();
         conn = ConnectToSQL.conn();
         try {
-            PsStudent = conn.prepareStatement("SELECT * FROM person WHERE " + ComboboxValue + "=? AND HireDate IS NULL");
-            PsStudent.setString(1, search);
+            PsStudent = conn.prepareStatement("SELECT * FROM person WHERE " + ComboboxValue + " LIKE ?  AND HireDate IS NULL");
+            PsStudent.setString(1,"%" +search+"%");
             RsStudent = PsStudent.executeQuery();
             while(RsStudent.next()){
                 DTO_Person person_DTO = new DTO_Person();
@@ -70,7 +71,6 @@ public class DAL_Student {
     ArrayList<DTO_Person> arrayList = new ArrayList<>();
     conn = ConnectToSQL.conn();
     try {
-        System.out.println("789");
         PsStudent = conn.prepareStatement("SELECT * FROM person WHERE PersonID = ? AND HireDate IS NULL");
         PsStudent.setInt(1, id);
         RsStudent = PsStudent.executeQuery();
@@ -94,6 +94,39 @@ public class DAL_Student {
         // Đóng các tài nguyên (ResultSet, PreparedStatement) ở đây nếu cần
     }
 }
+    public int insertPerson(DTO_Person person) throws SQLException {
+        
+        conn = ConnectToSQL.conn();
+        try {
+            String query = "INSERT INTO Person (FirstName, LastName, EnrollmentDate) VALUES (?, ?, ?)";
+            PsStudent = conn.prepareStatement(query);
+            PsStudent.setString(1, person.getFirstName());
+            PsStudent.setString(2, person.getLastName());
+            PsStudent.setDate(3, new java.sql.Date(person.getEnrollmentDate().getTime()));
+            System.out.println("1234");
+            return PsStudent.executeUpdate();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    public int deleteStudent(int personID) throws SQLException {
+        String query = "DELETE FROM person WHERE PersonID = ?";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+            preparedStatement.setInt(1, personID);
+            return preparedStatement.executeUpdate();
+        }
+    }
+    public int updateStudentName(DTO_Person person) throws SQLException {
+        String query = "UPDATE person SET FirstName = ?, LastName = ? WHERE PersonID = ?";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+            preparedStatement.setString(1, person.getFirstName());
+            preparedStatement.setString(2, person.getLastName());
+            preparedStatement.setInt(3, person.getPersonID());
+            return preparedStatement.executeUpdate();
+        }
+    }
 
     
 }

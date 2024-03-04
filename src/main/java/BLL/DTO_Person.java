@@ -27,6 +27,7 @@ public class DTO_Person {
         this.HireDate= HireDate;
         this.EnrollmentDate = EnrollmentDate;
     }
+    
     public int getPersonID()
     {
         return PersonID;
