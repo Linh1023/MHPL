@@ -4,7 +4,7 @@
  */
 package BLL;
 
-import DAL.CourseDAL;
+import DAL.DAL_Course;
 import java.awt.List;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,10 +15,10 @@ import java.util.ArrayList;
  */
 public class BLL_Course {
 
-    CourseDAL stdDal;
+    DAL_Course stdDal;
 
     public BLL_Course() {
-        stdDal = new CourseDAL();
+        stdDal = new DAL_Course();
 
     }
 

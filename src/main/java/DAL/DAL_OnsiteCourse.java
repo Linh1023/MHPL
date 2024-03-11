@@ -10,15 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class OnsiteCourseDAL extends MyDatabaseManager {
+public class DAL_OnsiteCourse extends MyDatabaseManager {
 
-    public OnsiteCourseDAL() {
-        OnsiteCourseDAL.connectDB();
+    public DAL_OnsiteCourse() {
+        DAL_OnsiteCourse.connectDB();
     }
 
     public int insertCourse(OnsiteCourse s) throws SQLException {
         String query = "INSERT  onsitecourse ( CourseID ,Location, Days, Time) VALUES ( ?,?,?, ?)";
-        PreparedStatement p = OnsiteCourseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = DAL_OnsiteCourse.getConnection().prepareStatement(query);
         p.setInt(1, s.getCourseId());
         p.setString(2, s.getLocation());
         p.setString(3, s.getDays());
@@ -31,7 +31,7 @@ public class OnsiteCourseDAL extends MyDatabaseManager {
     public int updateCourse(OnsiteCourse s) throws SQLException {
         String query = "Update onsitecourse SET Location = ? , Days = ?,Time=? "
                 + " WHERE courseID  = ?";
-        PreparedStatement p = OnsiteCourseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = DAL_OnsiteCourse.getConnection().prepareStatement(query);
         p.setString(1, s.getLocation());
         p.setString(2, s.getDays());
         p.setString(3, s.getTime());
@@ -43,7 +43,7 @@ public class OnsiteCourseDAL extends MyDatabaseManager {
 
     public ArrayList readCourse() throws SQLException {
         String query = "SELECT * FROM onsitecourse ";
-        ResultSet rs = OnsiteCourseDAL.doReadQuery(query);
+        ResultSet rs = DAL_OnsiteCourse.doReadQuery(query);
         ArrayList list = new ArrayList();
 
         if (rs != null) {
@@ -62,7 +62,7 @@ public class OnsiteCourseDAL extends MyDatabaseManager {
     }
     public int DeleteCourse(int courseID) throws SQLException {
         String query = "DELETE FROM onsitecourse WHERE courseID = ?";
-        PreparedStatement p = CourseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = DAL_Course.getConnection().prepareStatement(query);
         p.setInt(1, courseID);
         int result = p.executeUpdate();
 

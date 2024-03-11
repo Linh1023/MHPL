@@ -4,7 +4,7 @@
  */
 package BLL;
 
-import DAL.OnsiteCourseDAL;
+import DAL.DAL_OnsiteCourse;
 import java.awt.List;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,10 +15,10 @@ import java.util.ArrayList;
  */
 public class BLL_OnsiteCourse {
 
-    OnsiteCourseDAL stdDal;
+    DAL_OnsiteCourse stdDal;
 
     public BLL_OnsiteCourse() {
-        stdDal = new OnsiteCourseDAL();
+        stdDal = new DAL_OnsiteCourse();
 
     }
 

@@ -13,15 +13,15 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CourseDAL extends MyDatabaseManager {
+public class DAL_Course extends MyDatabaseManager {
 
-    public CourseDAL() {
-        CourseDAL.connectDB();
+    public DAL_Course() {
+        DAL_Course.connectDB();
     }
 
     public int insertCourse(Course s) throws SQLException {
         String query = "INSERT  course ( Title, Credits,DepartmentID) VALUES ( ?,?, ?)";
-        PreparedStatement p = CourseDAL.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement p = DAL_Course.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         p.setString(1, s.getTitle());
         p.setInt(2, s.getCredits());
         p.setInt(3, s.getDepartmentID());
@@ -39,7 +39,7 @@ public class CourseDAL extends MyDatabaseManager {
     public int updateCourse(Course s) throws SQLException {
         String query = "Update course SET Title = ? , Credits = ?,DepartmentID=? "
                 + " WHERE courseID  = ?";
-        PreparedStatement p = CourseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = DAL_Course.getConnection().prepareStatement(query);
         p.setString(1, s.getTitle());
         p.setInt(2, s.getCredits());
         p.setInt(3, s.getDepartmentID());
@@ -51,7 +51,7 @@ public class CourseDAL extends MyDatabaseManager {
 
     public ArrayList readCourse() throws SQLException {
         String query = "SELECT * FROM course ";
-        ResultSet rs = CourseDAL.doReadQuery(query);
+        ResultSet rs = DAL_Course.doReadQuery(query);
         ArrayList list = new ArrayList();
 
         if (rs != null) {
@@ -82,7 +82,7 @@ public class CourseDAL extends MyDatabaseManager {
 
     public ArrayList readCourseFull(String query) throws SQLException {
         System.out.println(query);
-        ResultSet rs = CourseDAL.doReadQuery(query);
+        ResultSet rs = DAL_Course.doReadQuery(query);
         ArrayList list = new ArrayList();
         if (rs != null) {
             while (rs.next()) {
@@ -121,7 +121,7 @@ public class CourseDAL extends MyDatabaseManager {
         try {
             return readCourseFull(query);
         } catch (SQLException ex) {
-            Logger.getLogger(CourseDAL.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DAL_Course.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println(query);
         return null;
@@ -156,14 +156,14 @@ public class CourseDAL extends MyDatabaseManager {
         try {
             return readCourseFull(query);
         } catch (SQLException ex) {
-            Logger.getLogger(CourseDAL.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DAL_Course.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
     public int DeleteCourse(int courseID) throws SQLException {
         String query = "DELETE FROM course WHERE courseID = ?";
-        PreparedStatement p = CourseDAL.getConnection().prepareStatement(query);
+        PreparedStatement p = DAL_Course.getConnection().prepareStatement(query);
         p.setInt(1, courseID);
         int result = p.executeUpdate();
 

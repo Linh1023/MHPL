@@ -4,17 +4,17 @@
  */
 package BLL;
 
-import DAL.OnlineCourseDAL;
+import DAL.DAL_OnlineCourse;
 import java.awt.List;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BLL_OnlineCourse {
 
-    OnlineCourseDAL stdDal;
+    DAL_OnlineCourse stdDal;
 
     public BLL_OnlineCourse() {
-        stdDal = new OnlineCourseDAL();
+        stdDal = new DAL_OnlineCourse();
     }
 
     public int addCourse(OnlineCourse s) throws SQLException {
