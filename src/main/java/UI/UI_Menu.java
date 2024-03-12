@@ -4,6 +4,7 @@
  */
 package UI;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -16,8 +17,11 @@ public class UI_Menu extends javax.swing.JFrame {
      * Creates new form UI_Menu
      */
     public UI_Menu() {
+        
         initComponents();
         setLocationRelativeTo(null);
+        
+        
     }
 
     /**
@@ -44,7 +48,8 @@ public class UI_Menu extends javax.swing.JFrame {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 28, 255, -1));
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon("D:\\MHPL\\src\\main\\java\\images\\img_phancong.png")); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon("src/main/java/images/img_phancong.png")
+        );
         jButton3.setText("QUẢN PHÂN CÔNG");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -54,7 +59,8 @@ public class UI_Menu extends javax.swing.JFrame {
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(465, 274, -1, 124));
 
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon("D:\\MHPL\\src\\main\\java\\images\\img_result.png")); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon("src/main/java/images/img_result.png")
+        );
         jButton4.setText("QUẢN LÝ KẾT QUẢ");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,7 +70,8 @@ public class UI_Menu extends javax.swing.JFrame {
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 274, -1, 124));
 
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton5.setIcon(new javax.swing.ImageIcon("D:\\MHPL\\src\\main\\java\\images\\img_course.png")); // NOI18N
+        jButton5.setIcon(new javax.swing.ImageIcon("src/main/java/images/img_course.png")
+        );
         jButton5.setText("QUẢN LÝ KHÓA HỌC");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,7 +80,8 @@ public class UI_Menu extends javax.swing.JFrame {
         });
         getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(44, 274, 331, 124));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("D:\\MHPL\\src\\main\\java\\images\\background.png")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon("src/main/java/images/background.png")
+        );
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
