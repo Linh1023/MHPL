@@ -11,6 +11,7 @@ import BLL.Person;
 import BLL.StudentGrade;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -34,7 +35,7 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         
         initComponents();
         jLabel_HideFind.setVisible(false);
-        
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jLabel_HideFind.setText("hello world");
         System.out.println(jLabel_HideFind.getText());
         
@@ -96,14 +97,13 @@ public class UI_StudentGrade extends javax.swing.JFrame {
         jLabel_HideFind = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(0, 102, 204));
 
         jLabel_Header.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel_Header.setText("Đăng ký khóa học và lưu điểm");
 
         jLabel_OnOff.setText("On-Off :");
 
-        jComboBox_OnOff.setBackground(new java.awt.Color(255, 255, 255));
         jComboBox_OnOff.setForeground(new java.awt.Color(255, 255, 255));
         jComboBox_OnOff.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "On site", "Online" }));
         jComboBox_OnOff.addActionListener(new java.awt.event.ActionListener() {
@@ -114,7 +114,6 @@ public class UI_StudentGrade extends javax.swing.JFrame {
 
         jLabel_Course.setText("Course :");
 
-        jComboBox_Course.setBackground(new java.awt.Color(255, 255, 255));
         jComboBox_Course.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox_CourseActionPerformed(evt);
@@ -396,7 +395,6 @@ public class UI_StudentGrade extends javax.swing.JFrame {
             }
         });
 
-        jComboBox_TimTheo.setBackground(new java.awt.Color(255, 255, 255));
         jComboBox_TimTheo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student ID", "Name" }));
         jComboBox_TimTheo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

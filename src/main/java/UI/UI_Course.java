@@ -18,21 +18,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author quang
  */
-public class FormCourse extends javax.swing.JFrame {
+public class UI_Course extends javax.swing.JFrame {
 
     BLL_Course std = new BLL_Course();
     BLL_OnlineCourse onlinestd = new BLL_OnlineCourse();
     BLL_OnsiteCourse onsitestd = new BLL_OnsiteCourse();
 
-    public FormCourse() throws SQLException {
+    public UI_Course() throws SQLException {
         initComponents();
         inits();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -87,6 +90,7 @@ public class FormCourse extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 750));
+        setPreferredSize(new java.awt.Dimension(1200, 750));
 
         jPanel3.setPreferredSize(new java.awt.Dimension(1000, 750));
 
@@ -187,7 +191,7 @@ public class FormCourse extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jCheckBoxSat))
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 42, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -280,7 +284,7 @@ public class FormCourse extends javax.swing.JFrame {
                                 .addGap(15, 15, 15)
                                 .addComponent(jRadioButtonOnsite, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButtonOnline, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
+                                .addComponent(jRadioButtonOnline, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboBoxDepartment, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -438,7 +442,7 @@ public class FormCourse extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                    .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
                     .addComponent(btnDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnInsert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -494,7 +498,7 @@ public class FormCourse extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1018, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -585,10 +589,10 @@ public class FormCourse extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new FormCourse().setVisible(true);
+                    new UI_Course().setVisible(true);
 
                 } catch (SQLException ex) {
-                    Logger.getLogger(FormCourse.class
+                    Logger.getLogger(UI_Course.class
                             .getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -766,7 +770,7 @@ public class FormCourse extends javax.swing.JFrame {
                 }
             
         } catch (SQLException ex) {
-            Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UI_Course.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -790,7 +794,7 @@ public class FormCourse extends javax.swing.JFrame {
             ArrayList list = std.readCourseFull();
             update1(list);
         } catch (SQLException ex) {
-            Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UI_Course.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -952,7 +956,7 @@ public class FormCourse extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(FormCourse.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UI_Course.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             showMessageDialog("Lỗi Chưa Chọn Khóa Học Để Sửa", "Lỗi");

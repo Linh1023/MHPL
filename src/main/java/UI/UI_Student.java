@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -28,6 +29,7 @@ public class UI_Student extends javax.swing.JFrame {
     public UI_Student() {
         initComponents();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         loadStudent();
         loadData();
         
@@ -52,7 +54,6 @@ public class UI_Student extends javax.swing.JFrame {
         jButton_Sua = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton_refresh = new javax.swing.JButton();
-        jButton_exit = new javax.swing.JButton();
         txtID = new javax.swing.JTextField();
         txtFirstName = new javax.swing.JTextField();
         txtLastName = new javax.swing.JTextField();
@@ -131,16 +132,6 @@ public class UI_Student extends javax.swing.JFrame {
             }
         });
 
-        jButton_exit.setBackground(new java.awt.Color(0, 153, 204));
-        jButton_exit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton_exit.setForeground(new java.awt.Color(255, 255, 255));
-        jButton_exit.setText("Thoát");
-        jButton_exit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_exitActionPerformed(evt);
-            }
-        });
-
         txtID.setEditable(false);
         txtID.setEnabled(false);
         txtID.setMinimumSize(new java.awt.Dimension(64, 30));
@@ -196,8 +187,6 @@ public class UI_Student extends javax.swing.JFrame {
                 .addComponent(jComboBox_item, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(jButton_timkiem)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton_exit)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(74, 74, 74)
@@ -253,9 +242,8 @@ public class UI_Student extends javax.swing.JFrame {
                     .addComponent(jTextField_timkien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBox_item, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_timkiem, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_exit))
-                .addGap(22, 22, 22)
+                    .addComponent(jButton_timkiem, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,10 +332,6 @@ public class UI_Student extends javax.swing.JFrame {
             //jSpinner_Date.setValue(enrollmentDate);
         }
     }
-    private void jButton_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_exitActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jButton_exitActionPerformed
-
     private void jComboBox_itemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_itemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox_itemActionPerformed
@@ -553,7 +537,6 @@ public class UI_Student extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton_Sua;
-    private javax.swing.JButton jButton_exit;
     private javax.swing.JButton jButton_insert;
     private javax.swing.JButton jButton_refresh;
     private javax.swing.JButton jButton_timkiem;
