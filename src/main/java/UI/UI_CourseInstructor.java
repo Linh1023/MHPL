@@ -180,7 +180,7 @@ public class UI_CourseInstructor extends javax.swing.JFrame {
 
         btnXoa.setBackground(new java.awt.Color(255, 0, 0));
         btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnXoa.setForeground(new java.awt.Color(204, 0, 0));
+        btnXoa.setForeground(new java.awt.Color(255, 255, 255));
         btnXoa.setText("XÓA");
         btnXoa.setEnabled(false);
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
@@ -191,7 +191,7 @@ public class UI_CourseInstructor extends javax.swing.JFrame {
 
         btnSua.setBackground(new java.awt.Color(51, 0, 204));
         btnSua.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnSua.setForeground(new java.awt.Color(255, 255, 0));
+        btnSua.setForeground(new java.awt.Color(255, 255, 255));
         btnSua.setText("SỬA");
         btnSua.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSua.setEnabled(false);
@@ -416,7 +416,7 @@ public class UI_CourseInstructor extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION);
         if (choose == JOptionPane.YES_OPTION) {
             try {
-                int result = cibll.updateCourseInstructor(courseID, newInsID, newInsID);
+                int result = cibll.updateCourseInstructor(courseID, oldInsID, newInsID);
                 if (result > 0) {
                     JOptionPane.showMessageDialog(rootPane, "Cập nhật thành công!");
                     refresh();
@@ -522,11 +522,11 @@ public class UI_CourseInstructor extends javax.swing.JFrame {
 
     private void tblPhanCongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPhanCongMouseClicked
         // TODO add your handling code here:
+        int col = tblPhanCong.getSelectedColumn();
+        int row = tblPhanCong.getSelectedRow();
         btnThem.setEnabled(false);
         btnXoa.setEnabled(true);
         btnSua.setEnabled(true);
-        int col = tblPhanCong.getSelectedColumn();
-        int row = tblPhanCong.getSelectedRow();
         cbbKhoaHoc.setSelectedItem(tblPhanCong.getValueAt(row, 0) + " - " + tblPhanCong.getValueAt(row, 1));
         cbbKhoaHoc.setEnabled(false);
         cbbGiangVien.addItem(tblPhanCong.getValueAt(row, 2) + " - " + tblPhanCong.getValueAt(row, 3));
@@ -535,17 +535,18 @@ public class UI_CourseInstructor extends javax.swing.JFrame {
 //        xem chi tiet
         if (col == 4) {
             BLL_Instructor b = new BLL_Instructor();
+            BLL_Course cbll = new BLL_Course();
             int courseID = Integer.parseInt(tblPhanCong.getValueAt(row, 0).toString());
             int personID = Integer.parseInt(tblPhanCong.getValueAt(row, 2).toString());
             Instructor ins;
+            Course c;
             try {
                 ins = b.getInstructor(personID);
-                Course c = new Course();
+                c = cbll.getCourse(courseID);
                 new UI_CourseIntructorDetail(c, ins).setVisible(true);
             } catch (SQLException ex) {
                 Logger.getLogger(UI_CourseInstructor.class.getName()).log(Level.SEVERE, null, ex);
             }
-            refresh();
         }
     }//GEN-LAST:event_tblPhanCongMouseClicked
 

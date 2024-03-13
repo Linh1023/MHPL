@@ -104,18 +104,20 @@ public class DAL_Course extends MyDatabaseManager {
 
     public ArrayList find(int type) {
         String query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID ";
-        if (type ==0 ) query += ",b.url ,c.Location,c.Days,c.Time "
-                + "From course as a "
-                + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-                + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID ";
+        if (type == 0) {
+            query += ",b.url ,c.Location,c.Days,c.Time "
+                    + "From course as a "
+                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID ";
+        }
         if (type == 1) {
             query += ",c.Location,c.Days,c.Time ,NUll as url "
-                + "From course as a "
-                + "RIGHT JOIN onsitecourse AS c ON a.CourseID = c.CourseID ";
+                    + "From course as a "
+                    + "RIGHT JOIN onsitecourse AS c ON a.CourseID = c.CourseID ";
         }
         if (type == 2) {
             query += ", b.url ,NULL AS Location,NULL AS Days,NULL AS Time "
-                     + "From course as a "
+                    + "From course as a "
                     + "RIGHT JOIN onlinecourse AS b ON a.CourseID = b.CourseID ";
         }
         try {
@@ -129,18 +131,20 @@ public class DAL_Course extends MyDatabaseManager {
 
     public ArrayList find(String value, int filter, int type) {
         String query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID ";
-        if (type ==0 ) query += ",b.url ,c.Location,c.Days,c.Time "
-                + "From course as a "
-                + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-                + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID ";
+        if (type == 0) {
+            query += ",b.url ,c.Location,c.Days,c.Time "
+                    + "From course as a "
+                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
+                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID ";
+        }
         if (type == 1) {
             query += ",c.Location,c.Days,c.Time ,NUll as url "
-                + "From course as a "
-                + "RIGHT JOIN onsitecourse AS c ON a.CourseID = c.CourseID ";
+                    + "From course as a "
+                    + "RIGHT JOIN onsitecourse AS c ON a.CourseID = c.CourseID ";
         }
         if (type == 2) {
             query += ", b.url ,NULL AS Location,NULL AS Days,NULL AS Time "
-                     + "From course as a "
+                    + "From course as a "
                     + "RIGHT JOIN onlinecourse AS b ON a.CourseID = b.CourseID ";
         }
 
@@ -168,6 +172,25 @@ public class DAL_Course extends MyDatabaseManager {
         int result = p.executeUpdate();
 
         return result;
+    }
+
+    public Course getCourse(int courseID) throws SQLException {
+        String query = "SELECT * FROM Course WHERE CourseID = ? ";
+
+        PreparedStatement p = DAL_Instructor.getConnection().prepareStatement(query);
+        p.setInt(1, courseID);
+        ResultSet rs = p.executeQuery();
+
+        Course s = new Course();
+        if (rs != null) {
+            while (rs.next()) {
+                s.setCourseId(rs.getInt("CourseID"));
+                s.setTitle(rs.getString("Title"));
+                s.setCredits(rs.getInt("Credits"));
+                s.setDepartmentID(rs.getInt("DepartmentID"));
+            }
+        }
+        return s;
     }
 //public ArrayList find(String value, int filter,int type) {
 //        String query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "

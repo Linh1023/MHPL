@@ -69,4 +69,8 @@ public class BLL_Course {
         System.out.println("Update BLL " + result_up);
         return result_up;
     }
+     
+     public Course getCourse(int courseID) throws SQLException {
+         return stdDal.getCourse(courseID);
+     }
 }
