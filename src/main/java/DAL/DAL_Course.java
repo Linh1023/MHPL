@@ -21,6 +21,7 @@ public class DAL_Course extends MyDatabaseManager {
 
     public int insertCourse(Course s) throws SQLException {
         String query = "INSERT  course ( Title, Credits,DepartmentID) VALUES ( ?,?, ?)";
+                System.out.println(query);
         PreparedStatement p = DAL_Course.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         p.setString(1, s.getTitle());
         p.setInt(2, s.getCredits());
@@ -165,17 +166,18 @@ public class DAL_Course extends MyDatabaseManager {
         return null;
     }
 
-    public int DeleteCourse(int courseID) throws SQLException {
+    public boolean DeleteCourse(int courseID) throws SQLException {
         String query = "DELETE FROM course WHERE courseID = ?";
+        System.out.println(query);
         PreparedStatement p = DAL_Course.getConnection().prepareStatement(query);
         p.setInt(1, courseID);
-        int result = p.executeUpdate();
-
-        return result;
+        p.executeUpdate();
+        return true;
     }
 
     public Course getCourse(int courseID) throws SQLException {
         String query = "SELECT * FROM Course WHERE CourseID = ? ";
+        System.out.println(query);
 
         PreparedStatement p = DAL_Instructor.getConnection().prepareStatement(query);
         p.setInt(1, courseID);
@@ -192,49 +194,18 @@ public class DAL_Course extends MyDatabaseManager {
         }
         return s;
     }
-//public ArrayList find(String value, int filter,int type) {
-//        String query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-//                    + "FROM course AS a ";
-//        if (filter == 0) {
-//            query += "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-//                    + "FROM course AS a "
-//                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
-//                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-//                    + "WHERE LOWER(a.Title) LIKE '%" + value + "%';";
-//        }
-//        if (filter == 1) {
-//            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-//                    + "FROM course AS a "
-//                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
-//                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-//                    + "WHERE a.Credits = "+value + ";";
-//        }
-//        if (filter == 2) {
-//            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-//                    + "FROM course AS a "
-//                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
-//                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-//                    + "WHERE a.DepartmentID = "+value + ";";
-//        }
-//        if (filter == 3) {
-//            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-//                    + "FROM course AS a "
-//                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-//                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
-//                    + "WHERE b.url IS NOT NULL";
-//        }
-//        if (filter == 4) {
-//            query = "SELECT a.CourseID, a.Title, a.Credits, a.DepartmentID, b.url, c.Location, c.Days, c.Time "
-//                    + "FROM course AS a "
-//                    + "LEFT JOIN onsitecourse AS c ON a.CourseID = c.CourseID "
-//                    + "LEFT JOIN onlinecourse AS b ON a.CourseID = b.CourseID "
-//                    + "WHERE c.Location IS NOT NULL";
-//        }
-//        try {
-//            return readCourseFull(query);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(CourseDAL.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-//    }
+
+
+    public boolean InCourseIntructor(int courseID) throws SQLException {
+        String query = "SELECT * FROM courseinstructor WHERE CourseID = ?";
+        System.out.println(query);
+        PreparedStatement p = DAL_Course.getConnection().prepareStatement(query);
+        p.setInt(1, courseID);
+        ResultSet result = p.executeQuery();
+        if (result.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -568,8 +568,10 @@ public class UI_Course extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        funcDeleteCourse();
-        funcRefreshCourse();
+        if (funcDeleteCourse())
+            funcRefreshCourse();
+        else
+            showMessageDialog("Không thể xóa do khóa Học đã được phân công", "Lỗi");
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void jComboBoxTypeCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTypeCourseActionPerformed
@@ -699,13 +701,13 @@ public class UI_Course extends javax.swing.JFrame {
     }
 
     private boolean funcInsertCourse() {
-        Course s=new Course();
+        Course s = new Course();
 
         //tạo biến xét điều kiện bảng  course s
         String creditString = txtCredits.getText();
         String departmentId = (String) jComboBoxDepartment.getSelectedItem();
         String title = txtTitle.getText();
-        
+
         if (creditString.equals("") || title.equals("")) {
             showMessageDialog("Chưa Điền Đủ Dữ Liệu", "Lỗi");
             return false;
@@ -741,34 +743,38 @@ public class UI_Course extends javax.swing.JFrame {
             }
             String time = txtTime.getText();
             s = new OnsiteCourse();
-            
-            ((OnsiteCourse)s).setLocation(location);
-            ((OnsiteCourse)s).setDays(days);
-            ((OnsiteCourse)s).setTime(time);
-        }
-        else{
+
+            ((OnsiteCourse) s).setLocation(location);
+            ((OnsiteCourse) s).setDays(days);
+            ((OnsiteCourse) s).setTime(time);
+        } else {
             String url = txtUrl.getText();
-            
-            s=new OnlineCourse();
+
+            s = new OnlineCourse();
             ((OnlineCourse) s).setUrl(url);
         }
 
         s.setCredits(Integer.parseInt(creditString));
         s.setDepartmentID(Integer.parseInt(departmentId));
         s.setTitle(title);
-        
+
         try {
             s.getTitle();
             int courseId = std.addCourse(s);
-            if (courseId > 0) 
+            if (courseId > 0) {
                 if (jRadioButtonOnsite.isSelected()) {
                     s.setCourseId(courseId);
-                    if (onsitestd.addCourse((OnsiteCourse) s) != 0) return true;
+                    if (onsitestd.addCourse((OnsiteCourse) s) != 0) {
+                        return true;
+                    }
                 } else {
                     s.setCourseId(courseId);
-                    if (onlinestd.addCourse((OnlineCourse) s) != 0) return true;
+                    if (onlinestd.addCourse((OnlineCourse) s) != 0) {
+                        return true;
+                    }
                 }
-            
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(UI_Course.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -804,8 +810,9 @@ public class UI_Course extends javax.swing.JFrame {
         selectionFilter = jComboBoxTypeFilter.getSelectedIndex();
         selectionType = jComboBoxTypeCourse.getSelectedIndex();
         if (selectionFilter >= 0 && selectionFilter < 3 && !"".equals(value)) {
-            if(selectionFilter==2 && !isInteger(value))
+            if (selectionFilter == 2 && !isInteger(value)) {
                 JOptionPane.showMessageDialog(null, "Filter không hợp lệ", "Lỗi", JOptionPane.OK_OPTION);
+            }
 
             ArrayList myList = std.find(value, selectionFilter, selectionType);
             update1(myList);
@@ -963,20 +970,24 @@ public class UI_Course extends javax.swing.JFrame {
         }
     }
 
-    private void funcDeleteCourse() {
+    private boolean funcDeleteCourse() {
         int rowIndex = tblCourse.getSelectedRow();
         if (rowIndex >= 0) {
             int courseId = Integer.parseInt(tblCourse.getValueAt(rowIndex, 0).toString());
             try {
-                std.DeleteCouse(courseId);
-                if (jRadioButtonOnsite.isSelected()) {
-                    onsitestd.DeleteCouse(courseId);
+                if (std.DeleteCourse(courseId)) {
+                    if (jRadioButtonOnsite.isSelected()) {
+                        onsitestd.DeleteCouse(courseId);
+                    } else {
+                        onlinestd.DeleteCouse(courseId);
+                    }
+                    return true;
                 }
-                onlinestd.DeleteCouse(courseId);
-
             } catch (Exception e) {
             }
         }
+                            System.out.println("vào");
+            return false;
     }
 
     public void delAllvaluetable() {
