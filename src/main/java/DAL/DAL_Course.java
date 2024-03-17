@@ -21,7 +21,7 @@ public class DAL_Course extends MyDatabaseManager {
 
     public int insertCourse(Course s) throws SQLException {
         String query = "INSERT  course ( Title, Credits,DepartmentID) VALUES ( ?,?, ?)";
-                System.out.println(query);
+        System.out.println(query);
         PreparedStatement p = DAL_Course.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         p.setString(1, s.getTitle());
         p.setInt(2, s.getCredits());
@@ -195,10 +195,21 @@ public class DAL_Course extends MyDatabaseManager {
         return s;
     }
 
-
     public boolean InCourseIntructor(int courseID) throws SQLException {
         String query = "SELECT * FROM courseinstructor WHERE CourseID = ?";
         System.out.println(query);
+        PreparedStatement p = DAL_Course.getConnection().prepareStatement(query);
+        p.setInt(1, courseID);
+        ResultSet result = p.executeQuery();
+        if (result.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean inOnlineCourse(int courseID) throws SQLException {
+        String query = "SELECT * FROM onlinecourse WHERE CourseID = ?";
         PreparedStatement p = DAL_Course.getConnection().prepareStatement(query);
         p.setInt(1, courseID);
         ResultSet result = p.executeQuery();

@@ -82,4 +82,8 @@ public class BLL_Course {
     public Course getCourse(int courseID) throws SQLException {
         return stdDal.getCourse(courseID);
     }
+    
+    public boolean inOnlineCourse(int courseID) throws SQLException {
+        return stdDal.inOnlineCourse(courseID);
+    }
 }

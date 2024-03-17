@@ -373,6 +373,8 @@ public class UI_CourseInstructor extends javax.swing.JFrame {
                 Logger.getLogger(UI_CourseInstructor.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(rootPane, "Thêm thất bại!");
             }
+        }else{
+            JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn đầy đủ thông tin!");
         }
     }//GEN-LAST:event_btnThemActionPerformed
 
@@ -404,12 +406,19 @@ public class UI_CourseInstructor extends javax.swing.JFrame {
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
+        if(cbbGiangVien.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(rootPane,"Vui lòng giảng viên để thay đổi phân công!" );
+            return;
+        }
+        
         String course = (String) cbbKhoaHoc.getSelectedItem();
         String newIns = (String) cbbGiangVien.getSelectedItem();
         String oldIns = cbbGiangVien.getItemAt(cbbGiangVien.getItemCount() - 1);
+        
         int courseID = Integer.parseInt(course.split(" - ")[0]);
         int oldInsID = Integer.parseInt(oldIns.split(" - ")[0]);
         int newInsID = Integer.parseInt(newIns.split(" - ")[0]);
+        
         int choose = JOptionPane.showConfirmDialog(rootPane,
                 "Bạn có muổn thay đổi phân công này?",
                 "Sửa phân công",
@@ -540,10 +549,12 @@ public class UI_CourseInstructor extends javax.swing.JFrame {
             int personID = Integer.parseInt(tblPhanCong.getValueAt(row, 2).toString());
             Instructor ins;
             Course c;
+            boolean inOnlineCourse;
             try {
                 ins = b.getInstructor(personID);
                 c = cbll.getCourse(courseID);
-                new UI_CourseIntructorDetail(c, ins).setVisible(true);
+                inOnlineCourse = cbll.inOnlineCourse(courseID);
+                new UI_CourseIntructorDetail(c, ins,inOnlineCourse).setVisible(true);
             } catch (SQLException ex) {
                 Logger.getLogger(UI_CourseInstructor.class.getName()).log(Level.SEVERE, null, ex);
             }
